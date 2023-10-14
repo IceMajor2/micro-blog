@@ -22,5 +22,7 @@ public class Category {
     private Long id;
     @Indexed(unique = true)
     private String name;
+    // TODO: change data structure to 'Set'
+    // TODO: initialize collection
     private List<Post> posts;
 }
