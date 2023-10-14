@@ -14,7 +14,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping(params = "name")
     public Category getCategory(@RequestParam("name") String categoryName) {
         return categoryService.get(categoryName);
     }
