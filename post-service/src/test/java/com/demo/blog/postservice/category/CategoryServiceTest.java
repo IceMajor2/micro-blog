@@ -37,7 +37,7 @@ public class CategoryServiceTest {
     class Get {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoriesWithEmptyPosts")
+        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoriesNoPosts")
         void shouldReturnCategory(Category category) {
             // arrange
             when(repository.findByName(category.getName())).thenReturn(Optional.of(category));
@@ -80,7 +80,7 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategories() {
             // arange
-            List<Category> expected = categoriesWithEmptyPosts().toList();
+            List<Category> expected = categoriesNoPosts().toList();
             when(repository.findAll()).thenReturn(expected);
 
             // act
@@ -101,7 +101,6 @@ public class CategoryServiceTest {
             Category expected = Category.builder()
                     .id(1L)
                     .name(request.getName())
-                    .posts(Collections.emptySet())
                     .build();
             Category requestAsModel = request.toModel();
             when(repository.save(requestAsModel)).thenReturn(expected);
@@ -124,11 +123,6 @@ public class CategoryServiceTest {
         void shouldThrowExceptionOnConflict() {
             // arrange
             CategoryRequest request = CategoryRequest.builder().name("Java").build();
-            Category category = Category.builder()
-                    .id(9L)
-                    .name("Java")
-                    .posts(Collections.emptySet())
-                    .build();
             when(repository.existsByName(request.getName())).thenReturn(true);
 
             // act & arrange
@@ -136,13 +130,13 @@ public class CategoryServiceTest {
         }
     }
 
-    private static Stream<Category> categoriesWithEmptyPosts() {
+    private static Stream<Category> categoriesNoPosts() {
         return Stream.of(
-                Category.builder().id(1L).name("Java").posts(Collections.emptySet()).build(),
-                Category.builder().id(2L).name("Threads").posts(Collections.emptySet()).build(),
-                Category.builder().id(3L).name("Security").posts(Collections.emptySet()).build(),
-                Category.builder().id(4L).name("Microservices").posts(Collections.emptySet()).build(),
-                Category.builder().id(5L).name("Project Management").posts(Collections.emptySet()).build()
+                Category.builder().id(1L).name("Java").build(),
+                Category.builder().id(2L).name("Threads").build(),
+                Category.builder().id(3L).name("Security").build(),
+                Category.builder().id(4L).name("Microservices").build(),
+                Category.builder().id(5L).name("Project Management").build()
         );
     }
 
