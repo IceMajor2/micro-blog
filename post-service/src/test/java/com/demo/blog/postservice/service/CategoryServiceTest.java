@@ -88,10 +88,10 @@ public class CategoryServiceTest {
     private static Stream<Category> categoriesWithEmptyPosts() {
         return Stream.of(
                 Category.builder().id(1L).name("Java").posts(Collections.emptyList()).build(),
-                Category.builder().id(1L).name("Threads").posts(Collections.emptyList()).build(),
-                Category.builder().id(1L).name("Security").posts(Collections.emptyList()).build(),
-                Category.builder().id(1L).name("Microservices").posts(Collections.emptyList()).build(),
-                Category.builder().id(1L).name("Project Management").posts(Collections.emptyList()).build()
+                Category.builder().id(2L).name("Threads").posts(Collections.emptyList()).build(),
+                Category.builder().id(3L).name("Security").posts(Collections.emptyList()).build(),
+                Category.builder().id(4L).name("Microservices").posts(Collections.emptyList()).build(),
+                Category.builder().id(5L).name("Project Management").posts(Collections.emptyList()).build()
         );
     }
 
