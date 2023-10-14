@@ -114,6 +114,12 @@ public class CategoryServiceTest {
             verify(repository, times(1)).save(requestAsModel);
             verifyNoMoreInteractions(repository);
         }
+
+        @Test
+        void shouldThrowExceptionOnNullCategory() {
+            CategoryRequest request = CategoryRequest.builder().name(null).build();
+            assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> SUT.add(request));
+        }
     }
 
     private static Stream<Category> categoriesWithEmptyPosts() {
