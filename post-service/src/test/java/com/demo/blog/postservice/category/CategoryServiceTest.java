@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Nested;
@@ -21,7 +22,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -112,13 +112,27 @@ public class CategoryServiceTest {
             // assert
             assertThat(actual).isEqualTo(expected);
             verify(repository, times(1)).save(requestAsModel);
-            verifyNoMoreInteractions(repository);
         }
 
         @Test
         void shouldThrowExceptionOnNullCategory() {
             CategoryRequest request = CategoryRequest.builder().name(null).build();
             assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> SUT.add(request));
+        }
+
+        @Test
+        void shouldThrowExceptionOnConflict() {
+            // arrange
+            CategoryRequest request = CategoryRequest.builder().name("Java").build();
+            Category category = Category.builder()
+                    .id(9L)
+                    .name("Java")
+                    .posts(Collections.emptySet())
+                    .build();
+            when(repository.existsByName(request.getName())).thenReturn(true);
+
+            // act & arrange
+            assertThatExceptionOfType(CategoryAlreadyExistsException.class).isThrownBy(() -> SUT.add(request));
         }
     }
 
