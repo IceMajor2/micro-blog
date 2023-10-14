@@ -109,7 +109,7 @@ public class CategoryServiceTest {
 
             // assert
             assertThat(actual).isEqualTo(expected);
-            verify(repository, times(1)).save(toModel(request));
+            verify(repository, times(1)).save(requestAsModel);
             verifyNoMoreInteractions(repository);
         }
     }
