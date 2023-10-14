@@ -1,9 +1,6 @@
-package com.demo.blog.postservice.service;
+package com.demo.blog.postservice.category;
 
-import com.demo.blog.postservice.category.Category;
-import com.demo.blog.postservice.category.CategoryService;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
-import com.demo.blog.postservice.category.CategoryRepository;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
