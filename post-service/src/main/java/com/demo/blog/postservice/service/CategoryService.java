@@ -13,6 +13,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public Category get(String categoryName) {
-        throw new CategoryNotFoundException();
+        return categoryRepository.findByName(categoryName)
+                .orElseThrow(CategoryNotFoundException::new);
     }
 }
