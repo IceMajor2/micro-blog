@@ -53,7 +53,11 @@ public class CategoryServiceTest {
                 .isThrownBy(() -> SUT.get("SOME CATEGORY"));
     }
 
-    // TODO: write 'shouldThrowExceptionOnInvalidCategoryName' test
+    @Test
+    void shouldThrowExceptionOnNullCategoryName() {
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> SUT.get(null));
+    }
 
     @Test
     void shouldReturnEmptyListWhenCollectionIsEmpty() {
@@ -69,11 +73,14 @@ public class CategoryServiceTest {
 
     @Test
     void shouldReturnListOfAllCategories() {
+        // arange
         List<Category> expected = categoriesWithEmptyPosts().toList();
         when(repository.findAll()).thenReturn(expected);
 
+        // act
         List<Category> actual = SUT.getAll();
 
+        // assert
         assertThat(actual).containsExactlyElementsOf(expected);
     }
 
