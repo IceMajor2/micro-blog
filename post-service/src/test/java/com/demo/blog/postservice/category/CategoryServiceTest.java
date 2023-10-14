@@ -2,6 +2,7 @@ package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.ClassOrderer;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -30,56 +32,60 @@ public class CategoryServiceTest {
     @Mock
     private CategoryRepository repository;
 
-    @ParameterizedTest
-    @MethodSource("categoriesWithEmptyPosts")
-    void shouldReturnCategory(Category category) {
-        // arrange
-        when(repository.findByName(category.getName())).thenReturn(Optional.of(category));
+    @Nested
+    class Get {
 
-        // act
-        Category actual = SUT.get(category.getName());
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoriesWithEmptyPosts")
+        void shouldReturnCategory(Category category) {
+            // arrange
+            when(repository.findByName(category.getName())).thenReturn(Optional.of(category));
 
-        // assert
-        assertThat(actual).isEqualTo(category);
-        verify(repository, times(1)).findByName(category.getName());
-        verifyNoMoreInteractions(repository);
-    }
+            // act
+            Category actual = SUT.get(category.getName());
 
-    @Test
-    void shouldThrowExceptionOnCategoryNotFound() {
-        assertThatExceptionOfType(CategoryNotFoundException.class)
-                .isThrownBy(() -> SUT.get("SOME CATEGORY"));
-    }
+            // assert
+            assertThat(actual).isEqualTo(category);
+            verify(repository, times(1)).findByName(category.getName());
+            verifyNoMoreInteractions(repository);
+        }
 
-    @Test
-    void shouldThrowExceptionOnNullCategoryName() {
-        assertThatExceptionOfType(NullPointerException.class)
-                .isThrownBy(() -> SUT.get(null));
-    }
+        @Test
+        void shouldThrowExceptionOnCategoryNotFound() {
+            assertThatExceptionOfType(CategoryNotFoundException.class)
+                    .isThrownBy(() -> SUT.get("SOME CATEGORY"));
+        }
 
-    @Test
-    void shouldReturnEmptyListWhenCollectionIsEmpty() {
-        // arrange
-        when(repository.findAll()).thenReturn(Collections.emptyList());
+        @Test
+        void shouldThrowExceptionOnNullCategoryName() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.get(null));
+        }
 
-        // act
-        List<Category> actual = SUT.getAll();
+        @Test
+        void shouldReturnEmptyListWhenCollectionIsEmpty() {
+            // arrange
+            when(repository.findAll()).thenReturn(Collections.emptyList());
 
-        // assert
-        assertThat(actual).isEmpty();
-    }
+            // act
+            List<Category> actual = SUT.getAll();
 
-    @Test
-    void shouldReturnListOfAllCategories() {
-        // arange
-        List<Category> expected = categoriesWithEmptyPosts().toList();
-        when(repository.findAll()).thenReturn(expected);
+            // assert
+            assertThat(actual).isEmpty();
+        }
 
-        // act
-        List<Category> actual = SUT.getAll();
+        @Test
+        void shouldReturnListOfAllCategories() {
+            // arange
+            List<Category> expected = categoriesWithEmptyPosts().toList();
+            when(repository.findAll()).thenReturn(expected);
 
-        // assert
-        assertThat(actual).containsExactlyElementsOf(expected);
+            // act
+            List<Category> actual = SUT.getAll();
+
+            // assert
+            assertThat(actual).containsExactlyElementsOf(expected);
+        }
     }
 
     private static Stream<Category> categoriesWithEmptyPosts() {
