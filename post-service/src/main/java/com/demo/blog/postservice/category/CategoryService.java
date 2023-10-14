@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class CategoryService {
 
     Category add(CategoryRequest request) {
         Category category = request.toModel();
+        if(categoryRepository.existsByName(category.getName())) {
+            throw new CategoryAlreadyExistsException();
+        }
         return categoryRepository.save(category);
     }
 }
