@@ -1,5 +1,6 @@
 package com.demo.blog.postservice.category;
 
+import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Nested;
@@ -88,6 +89,31 @@ public class CategoryServiceTest {
         }
     }
 
+    @Nested
+    class Post {
+
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#validRequests")
+        void shouldAcceptValidCategory(CategoryRequest request) {
+            // arrange
+            Category expected = Category.builder()
+                    .id(1L)
+                    .name(request.getName())
+                    .posts(Collections.emptyList())
+                    .build();
+            Category requestAsModel = request.toModel();
+            when(repository.save(requestAsModel)).thenReturn(expected);
+
+            // act
+            Category actual = SUT.add(request);
+
+            // assert
+            assertThat(actual).isEqualTo(expected);
+            verify(repository, times(1)).save(toModel(request));
+            verifyNoMoreInteractions(repository);
+        }
+    }
+
     private static Stream<Category> categoriesWithEmptyPosts() {
         return Stream.of(
                 Category.builder().id(1L).name("Java").posts(Collections.emptyList()).build(),
@@ -95,6 +121,15 @@ public class CategoryServiceTest {
                 Category.builder().id(3L).name("Security").posts(Collections.emptyList()).build(),
                 Category.builder().id(4L).name("Microservices").posts(Collections.emptyList()).build(),
                 Category.builder().id(5L).name("Project Management").posts(Collections.emptyList()).build()
+        );
+    }
+
+    private static Stream<CategoryRequest> validRequests() {
+        return Stream.of(
+                CategoryRequest.builder().name("Python").build(),
+                CategoryRequest.builder().name("Backend").build(),
+                CategoryRequest.builder().name("Algorithms").build(),
+                CategoryRequest.builder().name("Data Structures").build()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.demo.blog.postservice.category;
 
+import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,9 @@ public class CategoryService {
 
     List<Category> getAll() {
         return categoryRepository.findAll();
+    }
+
+    Category add(CategoryRequest request) {
+        return null;
     }
 }
