@@ -3,12 +3,15 @@ package com.demo.blog.postservice.service;
 import com.demo.blog.postservice.domain.Category;
 import com.demo.blog.postservice.exception.CategoryNotFoundException;
 import com.demo.blog.postservice.repository.CategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestClassOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -19,16 +22,14 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
+@ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
 
+    @InjectMocks
     private CategoryService SUT;
-    private CategoryRepository repository;
 
-    @BeforeEach
-    void setUp() {
-        repository = mock(CategoryRepository.class);
-        SUT = new CategoryService(repository);
-    }
+    @Mock
+    private CategoryRepository repository;
 
     @Test
     void shouldThrowExceptionOnCategoryNotFound() {
