@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -30,12 +31,6 @@ public class CategoryServiceTest {
 
     @Mock
     private CategoryRepository repository;
-
-    @Test
-    void shouldThrowExceptionOnCategoryNotFound() {
-        assertThatExceptionOfType(CategoryNotFoundException.class)
-                .isThrownBy(() -> SUT.get("SOME CATEGORY"));
-    }
 
     @ParameterizedTest
     @MethodSource("validCategoryNames")
@@ -55,6 +50,12 @@ public class CategoryServiceTest {
         assertThat(actual).isEqualTo(expected);
         verify(repository, times(1)).findByName(categoryName);
         verifyNoMoreInteractions(repository);
+    }
+
+    @Test
+    void shouldThrowExceptionOnCategoryNotFound() {
+        assertThatExceptionOfType(CategoryNotFoundException.class)
+                .isThrownBy(() -> SUT.get("SOME CATEGORY"));
     }
 
     private static Stream<String> validCategoryNames() {
