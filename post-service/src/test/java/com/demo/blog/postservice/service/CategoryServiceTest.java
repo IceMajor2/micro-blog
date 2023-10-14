@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -33,22 +34,17 @@ public class CategoryServiceTest {
     private CategoryRepository repository;
 
     @ParameterizedTest
-    @MethodSource("validCategoryNames")
-    void shouldReturnCategory(String categoryName) {
+    @MethodSource("categoriesWithEmptyPosts")
+    void shouldReturnCategory(Category category) {
         // arrange
-        Category expected = Category.builder()
-                .id(1L)
-                .name(categoryName)
-                .posts(Collections.emptyList())
-                .build();
-        when(repository.findByName(categoryName)).thenReturn(Optional.of(expected));
+        when(repository.findByName(category.getName())).thenReturn(Optional.of(category));
 
         // act
-        Category actual = SUT.get(categoryName);
+        Category actual = SUT.get(category.getName());
 
         // assert
-        assertThat(actual).isEqualTo(expected);
-        verify(repository, times(1)).findByName(categoryName);
+        assertThat(actual).isEqualTo(category);
+        verify(repository, times(1)).findByName(category.getName());
         verifyNoMoreInteractions(repository);
     }
 
@@ -58,13 +54,27 @@ public class CategoryServiceTest {
                 .isThrownBy(() -> SUT.get("SOME CATEGORY"));
     }
 
-    private static Stream<String> validCategoryNames() {
+    // TODO: write 'shouldThrowExceptionOnInvalidCategoryName' test
+
+    @Test
+    void shouldReturnEmptyListWhenCollectionIsEmpty() {
+        // arrange
+        when(repository.findAll()).thenReturn(Collections.emptyList());
+
+        // act
+        List<Category> actual = SUT.getAll();
+
+        // assert
+        assertThat(actual).isEmpty();
+    }
+
+    private static Stream<Category> categoriesWithEmptyPosts() {
         return Stream.of(
-                "Java",
-                "Threads",
-                "Security",
-                "Microservices",
-                "Project Management"
+                Category.builder().id(1L).name("Java").posts(Collections.emptyList()).build(),
+                Category.builder().id(1L).name("Threads").posts(Collections.emptyList()).build(),
+                Category.builder().id(1L).name("Security").posts(Collections.emptyList()).build(),
+                Category.builder().id(1L).name("Microservices").posts(Collections.emptyList()).build(),
+                Category.builder().id(1L).name("Project Management").posts(Collections.emptyList()).build()
         );
     }
 
