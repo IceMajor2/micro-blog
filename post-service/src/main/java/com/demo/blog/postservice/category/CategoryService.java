@@ -25,6 +25,7 @@ public class CategoryService {
     }
 
     Category add(CategoryRequest request) {
-        return null;
+        Category category = request.toModel();
+        return categoryRepository.save(category);
     }
 }
