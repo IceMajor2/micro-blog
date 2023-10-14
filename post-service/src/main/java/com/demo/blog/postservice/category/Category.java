@@ -1,5 +1,6 @@
-package com.demo.blog.postservice.domain;
+package com.demo.blog.postservice.category;
 
+import com.demo.blog.postservice.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

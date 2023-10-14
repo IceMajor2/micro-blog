@@ -1,6 +1,5 @@
-package com.demo.blog.postservice.repository;
+package com.demo.blog.postservice.post;
 
-import com.demo.blog.postservice.domain.Post;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface PostRepository extends MongoRepository<Post, Long> {

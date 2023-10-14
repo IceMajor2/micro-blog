@@ -1,8 +1,8 @@
-package com.demo.blog.postservice.service;
+package com.demo.blog.postservice.category;
 
-import com.demo.blog.postservice.domain.Category;
-import com.demo.blog.postservice.exception.CategoryNotFoundException;
-import com.demo.blog.postservice.repository.CategoryRepository;
+import com.demo.blog.postservice.category.Category;
+import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
+import com.demo.blog.postservice.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
