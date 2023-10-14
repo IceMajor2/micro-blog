@@ -1,10 +1,10 @@
 package com.demo.blog.postservice.category;
 
+import com.demo.blog.postservice.category.dto.CategoryRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +23,11 @@ public class CategoryController {
     @GetMapping
     public List<Category> getCategories() {
         return categoryService.getAll();
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Category addCategory(@RequestBody CategoryRequest request) {
+        return categoryService.add(request);
     }
 }
