@@ -73,6 +73,8 @@ public class CategoryServiceTest {
 
             // assert
             assertThat(actual).isEmpty();
+            verify(repository, times(1)).findAll();
+            verifyNoMoreInteractions(repository);
         }
 
         @Test
