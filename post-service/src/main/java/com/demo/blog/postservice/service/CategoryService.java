@@ -6,6 +6,8 @@ import com.demo.blog.postservice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -15,5 +17,10 @@ public class CategoryService {
     public Category get(String categoryName) {
         return categoryRepository.findByName(categoryName)
                 .orElseThrow(CategoryNotFoundException::new);
+    }
+
+    public List<Category> getAll() {
+        categoryRepository.findAll();
+        return List.of();
     }
 }
