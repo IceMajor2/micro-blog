@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -66,6 +65,16 @@ public class CategoryServiceTest {
 
         // assert
         assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void shouldReturnListOfAllCategories() {
+        List<Category> expected = categoriesWithEmptyPosts().toList();
+        when(repository.findAll()).thenReturn(expected);
+
+        List<Category> actual = SUT.getAll();
+
+        assertThat(actual).containsExactlyElementsOf(expected);
     }
 
     private static Stream<Category> categoriesWithEmptyPosts() {
