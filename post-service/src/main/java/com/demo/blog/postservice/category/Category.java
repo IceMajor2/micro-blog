@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.post.Post;
+import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Category {
     @Id
     private Long id;
     @Indexed(unique = true)
+    @Nonnull
     private String name;
     private Set<Post> posts = new HashSet<>();
 }
