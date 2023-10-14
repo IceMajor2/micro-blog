@@ -67,4 +67,12 @@ public class CategoryServiceTest {
                 "Project Management"
         );
     }
+
+    private static Stream<String> invalidCategoryNames() {
+        return Stream.of(
+                "",
+                null,
+                "   \n \t"
+        );
+    }
 }
