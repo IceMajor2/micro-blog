@@ -9,7 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Document("category")
 @AllArgsConstructor
@@ -22,7 +23,5 @@ public class Category {
     private Long id;
     @Indexed(unique = true)
     private String name;
-    // TODO: change data structure to 'Set'
-    // TODO: initialize collection
-    private List<Post> posts;
+    private Set<Post> posts = new HashSet<>();
 }

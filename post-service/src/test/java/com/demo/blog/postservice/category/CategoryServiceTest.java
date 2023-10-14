@@ -101,7 +101,7 @@ public class CategoryServiceTest {
             Category expected = Category.builder()
                     .id(1L)
                     .name(request.getName())
-                    .posts(Collections.emptyList())
+                    .posts(Collections.emptySet())
                     .build();
             Category requestAsModel = request.toModel();
             when(repository.save(requestAsModel)).thenReturn(expected);
@@ -118,11 +118,11 @@ public class CategoryServiceTest {
 
     private static Stream<Category> categoriesWithEmptyPosts() {
         return Stream.of(
-                Category.builder().id(1L).name("Java").posts(Collections.emptyList()).build(),
-                Category.builder().id(2L).name("Threads").posts(Collections.emptyList()).build(),
-                Category.builder().id(3L).name("Security").posts(Collections.emptyList()).build(),
-                Category.builder().id(4L).name("Microservices").posts(Collections.emptyList()).build(),
-                Category.builder().id(5L).name("Project Management").posts(Collections.emptyList()).build()
+                Category.builder().id(1L).name("Java").posts(Collections.emptySet()).build(),
+                Category.builder().id(2L).name("Threads").posts(Collections.emptySet()).build(),
+                Category.builder().id(3L).name("Security").posts(Collections.emptySet()).build(),
+                Category.builder().id(4L).name("Microservices").posts(Collections.emptySet()).build(),
+                Category.builder().id(5L).name("Project Management").posts(Collections.emptySet()).build()
         );
     }
 
