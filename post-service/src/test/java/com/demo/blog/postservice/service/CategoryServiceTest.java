@@ -94,12 +94,4 @@ public class CategoryServiceTest {
                 Category.builder().id(5L).name("Project Management").posts(Collections.emptyList()).build()
         );
     }
-
-    private static Stream<String> invalidCategoryNames() {
-        return Stream.of(
-                "",
-                null,
-                "   \n \t"
-        );
-    }
 }
