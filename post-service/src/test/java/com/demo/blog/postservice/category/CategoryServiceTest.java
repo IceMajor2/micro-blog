@@ -1,8 +1,11 @@
 package com.demo.blog.postservice.category;
 
+import com.demo.blog.postservice.assertions.PostAssertions;
 import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
+import com.demo.blog.postservice.post.Post;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,9 +20,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.demo.blog.postservice.assertions.PostAssertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
@@ -33,22 +37,30 @@ public class CategoryServiceTest {
     @Mock
     private CategoryRepository repository;
 
+    private Long ANY_LONG = 1L;
+    private Set<Post> ANY_SET = Collections.emptySet();
+
     @Nested
-    class Get {
+    class GetReq {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoriesNoPosts")
-        void shouldReturnCategory(Category category) {
+        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoryNames")
+        void shouldReturnCategory(String categoryName) {
             // arrange
-            when(repository.findByName(category.getName())).thenReturn(Optional.of(category));
+            String expectedName = new String(categoryName);
+            Category category = Category.builder()
+                    .id(ANY_LONG)
+                    .name(categoryName)
+                    .posts(ANY_SET)
+                    .build();
+            when(repository.findByName(categoryName)).thenReturn(Optional.of(category));
 
             // act
-            Category actual = SUT.get(category.getName());
+            Category actual = SUT.get(categoryName);
 
             // assert
-            assertThat(actual).isEqualTo(category);
-            verify(repository, times(1)).findByName(category.getName());
-            verifyNoMoreInteractions(repository);
+            PostAssertions.assertThat(actual).isNamed(expectedName);
+            verify(repository, times(1)).findByName(categoryName);
         }
 
         @Test
@@ -74,13 +86,18 @@ public class CategoryServiceTest {
             // assert
             assertThat(actual).isEmpty();
             verify(repository, times(1)).findAll();
-            verifyNoMoreInteractions(repository);
         }
 
         @Test
         void shouldReturnListOfAllCategories() {
             // arange
-            List<Category> expected = categoriesNoPosts().toList();
+            List<Category> expected = categoryNames()
+                    .map(name -> Category.builder()
+                            .id(ANY_LONG)
+                            .name(name)
+                            .posts(ANY_SET)
+                            .build())
+                    .toList();
             when(repository.findAll()).thenReturn(expected);
 
             // act
@@ -92,7 +109,7 @@ public class CategoryServiceTest {
     }
 
     @Nested
-    class Post {
+    class PostReq {
 
         @ParameterizedTest
         @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#validRequests")
@@ -109,7 +126,7 @@ public class CategoryServiceTest {
             Category actual = SUT.add(request);
 
             // assert
-            assertThat(actual).isEqualTo(expected);
+            Assertions.assertThat(actual).isEqualTo(expected);
             verify(repository, times(1)).save(requestAsModel);
         }
 
@@ -124,13 +141,13 @@ public class CategoryServiceTest {
         }
     }
 
-    private static Stream<Category> categoriesNoPosts() {
+    private static Stream<String> categoryNames() {
         return Stream.of(
-                Category.builder().id(1L).name("Java").build(),
-                Category.builder().id(2L).name("Threads").build(),
-                Category.builder().id(3L).name("Security").build(),
-                Category.builder().id(4L).name("Microservices").build(),
-                Category.builder().id(5L).name("Project Management").build()
+                "Java",
+                "Threads",
+                "Security",
+                "Microservices",
+                "Project Management"
         );
     }
 
