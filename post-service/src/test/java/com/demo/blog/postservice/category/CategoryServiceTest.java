@@ -4,7 +4,6 @@ import com.demo.blog.postservice.assertions.PostAssertions;
 import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
-import com.demo.blog.postservice.post.Post;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.demo.blog.postservice.assertions.PostAssertions.assertThat;
@@ -37,7 +35,6 @@ public class CategoryServiceTest {
     private CategoryRepository repository;
 
     private Long ANY_LONG = 1L;
-    private Set<Post> ANY_SET = Collections.emptySet();
 
     @Nested
     class GetReq {
