@@ -1,6 +1,5 @@
 package com.demo.blog.postservice.category;
 
-import com.demo.blog.postservice.assertions.PostAssertions;
 import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
@@ -54,7 +53,7 @@ public class CategoryServiceTest {
             Category actual = SUT.get(categoryName);
 
             // assert
-            PostAssertions.assertThat(actual).isNamed(expectedName);
+            assertThat(actual).isNamed(expectedName);
             verify(repository, times(1)).findByName(categoryName);
         }
 
@@ -117,7 +116,7 @@ public class CategoryServiceTest {
             // arrange
             String expectedName = new String(request.getName());
             Category expected = new CategoryBuilder()
-                    .withId(1L)
+                    .withId(ANY_LONG)
                     .withName(request.getName())
                     .build();
             Category requestAsModel = new CategoryBuilder()
@@ -129,7 +128,7 @@ public class CategoryServiceTest {
             Category actual = SUT.add(request);
 
             // assert
-            PostAssertions.assertThat(actual).isNamed(expectedName);
+            assertThat(actual).isNamed(expectedName);
             verify(repository, times(1)).save(requestAsModel);
         }
 
