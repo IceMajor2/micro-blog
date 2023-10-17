@@ -1,15 +1,16 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Objects;
+import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.demo.blog.postservice.assertions.JakartaValidationAssert.assertThat;
 
 public class CategoryRequestTest {
 
@@ -20,15 +21,11 @@ public class CategoryRequestTest {
     @ValueSource(strings = {"", "  \t  \n\t", "      "})
     @NullSource
     void shouldThrowExceptionOnBlankCategory(String categoryName) {
-        CategoryRequest request = CategoryRequest.builder().name("").build();
-        // TODO: change into custom matcher
-        assertThat(errorMessageExists(request, NOT_BLANK_MSG))
-                .withFailMessage("Error message was not found")
-                .isTrue();
+        CategoryRequest request = CategoryRequest.builder().name(categoryName).build();
+        assertThat(validate(request)).containsOnlyExceptionMessages(NOT_BLANK_MSG);
     }
 
-    private static boolean errorMessageExists(Object object, String errorMessage) {
-        return validator.validate(object).stream()
-                .anyMatch(violation -> Objects.equals(errorMessage, violation.getMessage()));
+    private static Set<ConstraintViolation<Object>> validate(Object object) {
+        return validator.validate(object);
     }
 }
