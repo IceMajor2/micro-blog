@@ -2,7 +2,6 @@ package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.post.Post;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,7 +15,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
 public class Category {
 
     @Id
