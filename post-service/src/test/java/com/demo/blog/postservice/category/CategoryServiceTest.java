@@ -5,7 +5,6 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.postservice.post.Post;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -48,10 +47,9 @@ public class CategoryServiceTest {
         void shouldReturnCategory(String categoryName) {
             // arrange
             String expectedName = new String(categoryName);
-            Category category = Category.builder()
-                    .id(ANY_LONG)
-                    .name(categoryName)
-                    .posts(ANY_SET)
+            Category category = new CategoryBuilder()
+                    .withId(ANY_LONG)
+                    .withName(categoryName)
                     .build();
             when(repository.findByName(categoryName)).thenReturn(Optional.of(category));
 
@@ -92,10 +90,9 @@ public class CategoryServiceTest {
         void shouldReturnListOfAllCategories() {
             // arange
             List<Category> expected = categoryNames()
-                    .map(name -> Category.builder()
-                            .id(ANY_LONG)
-                            .name(name)
-                            .posts(ANY_SET)
+                    .map(name -> new CategoryBuilder()
+                            .withId(ANY_LONG)
+                            .withName(name)
                             .build())
                     .toList();
             when(repository.findAll()).thenReturn(expected);
@@ -115,18 +112,21 @@ public class CategoryServiceTest {
         @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#validRequests")
         void shouldAcceptValidCategory(CategoryRequest request) {
             // arrange
-            Category expected = Category.builder()
-                    .id(1L)
-                    .name(request.getName())
+            String expectedName = new String(request.getName());
+            Category expected = new CategoryBuilder()
+                    .withId(1L)
+                    .withName(request.getName())
                     .build();
-            Category requestAsModel = request.toModel();
+            Category requestAsModel = new CategoryBuilder()
+                    .fromRequest(request)
+                    .build();
             when(repository.save(requestAsModel)).thenReturn(expected);
 
             // act
             Category actual = SUT.add(request);
 
             // assert
-            Assertions.assertThat(actual).isEqualTo(expected);
+            PostAssertions.assertThat(actual).isNamed(expectedName);
             verify(repository, times(1)).save(requestAsModel);
         }
 
