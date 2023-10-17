@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Category addCategory(@RequestBody CategoryRequest request) {
+    public Category addCategory(@RequestBody @Valid CategoryRequest request) {
         return categoryService.add(request);
     }
 }
