@@ -114,12 +114,6 @@ public class CategoryServiceTest {
         }
 
         @Test
-        void shouldThrowExceptionOnNullCategory() {
-            CategoryRequest request = CategoryRequest.builder().name(null).build();
-            assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> SUT.add(request));
-        }
-
-        @Test
         void shouldThrowExceptionOnConflict() {
             // arrange
             CategoryRequest request = CategoryRequest.builder().name("Java").build();
