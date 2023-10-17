@@ -26,7 +26,9 @@ public class CategoryService {
     }
 
     Category add(CategoryRequest request) {
-        Category category = request.toModel();
+        Category category = new CategoryBuilder()
+                .fromRequest(request)
+                .build();
         if(categoryRepository.existsByName(category.getName())) {
             throw new CategoryAlreadyExistsException();
         }
