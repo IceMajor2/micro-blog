@@ -61,7 +61,7 @@ public class CategoryServiceTest {
         @Test
         void shouldThrowExceptionOnCategoryNotFound() {
             assertThatExceptionOfType(CategoryNotFoundException.class)
-                    .isThrownBy(() -> SUT.get("SOME CATEGORY"));
+                    .isThrownBy(() -> SUT.get("NON-EXISTING CATEGORY"));
         }
 
         @Test
@@ -85,20 +85,26 @@ public class CategoryServiceTest {
 
         @Test
         void shouldReturnListOfAllCategories() {
-            // arange
-            List<Category> expected = categoryNames()
+            // arrange
+            List<Category> stubbedCategories = categoryNames()
                     .map(name -> new CategoryBuilder()
                             .withId(ANY_LONG)
                             .withName(name)
                             .build())
                     .toList();
-            when(repository.findAll()).thenReturn(expected);
+            List<Category> expectedCategories = categoryNames()
+                    .map(name -> new CategoryBuilder()
+                            .withId(ANY_LONG)
+                            .withName(name)
+                            .build())
+                    .toList();
+            when(repository.findAll()).thenReturn(stubbedCategories);
 
             // act
             List<Category> actual = SUT.getAll();
 
             // assert
-            assertThat(actual).containsExactlyElementsOf(expected);
+            assertThat(actual).containsExactlyElementsOf(expectedCategories);
         }
     }
 
