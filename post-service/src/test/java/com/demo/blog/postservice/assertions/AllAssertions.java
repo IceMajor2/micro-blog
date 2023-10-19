@@ -1,14 +1,14 @@
 package com.demo.blog.postservice.assertions;
 
-import com.demo.blog.postservice.category.Category;
+import com.demo.blog.postservice.category.dto.CategoryResponse;
 import jakarta.validation.ConstraintViolation;
 import org.assertj.core.api.Assertions;
 
 import java.util.Set;
 
-public class PostAssertions extends Assertions {
+public class AllAssertions extends Assertions {
 
-    public static CategoryAssert assertThat(Category actual) {
+    public static CategoryAssert assertThat(CategoryResponse actual) {
         return new CategoryAssert(actual);
     }
 

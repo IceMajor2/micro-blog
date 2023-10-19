@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import com.demo.blog.postservice.category.dto.CategoryResponse;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import org.junit.jupiter.api.ClassOrderer;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.demo.blog.postservice.assertions.PostAssertions.assertThat;
+import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
@@ -29,7 +30,6 @@ public class CategoryServiceTest {
 
     @InjectMocks
     private CategoryService SUT;
-
     @Mock
     private CategoryRepository repository;
 
@@ -50,7 +50,7 @@ public class CategoryServiceTest {
             when(repository.findByName(categoryName)).thenReturn(Optional.of(category));
 
             // act
-            Category actual = SUT.get(categoryName);
+            CategoryResponse actual = SUT.get(categoryName);
 
             // assert
             assertThat(actual).isNamed(expectedName);
@@ -75,7 +75,7 @@ public class CategoryServiceTest {
             when(repository.findAll()).thenReturn(Collections.emptyList());
 
             // act
-            List<Category> actual = SUT.getAll();
+            List<CategoryResponse> actual = SUT.getAll();
 
             // assert
             assertThat(actual).isEmpty();
@@ -91,16 +91,15 @@ public class CategoryServiceTest {
                             .withName(name)
                             .build())
                     .toList();
-            List<Category> expectedCategories = categoryNames()
-                    .map(name -> new CategoryBuilder()
-                            .withId(ANY_LONG)
-                            .withName(name)
+            List<CategoryResponse> expectedCategories = categoryNames()
+                    .map(name -> CategoryResponse.builder()
+                            .name(name)
                             .build())
                     .toList();
             when(repository.findAll()).thenReturn(stubbedCategories);
 
             // act
-            List<Category> actual = SUT.getAll();
+            List<CategoryResponse> actual = SUT.getAll();
 
             // assert
             assertThat(actual).containsExactlyElementsOf(expectedCategories);
@@ -114,18 +113,18 @@ public class CategoryServiceTest {
         @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#validRequests")
         void shouldAcceptValidCategory(CategoryRequest request) {
             // arrange
-            String expectedName = new String(request.getName());
-            Category expected = new CategoryBuilder()
+            String expectedName = new String(request.name());
+            Category stub = new CategoryBuilder()
                     .withId(ANY_LONG)
-                    .withName(request.getName())
+                    .withName(expectedName)
                     .build();
             Category requestAsModel = new CategoryBuilder()
                     .fromRequest(request)
                     .build();
-            when(repository.save(requestAsModel)).thenReturn(expected);
+            when(repository.save(requestAsModel)).thenReturn(stub);
 
             // act
-            Category actual = SUT.add(request);
+            CategoryResponse actual = SUT.add(request);
 
             // assert
             assertThat(actual).isNamed(expectedName);
@@ -136,7 +135,7 @@ public class CategoryServiceTest {
         void shouldThrowExceptionOnConflict() {
             // arrange
             CategoryRequest request = CategoryRequest.builder().name("Java").build();
-            when(repository.existsByName(request.getName())).thenReturn(true);
+            when(repository.existsByName(request.name())).thenReturn(true);
 
             // act & arrange
             assertThatExceptionOfType(CategoryAlreadyExistsException.class).isThrownBy(() -> SUT.add(request));
