@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Sensitive ###
+# /src/main/resources/application.properties | --> git update-index --skip-worktree
+
 ### STS ###
 .apt_generated
 .classpath
