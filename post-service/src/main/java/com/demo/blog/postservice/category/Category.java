@@ -1,25 +1,27 @@
 package com.demo.blog.postservice.category;
 
-import com.demo.blog.postservice.post.Post;
-import lombok.AllArgsConstructor;
+import com.demo.blog.postservice.postcategory.PostCategory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Document("category")
-@AllArgsConstructor
+@Table("category")
 @NoArgsConstructor
 @Data
 public class Category {
 
     @Id
     private Long id;
-    @Indexed(unique = true)
     private String name;
-    private Set<Post> posts = new HashSet<>();
+    @MappedCollection(idColumn = "category_id", keyColumn = "post_id")
+    private Set<PostCategory> posts = new HashSet<>();
+
+    public Category(String name) {
+        this.name = name;
+    }
 }
