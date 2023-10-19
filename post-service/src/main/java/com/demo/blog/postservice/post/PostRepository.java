@@ -1,6 +1,9 @@
 package com.demo.blog.postservice.post;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface PostRepository extends MongoRepository<Post, Long> {
+import java.util.Optional;
+
+public interface PostRepository extends CrudRepository<Post, Long> {
+    Optional<Post> findByTitle(String title);
 }
