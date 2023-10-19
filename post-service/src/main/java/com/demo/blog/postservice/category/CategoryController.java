@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import com.demo.blog.postservice.category.dto.CategoryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,18 +17,18 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping(params = "name")
-    public Category getCategory(@RequestParam("name") String categoryName) {
+    public CategoryResponse getCategory(@RequestParam("name") String categoryName) {
         return categoryService.get(categoryName);
     }
 
     @GetMapping
-    public List<Category> getCategories() {
+    public List<CategoryResponse> getCategories() {
         return categoryService.getAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Category addCategory(@RequestBody @Valid CategoryRequest request) {
+    public CategoryResponse addCategory(@RequestBody @Valid CategoryRequest request) {
         return categoryService.add(request);
     }
 }

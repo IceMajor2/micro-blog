@@ -18,7 +18,7 @@ public class CategoryBuilder {
     }
 
     public CategoryBuilder fromRequest(CategoryRequest request) {
-        this.name = request.getName();
+        this.name = request.name();
         return this;
     }
 
