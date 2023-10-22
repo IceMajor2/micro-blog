@@ -33,34 +33,34 @@ public class CategoryServiceTest {
     @Mock
     private CategoryRepository repository;
 
-    private Long ANY_LONG = 1L;
+    private static final Long ANY_LONG = 1L;
+    private static final String ANY_STRING = "ANY_STRING";
 
     @Nested
     class GetReq {
 
-        @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoryNames")
-        void shouldReturnCategory(String categoryName) {
+        @Test
+        void shouldReturnCategoryOnGetWithParameter() {
             // arrange
-            String expectedName = new String(categoryName);
+            String expectedName = new String(ANY_STRING);
             Category category = new CategoryBuilder()
                     .withId(ANY_LONG)
-                    .withName(categoryName)
+                    .withName(ANY_STRING)
                     .build();
-            when(repository.findByName(categoryName)).thenReturn(Optional.of(category));
+            when(repository.findByName(ANY_STRING)).thenReturn(Optional.of(category));
 
             // act
-            CategoryResponse actual = SUT.get(categoryName);
+            CategoryResponse actual = SUT.get(ANY_STRING);
 
             // assert
             assertThat(actual).isNamed(expectedName);
-            verify(repository, times(1)).findByName(categoryName);
+            verify(repository, times(1)).findByName(ANY_STRING);
         }
 
         @Test
         void shouldThrowExceptionOnCategoryNotFound() {
             assertThatExceptionOfType(CategoryNotFoundException.class)
-                    .isThrownBy(() -> SUT.get("NON-EXISTING CATEGORY"));
+                    .isThrownBy(() -> SUT.get("NON_EXISTING_CATEGORY"));
         }
 
         @Test
@@ -103,6 +103,23 @@ public class CategoryServiceTest {
 
             // assert
             assertThat(actual).containsExactlyElementsOf(expectedCategories);
+        }
+
+        @Test
+        void shouldReturnCategoryOnGetWithPathVariable() {
+            // arange
+            String expectedName = new String(ANY_STRING);
+            Category category = new CategoryBuilder()
+                    .withId(ANY_LONG)
+                    .withName(ANY_STRING)
+                    .build();
+            when(repository.findByName(ANY_STRING)).thenReturn(Optional.of(category));
+
+            // act
+            CategoryResponse actual = SUT.getById(ANY_LONG);
+
+            // assert
+            assertThat(actual).isNamed(expectedName);
         }
     }
 

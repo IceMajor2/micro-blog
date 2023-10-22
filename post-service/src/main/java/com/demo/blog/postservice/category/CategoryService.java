@@ -22,6 +22,10 @@ public class CategoryService {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryName)));
     }
 
+    CategoryResponse getById(Long anyLong) {
+        return null;
+    }
+
     List<CategoryResponse> getAll() {
         return categoryRepository.findAll().stream()
                 .map(CategoryResponse::new)
