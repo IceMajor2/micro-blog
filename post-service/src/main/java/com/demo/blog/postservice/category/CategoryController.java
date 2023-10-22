@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/category")
@@ -27,7 +27,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryResponse> getCategories() {
+    public Set<CategoryResponse> getCategories() {
         return categoryService.getAll();
     }
 
