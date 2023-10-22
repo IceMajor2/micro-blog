@@ -4,10 +4,7 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
-import org.junit.jupiter.api.ClassOrderer;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestClassOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,7 +34,8 @@ public class CategoryServiceTest {
     static final String ANY_STRING = "ANY_STRING";
 
     @Nested
-    class GetReq {
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class GetRequests {
 
         @ParameterizedTest
         @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#categories")
@@ -131,7 +129,8 @@ public class CategoryServiceTest {
     }
 
     @Nested
-    class PostReq {
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class PostRequests {
 
         @ParameterizedTest
         @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#validRequests")
