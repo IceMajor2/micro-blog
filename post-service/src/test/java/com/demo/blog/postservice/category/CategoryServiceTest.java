@@ -60,14 +60,17 @@ public class CategoryServiceTest {
 
         @Test
         void shouldThrowExceptionOnCategoryNotFound() {
+            String noSuchCategory = "NON_EXISTING_CATEGORY";
             assertThatExceptionOfType(CategoryNotFoundException.class)
-                    .isThrownBy(() -> SUT.getByName("NON_EXISTING_CATEGORY"));
+                    .isThrownBy(() -> SUT.getByName(noSuchCategory))
+                    .withMessage(STR."Category '\{ noSuchCategory }' was not found");
         }
 
         @Test
         void shouldThrowExceptionOnNullCategoryName() {
             assertThatExceptionOfType(NullPointerException.class)
-                    .isThrownBy(() -> SUT.getByName(null));
+                    .isThrownBy(() -> SUT.getByName(null))
+                    .withMessage("Category name was null");
         }
 
         @Test
@@ -126,7 +129,8 @@ public class CategoryServiceTest {
         @Test
         void shouldThrowExceptionOnNullId() {
             assertThatExceptionOfType(NullPointerException.class)
-                    .isThrownBy(() -> SUT.getById(null));
+                    .isThrownBy(() -> SUT.getById(null))
+                    .withMessage("Category ID was null");
         }
     }
 
@@ -162,7 +166,9 @@ public class CategoryServiceTest {
             when(repository.existsByName(request.name())).thenReturn(true);
 
             // act & arrange
-            assertThatExceptionOfType(CategoryAlreadyExistsException.class).isThrownBy(() -> SUT.add(request));
+            assertThatExceptionOfType(CategoryAlreadyExistsException.class)
+                    .isThrownBy(() -> SUT.add(request))
+                    .withMessage(STR."Category '\{ request.name() }' already exists");
         }
     }
 
