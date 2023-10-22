@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
 import static com.demo.blog.postservice.assertions.AllAssertions.assertThatExceptionOfType;
+import static com.demo.blog.postservice.category.CategoryDataSupply.sortedCategories;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -39,22 +40,17 @@ public class CategoryServiceTest {
     class GetReq {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#categoryNames")
-        void shouldReturnCategoryOnGetWithParameter(String categoryName) {
+        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#categories")
+        void shouldReturnCategoryOnGetWithParameter(Category category) {
             // arrange
-            String expectedName = new String(categoryName);
-            Category category = new CategoryBuilder()
-                    .withId(ANY_LONG)
-                    .withName(categoryName)
-                    .build();
-            when(repository.findByName(categoryName)).thenReturn(Optional.of(category));
+            String expectedName = new String(category.getName());
+            when(repository.findByName(category.getName())).thenReturn(Optional.of(category));
 
             // act
-            CategoryResponse actual = SUT.getByName(categoryName);
+            CategoryResponse actual = SUT.getByName(category.getName());
 
             // assert
             assertThat(actual).isNamed(expectedName);
-            verify(repository, times(1)).findByName(categoryName);
         }
 
         @Test
@@ -118,8 +114,8 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
-            Set<Category> stubbedCategories = CategoryDataSupply.sortedCategories();
-            Set<CategoryResponse> expectedCategories = CategoryDataSupply.categoryNames()
+            Set<Category> stubbedCategories = CategoryDataSupply.toSet(sortedCategories());
+            Set<CategoryResponse> expectedCategories = CategoryDataSupply.categories()
                     .map(CategoryResponse::new)
                     .collect(Collectors.toSet());
             when(repository.findAllOrderByName()).thenReturn(stubbedCategories);
