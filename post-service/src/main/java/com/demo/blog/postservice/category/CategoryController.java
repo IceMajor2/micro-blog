@@ -16,8 +16,13 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @GetMapping("/{id}")
+    public CategoryResponse getCategoryById(@PathVariable("id") Long id) {
+        return categoryService.getById(id);
+    }
+
     @GetMapping(params = "name")
-    public CategoryResponse getCategory(@RequestParam("name") String categoryName) {
+    public CategoryResponse getCategoryByName(@RequestParam("name") String categoryName) {
         return categoryService.getByName(categoryName);
     }
 
