@@ -19,8 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static com.demo.blog.postservice.assertions.AllAssertions.*;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
