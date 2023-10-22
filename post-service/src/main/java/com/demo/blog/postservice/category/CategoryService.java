@@ -23,6 +23,8 @@ public class CategoryService {
     }
 
     CategoryResponse getById(Long id) {
+        if (id == null)
+            throw new NullPointerException("Category ID was null");
         return new CategoryResponse(categoryRepository.findById(id).get());
     }
 
@@ -36,9 +38,8 @@ public class CategoryService {
         Category category = new CategoryBuilder()
                 .fromRequest(request)
                 .build();
-        if (categoryRepository.existsByName(category.getName())) {
+        if (categoryRepository.existsByName(category.getName()))
             throw new CategoryAlreadyExistsException(category.getName());
-        }
         return new CategoryResponse(categoryRepository.save(category));
     }
 }
