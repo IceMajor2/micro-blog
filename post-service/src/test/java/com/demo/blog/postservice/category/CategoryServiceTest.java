@@ -15,11 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static com.demo.blog.postservice.assertions.AllAssertions.*;
+import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
+import static com.demo.blog.postservice.assertions.AllAssertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 public class CategoryServiceTest {
 
     @InjectMocks
-    private CategoryService SUT;
+    private CategoryServiceImpl SUT;
     @Mock
     private CategoryRepository repository;
 
@@ -62,7 +62,7 @@ public class CategoryServiceTest {
             String noSuchCategory = "NON_EXISTING_CATEGORY";
             assertThatExceptionOfType(CategoryNotFoundException.class)
                     .isThrownBy(() -> SUT.getByName(noSuchCategory))
-                    .withMessage(STR."Category '\{ noSuchCategory }' was not found");
+                    .withMessage(STR. "Category '\{ noSuchCategory }' was not found" );
         }
 
         @Test
@@ -100,7 +100,7 @@ public class CategoryServiceTest {
         void shouldThrowExceptionOnIdNotFound() {
             assertThatExceptionOfType(CategoryNotFoundException.class)
                     .isThrownBy(() -> SUT.getById(NEGATIVE_LONG))
-                    .withMessage(STR."Category of ''\{ NEGATIVE_LONG }'' ID was not found");
+                    .withMessage(STR. "Category of ''\{ NEGATIVE_LONG }'' ID was not found" );
         }
 
         @Test
@@ -109,7 +109,7 @@ public class CategoryServiceTest {
             when(repository.findAll()).thenReturn(Collections.emptyList());
 
             // act
-            List<CategoryResponse> actual = SUT.getAll();
+            Set<CategoryResponse> actual = SUT.getAll();
 
             // assert
             assertThat(actual).isEmpty();
@@ -117,7 +117,7 @@ public class CategoryServiceTest {
         }
 
         @Test
-        void shouldReturnListOfAllCategories() {
+        void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
             List<Category> stubbedCategories = CategoryDataSupply.categoryNames()
                     .map(name -> new CategoryBuilder()
@@ -126,17 +126,18 @@ public class CategoryServiceTest {
                             .build())
                     .toList();
             List<CategoryResponse> expectedCategories = CategoryDataSupply.categoryNames()
-                    .map(name -> CategoryResponse.builder()
-                            .name(name)
-                            .build())
+                    .map(CategoryResponse::new)
+                    .sorted(Comparator.comparing(CategoryResponse::name))
                     .toList();
             when(repository.findAll()).thenReturn(stubbedCategories);
 
             // act
-            List<CategoryResponse> actual = SUT.getAll();
+            Set<CategoryResponse> actual = SUT.getAll();
 
             // assert
-            assertThat(actual).containsExactlyElementsOf(expectedCategories);
+            assertThat(toList(actual))
+                    .isSortedAccordingTo(Comparator.comparing(CategoryResponse::name))
+                    .containsAll(expectedCategories);
         }
     }
 
@@ -174,7 +175,11 @@ public class CategoryServiceTest {
             // act & arrange
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                     .isThrownBy(() -> SUT.add(request))
-                    .withMessage(STR."Category '\{ request.name() }' already exists");
+                    .withMessage(STR. "Category '\{ request.name() }' already exists" );
         }
+    }
+
+    private <T> List<T> toList(Set<T> set) {
+        return set.stream().collect(Collectors.toList());
     }
 }
