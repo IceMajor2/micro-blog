@@ -122,6 +122,12 @@ public class CategoryServiceTest {
             // assert
             assertThat(actual).isNamed(expectedName);
         }
+
+        @Test
+        void shouldThrowExceptionOnNullId() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.getById(null));
+        }
     }
 
     @Nested
