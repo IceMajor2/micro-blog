@@ -25,7 +25,8 @@ public class CategoryService {
     CategoryResponse getById(Long id) {
         if (id == null)
             throw new NullPointerException("Category ID was null");
-        return new CategoryResponse(categoryRepository.findById(id).get());
+        return new CategoryResponse(categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id)));
     }
 
     List<CategoryResponse> getAll() {

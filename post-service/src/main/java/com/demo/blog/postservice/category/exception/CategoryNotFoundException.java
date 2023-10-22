@@ -11,4 +11,8 @@ public class CategoryNotFoundException extends RuntimeException {
     public CategoryNotFoundException(String categoryName) {
         super(STR."Category '\{ categoryName }' was not found");
     }
+
+    public CategoryNotFoundException(Long categoryId) {
+        super(STR."Category of ''\{ categoryId }'' ID was not found");
+    }
 }
