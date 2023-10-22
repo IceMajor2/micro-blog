@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -41,7 +40,7 @@ public class CategoryServiceTest {
     class GetReq {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoryNames")
+        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#categoryNames")
         void shouldReturnCategoryOnGetWithParameter(String categoryName) {
             // arrange
             String expectedName = new String(categoryName);
@@ -121,13 +120,13 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategories() {
             // arrange
-            List<Category> stubbedCategories = categoryNames()
+            List<Category> stubbedCategories = CategoryDataSupply.categoryNames()
                     .map(name -> new CategoryBuilder()
                             .withId(ANY_LONG)
                             .withName(name)
                             .build())
                     .toList();
-            List<CategoryResponse> expectedCategories = categoryNames()
+            List<CategoryResponse> expectedCategories = CategoryDataSupply.categoryNames()
                     .map(name -> CategoryResponse.builder()
                             .name(name)
                             .build())
@@ -146,7 +145,7 @@ public class CategoryServiceTest {
     class PostReq {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#validRequests")
+        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#validRequests")
         void shouldAcceptValidCategory(CategoryRequest request) {
             // arrange
             String expectedName = new String(request.name());
@@ -178,24 +177,5 @@ public class CategoryServiceTest {
                     .isThrownBy(() -> SUT.add(request))
                     .withMessage(STR."Category '\{ request.name() }' already exists");
         }
-    }
-
-    private static Stream<String> categoryNames() {
-        return Stream.of(
-                "Java",
-                "Threads",
-                "Security",
-                "Microservices",
-                "Project Management"
-        );
-    }
-
-    private static Stream<CategoryRequest> validRequests() {
-        return Stream.of(
-                CategoryRequest.builder().name("Python").build(),
-                CategoryRequest.builder().name("Backend").build(),
-                CategoryRequest.builder().name("Algorithms").build(),
-                CategoryRequest.builder().name("Data Structures").build()
-        );
     }
 }
