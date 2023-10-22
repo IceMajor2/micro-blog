@@ -2,12 +2,12 @@ package com.demo.blog.postservice.category;
 
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
-    List<Category> findAll();
+    Set<Category> findAllOrderByName();
 
     Optional<Category> findByName(String name);
 

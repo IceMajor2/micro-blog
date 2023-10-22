@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,9 +37,9 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Set<CategoryResponse> getAll() {
-        return categoryRepository.findAll().stream()
+        return categoryRepository.findAllOrderByName().stream()
                 .map(CategoryResponse::new)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
