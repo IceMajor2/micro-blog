@@ -10,6 +10,10 @@ public class CategoryAssert extends AbstractAssert<CategoryAssert, CategoryRespo
         super(actual, CategoryAssert.class);
     }
 
+    public static CategoryAssert assertThat(CategoryResponse actual) {
+        return new CategoryAssert(actual);
+    }
+
     public CategoryAssert isNamed(String name) {
         isNotNull();
         Assertions.assertThat(actual.name())

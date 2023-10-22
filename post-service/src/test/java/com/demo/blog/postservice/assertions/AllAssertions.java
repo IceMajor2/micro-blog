@@ -9,10 +9,10 @@ import java.util.Set;
 public class AllAssertions extends Assertions {
 
     public static CategoryAssert assertThat(CategoryResponse actual) {
-        return new CategoryAssert(actual);
+        return CategoryAssert.assertThat(actual);
     }
 
     public static JakartaValidationAssert assertThat(Set<ConstraintViolation<Object>> actual) {
-        return new JakartaValidationAssert(actual);
+        return JakartaValidationAssert.assertThat(actual);
     }
 }
