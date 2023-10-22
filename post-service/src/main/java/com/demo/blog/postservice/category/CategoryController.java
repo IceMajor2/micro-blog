@@ -18,7 +18,7 @@ public class CategoryController {
 
     @GetMapping(params = "name")
     public CategoryResponse getCategory(@RequestParam("name") String categoryName) {
-        return categoryService.get(categoryName);
+        return categoryService.getByName(categoryName);
     }
 
     @GetMapping

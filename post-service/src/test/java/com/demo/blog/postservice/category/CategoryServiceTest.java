@@ -50,7 +50,7 @@ public class CategoryServiceTest {
             when(repository.findByName(ANY_STRING)).thenReturn(Optional.of(category));
 
             // act
-            CategoryResponse actual = SUT.get(ANY_STRING);
+            CategoryResponse actual = SUT.getByName(ANY_STRING);
 
             // assert
             assertThat(actual).isNamed(expectedName);
@@ -60,13 +60,13 @@ public class CategoryServiceTest {
         @Test
         void shouldThrowExceptionOnCategoryNotFound() {
             assertThatExceptionOfType(CategoryNotFoundException.class)
-                    .isThrownBy(() -> SUT.get("NON_EXISTING_CATEGORY"));
+                    .isThrownBy(() -> SUT.getByName("NON_EXISTING_CATEGORY"));
         }
 
         @Test
         void shouldThrowExceptionOnNullCategoryName() {
             assertThatExceptionOfType(NullPointerException.class)
-                    .isThrownBy(() -> SUT.get(null));
+                    .isThrownBy(() -> SUT.getByName(null));
         }
 
         @Test

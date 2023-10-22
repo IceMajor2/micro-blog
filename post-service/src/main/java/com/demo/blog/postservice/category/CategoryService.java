@@ -15,7 +15,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    CategoryResponse get(String categoryName) {
+    CategoryResponse getByName(String categoryName) {
         if (categoryName == null)
             throw new NullPointerException("Category name was null");
         return new CategoryResponse(categoryRepository.findByName(categoryName)
