@@ -6,21 +6,20 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
+import static com.demo.blog.postservice.util.RestRequestUtil.get;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.sql.init.mode=never")
 @TestClassOrder(ClassOrderer.Random.class)
 public class CategoryIntegrationTest {
 
     @Autowired
-    TestRestTemplate testRestTemplate;
-
-    @Autowired
     CategoryRepository categoryRepository;
+
+    private static final String API_CATEGORY = "/api/category";
+    private static final String API_CATEGORY_ID = "/api/category/{id}";
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
@@ -33,8 +32,7 @@ public class CategoryIntegrationTest {
             Category expected = getCategory(id);
 
             // act
-            ResponseEntity<CategoryResponse> actual = testRestTemplate
-                    .exchange("/api/category/" + id, HttpMethod.GET, null, CategoryResponse.class);
+            var actual = get(API_CATEGORY_ID, HttpMethod.GET, CategoryResponse.class, id);
 
             // assert
             assertThat(actual).isValidGetResponse(expected);
