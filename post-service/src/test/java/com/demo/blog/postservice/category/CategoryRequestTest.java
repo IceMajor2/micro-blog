@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Set;
 
-import static com.demo.blog.postservice.assertions.JakartaValidationAssert.assertThat;
+import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
 
 public class CategoryRequestTest {
 
@@ -32,9 +32,19 @@ public class CategoryRequestTest {
             "_THIRTY_MORE_CHARS_STRING_REQUEST_",
             "_THIRTY_MORE_CHARS_STRING_REQUEST__"
     })
-    void shouldThrowExceptionOnCategoryNameLongerThan32Chars(String tooLongString) {
-        CategoryRequest request = new CategoryRequest(tooLongString);
+    void shouldThrowExceptionOnCategoryNameLongerThan32Chars(String tooLongName) {
+        CategoryRequest request = new CategoryRequest(tooLongName);
         assertThat(validate(request)).containsOnlyExceptionMessages(EXP_NAME_TOO_LONG_MSG);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "32_CHARS_STRING_REQUEST_ACCEPTED",
+            "31_CHARS_STRING_REQUEST_ACCEPTED"
+    })
+    void shouldAcceptRequestsWithNamesEqualOrShorterThan32Chars(String rightSizeName) {
+        CategoryRequest request = new CategoryRequest(rightSizeName);
+        assertThat(validate(request)).isValid();
     }
 
     private static Set<ConstraintViolation<Object>> validate(Object object) {
