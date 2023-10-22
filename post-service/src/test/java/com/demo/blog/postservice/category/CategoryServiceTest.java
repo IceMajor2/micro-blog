@@ -39,22 +39,23 @@ public class CategoryServiceTest {
     @Nested
     class GetReq {
 
-        @Test
-        void shouldReturnCategoryOnGetWithParameter() {
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.category.CategoryServiceTest#categoryNames")
+        void shouldReturnCategoryOnGetWithParameter(String categoryName) {
             // arrange
-            String expectedName = new String(ANY_STRING);
+            String expectedName = new String(categoryName);
             Category category = new CategoryBuilder()
                     .withId(ANY_LONG)
-                    .withName(ANY_STRING)
+                    .withName(categoryName)
                     .build();
-            when(repository.findByName(ANY_STRING)).thenReturn(Optional.of(category));
+            when(repository.findByName(categoryName)).thenReturn(Optional.of(category));
 
             // act
-            CategoryResponse actual = SUT.getByName(ANY_STRING);
+            CategoryResponse actual = SUT.getByName(categoryName);
 
             // assert
             assertThat(actual).isNamed(expectedName);
-            verify(repository, times(1)).findByName(ANY_STRING);
+            verify(repository, times(1)).findByName(categoryName);
         }
 
         @Test
@@ -113,7 +114,7 @@ public class CategoryServiceTest {
                     .withId(ANY_LONG)
                     .withName(ANY_STRING)
                     .build();
-            when(repository.findByName(ANY_STRING)).thenReturn(Optional.of(category));
+            when(repository.findById(ANY_LONG)).thenReturn(Optional.of(category));
 
             // act
             CategoryResponse actual = SUT.getById(ANY_LONG);
