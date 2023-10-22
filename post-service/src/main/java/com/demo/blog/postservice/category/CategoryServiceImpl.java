@@ -37,7 +37,7 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Set<CategoryResponse> getAll() {
-        return categoryRepository.findAllOrderByName().stream()
+        return categoryRepository.findByOrderByNameAsc().stream()
                 .map(CategoryResponse::new)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }

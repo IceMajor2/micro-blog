@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
-    Set<Category> findAllOrderByName();
+    Set<Category> findByOrderByNameAsc();
 
     Optional<Category> findByName(String name);
 

@@ -102,7 +102,7 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnEmptyListWhenCollectionIsEmpty() {
             // arrange
-            when(repository.findAllOrderByName()).thenReturn(Collections.emptySet());
+            when(repository.findByOrderByNameAsc()).thenReturn(Collections.emptySet());
 
             // act
             Set<CategoryResponse> actual = SUT.getAll();
@@ -118,7 +118,7 @@ public class CategoryServiceTest {
             Set<CategoryResponse> expectedCategories = CategoryDataSupply.categories()
                     .map(CategoryResponse::new)
                     .collect(Collectors.toSet());
-            when(repository.findAllOrderByName()).thenReturn(stubbedCategories);
+            when(repository.findByOrderByNameAsc()).thenReturn(stubbedCategories);
 
             // act
             Set<CategoryResponse> actual = SUT.getAll();
