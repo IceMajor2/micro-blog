@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.time.LocalDateTime;
 
+// TODO: make it a microservice?
 @Data
 public final class Comment {
 
