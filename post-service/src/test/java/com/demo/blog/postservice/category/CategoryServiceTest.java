@@ -96,7 +96,7 @@ public class CategoryServiceTest {
         void shouldThrowExceptionOnIdNotFound() {
             assertThatExceptionOfType(CategoryNotFoundException.class)
                     .isThrownBy(() -> SUT.getById(NEGATIVE_LONG))
-                    .withMessage(STR. "Category of ''\{ NEGATIVE_LONG }'' ID was not found" );
+                    .withMessage(STR. "Category of '\{ NEGATIVE_LONG }' ID was not found" );
         }
 
         @Test
