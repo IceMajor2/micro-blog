@@ -5,6 +5,7 @@ import com.demo.blog.postservice.category.dto.CategoryResponse;
 import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsException;
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 @RequiredArgsConstructor
 class CategoryServiceImpl implements CategoryService {
 
@@ -50,7 +52,9 @@ class CategoryServiceImpl implements CategoryService {
                 .build();
         if (categoryRepository.existsByName(category.getName()))
             throw new CategoryAlreadyExistsException(category.getName());
-        return new CategoryResponse(categoryRepository.save(category));
+        CategoryResponse response = new CategoryResponse(categoryRepository.save(category));
+        log.info(STR."Added category: '\{ response }'");
+        return response;
     }
 
     @Override
