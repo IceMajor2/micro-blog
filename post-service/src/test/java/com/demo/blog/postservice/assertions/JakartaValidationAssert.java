@@ -9,8 +9,11 @@ import java.util.stream.Collectors;
 
 public class JakartaValidationAssert extends AbstractAssert<JakartaValidationAssert, Set<ConstraintViolation<Object>>> {
 
+    private Set<String> errorMessages;
+
     public JakartaValidationAssert(Set<ConstraintViolation<Object>> actual) {
         super(actual, JakartaValidationAssert.class);
+        errorMessages = getErrorMessages();
     }
 
     public static JakartaValidationAssert assertThat(Set<ConstraintViolation<Object>> actual) {
@@ -19,12 +22,19 @@ public class JakartaValidationAssert extends AbstractAssert<JakartaValidationAss
 
     public JakartaValidationAssert containsOnlyExceptionMessages(String... errorMessages) {
         isNotNull();
-        Assertions.assertThat(errorMessages())
+        Assertions.assertThat(this.errorMessages)
                 .containsOnly(errorMessages);
         return this;
     }
 
-    private Set<String> errorMessages() {
+    public JakartaValidationAssert isValid() {
+        isNotNull();
+        Assertions.assertThat(this.errorMessages)
+                .isEmpty();
+        return this;
+    }
+
+    private Set<String> getErrorMessages() {
         return actual.stream()
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.toSet());
