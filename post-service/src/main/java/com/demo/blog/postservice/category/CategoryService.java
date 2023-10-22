@@ -22,8 +22,8 @@ public class CategoryService {
                 .orElseThrow(() -> new CategoryNotFoundException(categoryName)));
     }
 
-    CategoryResponse getById(Long anyLong) {
-        return null;
+    CategoryResponse getById(Long id) {
+        return new CategoryResponse(categoryRepository.findById(id).get());
     }
 
     List<CategoryResponse> getAll() {
