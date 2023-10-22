@@ -18,23 +18,35 @@ public class CategoryResponseEntityAssert extends AbstractAssert<CategoryRespons
         return new CategoryResponseEntityAssert(actual);
     }
 
-    public CategoryResponseEntityAssert statusCodeIs(HttpStatusCode statusCode) {
+    public CategoryResponseEntityAssert statusCodeIs(HttpStatusCode expectedStatusCode) {
         isNotNull();
         Assertions.assertThat(actual.getStatusCode())
                 .as("status code")
-                .isEqualTo(statusCode);
+                .isEqualTo(expectedStatusCode);
         return this;
     }
 
-    public CategoryResponseEntityAssert matchesModel(Category category) {
+    /**
+     * Asserts field of domain model (i.e. {@code Category} object)
+     * are equal to the ones of the response DTO
+     * (i.e. {@code CategoryResponse} object).
+     * @param expected
+     */
+    public CategoryResponseEntityAssert matchesModel(Category expected) {
         isNotNull();
-        CategoryAssert.assertThat(actual.getBody()).isNamed(category.getName());
+        CategoryAssert.assertThat(actual.getBody()).isNamed(expected.getName());
         return this;
     }
 
-    public CategoryResponseEntityAssert isValidGetResponse(Category category) {
+    /**
+     * A custom assertion that checks for the average HTTP GET request's response.
+     * Namely, it asserts the response's status code is {@code 200 OK} and that
+     * the {@code expected} object matches actual (through {@link CategoryResponseEntityAssert#matchesModel}).
+     * @param expected expected {@code Category} object
+     */
+    public CategoryResponseEntityAssert isValidGetResponse(Category expected) {
         statusCodeIs(HttpStatus.OK);
-        matchesModel(category);
+        matchesModel(expected);
         return this;
     }
 }
