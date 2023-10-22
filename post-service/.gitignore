@@ -5,7 +5,8 @@ target/
 !**/src/test/**/target/
 
 ### Sensitive ###
-# /src/main/resources/application.properties | --> git update-index --skip-worktree
+# /src/main/resources/.env | --> git update-index --skip-worktree
+# /src/test/resources/.env | --> git update-index --skip-worktree
 
 ### STS ###
 .apt_generated
