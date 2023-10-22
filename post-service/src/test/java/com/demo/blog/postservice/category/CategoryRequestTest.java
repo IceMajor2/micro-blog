@@ -40,7 +40,7 @@ public class CategoryRequestTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "32_CHARS_STRING_REQUEST_ACCEPTED",
-            "31_CHARS_STRING_REQUEST_ACCEPTED"
+            "31_CHAR_STRING_REQUEST_ACCEPTED"
     })
     void shouldAcceptRequestsWithNamesEqualOrShorterThan32Chars(String rightSizeName) {
         CategoryRequest request = new CategoryRequest(rightSizeName);
