@@ -13,6 +13,6 @@ public class CategoryNotFoundException extends RuntimeException {
     }
 
     public CategoryNotFoundException(Long categoryId) {
-        super(STR."Category of ''\{ categoryId }'' ID was not found");
+        super(STR."Category of '\{ categoryId }' ID was not found");
     }
 }
