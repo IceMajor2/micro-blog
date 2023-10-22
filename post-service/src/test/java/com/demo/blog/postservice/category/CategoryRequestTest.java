@@ -4,6 +4,8 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,6 +14,7 @@ import java.util.Set;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
 
+@TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryRequestTest {
 
     private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
