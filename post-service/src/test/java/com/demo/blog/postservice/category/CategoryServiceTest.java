@@ -34,6 +34,7 @@ public class CategoryServiceTest {
     private CategoryRepository repository;
 
     private static final Long ANY_LONG = 1L;
+    private static final Long NEGATIVE_LONG = -1L;
     private static final String ANY_STRING = "ANY_STRING";
 
     @Nested
@@ -74,6 +75,37 @@ public class CategoryServiceTest {
         }
 
         @Test
+        void shouldReturnCategoryOnGetWithPathVariable() {
+            // arange
+            String expectedName = new String(ANY_STRING);
+            Category category = new CategoryBuilder()
+                    .withId(ANY_LONG)
+                    .withName(ANY_STRING)
+                    .build();
+            when(repository.findById(ANY_LONG)).thenReturn(Optional.of(category));
+
+            // act
+            CategoryResponse actual = SUT.getById(ANY_LONG);
+
+            // assert
+            assertThat(actual).isNamed(expectedName);
+        }
+
+        @Test
+        void shouldThrowExceptionOnNullId() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.getById(null))
+                    .withMessage("Category ID was null");
+        }
+
+        @Test
+        void shouldThrowExceptionOnIdNotFound() {
+            assertThatExceptionOfType(CategoryNotFoundException.class)
+                    .isThrownBy(() -> SUT.getById(NEGATIVE_LONG))
+                    .withMessage(STR."Category of ''\{ NEGATIVE_LONG }'' ID was not found");
+        }
+
+        @Test
         void shouldReturnEmptyListWhenCollectionIsEmpty() {
             // arrange
             when(repository.findAll()).thenReturn(Collections.emptyList());
@@ -107,30 +139,6 @@ public class CategoryServiceTest {
 
             // assert
             assertThat(actual).containsExactlyElementsOf(expectedCategories);
-        }
-
-        @Test
-        void shouldReturnCategoryOnGetWithPathVariable() {
-            // arange
-            String expectedName = new String(ANY_STRING);
-            Category category = new CategoryBuilder()
-                    .withId(ANY_LONG)
-                    .withName(ANY_STRING)
-                    .build();
-            when(repository.findById(ANY_LONG)).thenReturn(Optional.of(category));
-
-            // act
-            CategoryResponse actual = SUT.getById(ANY_LONG);
-
-            // assert
-            assertThat(actual).isNamed(expectedName);
-        }
-
-        @Test
-        void shouldThrowExceptionOnNullId() {
-            assertThatExceptionOfType(NullPointerException.class)
-                    .isThrownBy(() -> SUT.getById(null))
-                    .withMessage("Category ID was null");
         }
     }
 
