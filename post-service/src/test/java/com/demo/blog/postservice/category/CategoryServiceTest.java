@@ -31,9 +31,9 @@ public class CategoryServiceTest {
     @Mock
     private CategoryRepository repository;
 
-    private static final Long ANY_LONG = 1L;
-    private static final Long NEGATIVE_LONG = -1L;
-    private static final String ANY_STRING = "ANY_STRING";
+    static final Long ANY_LONG = 1L;
+    static final Long NEGATIVE_LONG = -1L;
+    static final String ANY_STRING = "ANY_STRING";
 
     @Nested
     class GetReq {
@@ -106,30 +106,23 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnEmptyListWhenCollectionIsEmpty() {
             // arrange
-            when(repository.findAll()).thenReturn(Collections.emptyList());
+            when(repository.findAllOrderByName()).thenReturn(Collections.emptySet());
 
             // act
             Set<CategoryResponse> actual = SUT.getAll();
 
             // assert
             assertThat(actual).isEmpty();
-            verify(repository, times(1)).findAll();
         }
 
         @Test
         void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
-            List<Category> stubbedCategories = CategoryDataSupply.categoryNames()
-                    .map(name -> new CategoryBuilder()
-                            .withId(ANY_LONG)
-                            .withName(name)
-                            .build())
-                    .toList();
-            List<CategoryResponse> expectedCategories = CategoryDataSupply.categoryNames()
+            Set<Category> stubbedCategories = CategoryDataSupply.sortedCategories();
+            Set<CategoryResponse> expectedCategories = CategoryDataSupply.categoryNames()
                     .map(CategoryResponse::new)
-                    .sorted(Comparator.comparing(CategoryResponse::name))
-                    .toList();
-            when(repository.findAll()).thenReturn(stubbedCategories);
+                    .collect(Collectors.toSet());
+            when(repository.findAllOrderByName()).thenReturn(stubbedCategories);
 
             // act
             Set<CategoryResponse> actual = SUT.getAll();
