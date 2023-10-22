@@ -1,13 +1,13 @@
 package com.demo.blog.postservice.category.dto;
 
 import com.demo.blog.postservice.category.Category;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Builder
 public record CategoryResponse(
+        @JsonIgnore Long id,
         String name
 ) {
     public CategoryResponse(Category category) {
-        this(category.getName());
+        this(category.getId(), category.getName());
     }
 }
