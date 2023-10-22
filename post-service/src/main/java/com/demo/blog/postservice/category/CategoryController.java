@@ -4,9 +4,13 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Set;
 
 @RestController
@@ -32,8 +36,16 @@ public class CategoryController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse addCategory(@RequestBody @Valid CategoryRequest request) {
-        return categoryService.add(request);
+    public ResponseEntity<CategoryResponse> addCategory(@RequestBody @Valid CategoryRequest request) {
+        // TODO: add header 'Location' and test
+        CategoryResponse response = categoryService.add(request);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.id())
+                .toUri();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.LOCATION, location.toString())
+                .body(response);
     }
 }
