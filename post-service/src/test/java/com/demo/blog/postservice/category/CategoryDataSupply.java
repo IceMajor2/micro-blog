@@ -12,23 +12,23 @@ import static com.demo.blog.postservice.category.CategoryServiceTest.ANY_LONG;
 
 public class CategoryDataSupply {
 
-    static Set<Category> sortedCategories() {
-        return categoryNames()
-                .map(name -> new CategoryBuilder()
-                        .withId(ANY_LONG)
-                        .withName(name)
-                        .build())
-                .sorted(Comparator.comparing(Category::getName))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+    static Set<Category> toSet(Stream<Category> stream) {
+        return stream.collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    static Stream<String> categoryNames() {
+    static Stream<Category> sortedCategories() {
+        return categories()
+                .sorted(Comparator.comparing(Category::getName));
+
+    }
+
+    static Stream<Category> categories() {
         return Stream.of(
-                "Java",
-                "Threads",
-                "Security",
-                "Microservices",
-                "Project Management"
+                new CategoryBuilder().withId(ANY_LONG).withName("Java").build(),
+                new CategoryBuilder().withId(ANY_LONG).withName("Threads").build(),
+                new CategoryBuilder().withId(ANY_LONG).withName("Security").build(),
+                new CategoryBuilder().withId(ANY_LONG).withName("Microservices").build(),
+                new CategoryBuilder().withId(ANY_LONG).withName("Project Management").build()
         );
     }
 
