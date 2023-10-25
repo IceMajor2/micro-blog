@@ -1,6 +1,5 @@
 package com.demo.blog.postservice.assertions;
 
-import com.demo.blog.postservice.category.Category;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
@@ -21,31 +20,28 @@ public class CategoryResponseEntityAssert extends AbstractAssert<CategoryRespons
     }
 
     /**
-     * Asserts field of domain model (i.e. {@code Category} object)
-     * are equal to the ones of the response DTO
-     * (i.e. {@code CategoryResponse} object).
-     *
-     * @param expected
+     * This assertion includes:
+     * <ul>
+     *     <li>{@code actual} and {@code expected} objects' equality</li>
+     *     <li>{@code 200 OK} HTTP status code</li>
+     * </ul>
      */
-    public CategoryResponseEntityAssert matchesModel(Category expected) {
-        isNotNull();
-        Assertions.assertThat(actual)
-                .usingComparator(CategoryAssert.CATEGORY_RESPONSE_COMPARATOR)
-                .isEqualTo(new CategoryResponse(expected));
+    public CategoryResponseEntityAssert isValidGetResponse(CategoryResponse expected) {
+        HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
+        Assertions.assertThat(actual).isEqualTo(expected);
         return this;
     }
 
     /**
-     * A custom assertion that checks for the average HTTP GET request's response.
-     * Namely, it asserts the response's status code is {@code 200 OK} and that
-     * the {@code expected} object matches actual (through {@link CategoryResponseEntityAssert#matchesModel}).
-     *
-     * @param expected expected {@code Category} object
+     * This assertion includes:
+     * <ul>
+     *     <li>{@code actual} and {@code expected} objects' equality</li>
+     *     <li>{@code 201 Created} HTTP status code</li>
+     * </ul>
      */
-    public CategoryResponseEntityAssert isValidGetResponse(Category expected) {
-        HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
-        matchesModel(expected);
-        return this;
+    public void isValidPostResponse(CategoryResponse expected) {
+        HttpResponseAssert.assertThat(responseEntity).statusCodeIsCreated();
+        Assertions.assertThat(actual).isEqualTo(expected);
     }
 
 
@@ -62,14 +58,14 @@ public class CategoryResponseEntityAssert extends AbstractAssert<CategoryRespons
             return new CategoriesResponseEntityAssert(actual);
         }
 
-        public CategoriesResponseEntityAssert containsExactlyElementsOf(Iterable<Category> expected) {
+        public CategoriesResponseEntityAssert containsExactlyElementsOf(Iterable<CategoryResponse> expected) {
             Assertions.assertThat(actual)
                     .usingElementComparator(CategoryAssert.CATEGORY_RESPONSE_COMPARATOR)
-                    .containsExactlyElementsOf(Streamable.of(expected).map(CategoryResponse::new));
+                    .containsExactlyElementsOf(Streamable.of(expected));
             return this;
         }
 
-        public CategoriesResponseEntityAssert areValidGetAllResponse(Iterable<Category> expected) {
+        public CategoriesResponseEntityAssert areValidGetAllResponse(Iterable<CategoryResponse> expected) {
             HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
             containsExactlyElementsOf(expected);
             return this;
