@@ -1,19 +1,18 @@
 package com.demo.blog.postservice.category;
 
+import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
-import static com.demo.blog.postservice.assertions.AllAssertions.assertThatCategories;
-import static com.demo.blog.postservice.util.CategoryTestRepository.getAllCategoriesSorted;
-import static com.demo.blog.postservice.util.CategoryTestRepository.getCategory;
+import static com.demo.blog.postservice.assertions.AllAssertions.*;
+import static com.demo.blog.postservice.util.CategoryTestRepository.*;
 import static com.demo.blog.postservice.util.RestRequestUtil.get;
+import static com.demo.blog.postservice.util.RestRequestUtil.post;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.sql.init.mode=never")
 @TestClassOrder(ClassOrderer.Random.class)
@@ -36,7 +35,7 @@ public class CategoryIntegrationTest {
             Category expected = getCategory(id);
 
             // act
-            var actual = get(API_CATEGORY_ID, HttpMethod.GET, CategoryResponse.class, id);
+            var actual = get(API_CATEGORY_ID, CategoryResponse.class, id);
 
             // assert
             assertThat(actual).isValidGetResponse(expected);
@@ -48,10 +47,28 @@ public class CategoryIntegrationTest {
             Iterable<Category> expected = getAllCategoriesSorted();
 
             // act
-            ResponseEntity<Iterable<CategoryResponse>> actual = get(API_CATEGORY, HttpMethod.GET, PARAMETERIZED_TYPE_REFERENCE);
+            ResponseEntity<Iterable<CategoryResponse>> actual = get(API_CATEGORY, PARAMETERIZED_TYPE_REFERENCE);
 
             // assert
             assertThatCategories(actual).areValidGetAllResponse(expected);
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class PostRequests {
+
+        @Test
+        void shouldReturnLocationHeaderOnSuccessfulPost() {
+            // arrange
+            String expectedLocation = "/api/category/" + (getCategoriesSize() + 1);
+            CategoryRequest request = new CategoryRequest("Pascal");
+
+            // act
+            ResponseEntity<CategoryResponse> actual = post(API_CATEGORY, request, CategoryResponse.class);
+
+            // assert
+            assertThatResponse(actual).locationHeaderContains(expectedLocation);
         }
     }
 }
