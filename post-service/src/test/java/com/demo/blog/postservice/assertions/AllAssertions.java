@@ -17,6 +17,10 @@ public class AllAssertions extends Assertions {
         return CategoryResponseEntityAssert.assertThat(actual);
     }
 
+    public static CategoryResponseEntityAssert.CategoriesResponseEntityAssert assertThatCategories(ResponseEntity<Iterable<CategoryResponse>> actual) {
+        return CategoryResponseEntityAssert.CategoriesResponseEntityAssert.assertThat(actual);
+    }
+
     public static JakartaValidationAssert assertThat(Set<ConstraintViolation<Object>> actual) {
         return JakartaValidationAssert.assertThat(actual);
     }
