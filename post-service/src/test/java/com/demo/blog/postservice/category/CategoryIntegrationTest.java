@@ -4,10 +4,11 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.*;
@@ -33,7 +34,7 @@ public class CategoryIntegrationTest {
         @ValueSource(longs = {1L, 3L})
         void shouldReturnCategoryOnGetId(Long id) {
             // arrange
-            Category expected = getCategory(id);
+            CategoryResponse expected = new CategoryResponse(getCategory(id));
 
             // act
             var actual = get(API_CATEGORY_ID, CategoryResponse.class, id);
@@ -45,10 +46,10 @@ public class CategoryIntegrationTest {
         @Test
         void shouldReturnAllCategoriesOnGetAll() {
             // arrange
-            Iterable<Category> expected = getAllCategoriesSorted();
+            Iterable<CategoryResponse> expected = Streamable.of(getAllCategoriesSorted()).map(CategoryResponse::new);
 
             // act
-            ResponseEntity<Iterable<CategoryResponse>> actual = get(API_CATEGORY, PARAMETERIZED_TYPE_REFERENCE);
+            var actual = get(API_CATEGORY, PARAMETERIZED_TYPE_REFERENCE);
 
             // assert
             assertThatCategories(actual).areValidGetAllResponse(expected);
@@ -59,6 +60,20 @@ public class CategoryIntegrationTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class PostRequests {
 
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#validRequests")
+        @DirtiesContext
+        void shouldAddEntryOnValidRequest(CategoryRequest request) {
+            // arrange
+            CategoryResponse expected = new CategoryResponse(getCategoriesSize() + 1, new String(request.name()));
+
+            // act
+            var actual = post(API_CATEGORY, request, CategoryResponse.class);
+
+            // assert
+            assertThat(actual).isValidPostResponse(expected);
+        }
+
         @Test
         @DirtiesContext
         void shouldReturnLocationHeaderAndCreatedStatusCodeOnSuccessfulPost() {
@@ -67,7 +82,7 @@ public class CategoryIntegrationTest {
             CategoryRequest request = new CategoryRequest("Pascal");
 
             // act
-            ResponseEntity<CategoryResponse> actual = post(API_CATEGORY, request, CategoryResponse.class);
+            var actual = post(API_CATEGORY, request, CategoryResponse.class);
 
             // assert
             assertThatResponse(actual)
