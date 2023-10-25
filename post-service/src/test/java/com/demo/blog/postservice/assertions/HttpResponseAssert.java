@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
+
 public class HttpResponseAssert extends AbstractAssert<HttpResponseAssert, ResponseEntity<?>> {
 
     public HttpResponseAssert(ResponseEntity<?> actual) {
@@ -21,6 +23,13 @@ public class HttpResponseAssert extends AbstractAssert<HttpResponseAssert, Respo
         Assertions.assertThat(actual.getStatusCode())
                 .as("status code")
                 .isEqualTo(expectedStatusCode);
+        return this;
+    }
+
+    public HttpResponseAssert locationHeaderContains(String location) {
+        isNotNull();
+        URI actualLocation = actual.getHeaders().getLocation();
+        Assertions.assertThat(actualLocation).hasPath(location);
         return this;
     }
 
