@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.*;
 import static com.demo.blog.postservice.util.CategoryTestRepository.*;
@@ -59,7 +60,8 @@ public class CategoryIntegrationTest {
     class PostRequests {
 
         @Test
-        void shouldReturnLocationHeaderOnSuccessfulPost() {
+        @DirtiesContext
+        void shouldReturnLocationHeaderAndCreatedStatusCodeOnSuccessfulPost() {
             // arrange
             String expectedLocation = "/api/category/" + (getCategoriesSize() + 1);
             CategoryRequest request = new CategoryRequest("Pascal");
@@ -68,7 +70,9 @@ public class CategoryIntegrationTest {
             ResponseEntity<CategoryResponse> actual = post(API_CATEGORY, request, CategoryResponse.class);
 
             // assert
-            assertThatResponse(actual).locationHeaderContains(expectedLocation);
+            assertThatResponse(actual)
+                    .statusCodeIsCreated()
+                    .locationHeaderContains(expectedLocation);
         }
     }
 }
