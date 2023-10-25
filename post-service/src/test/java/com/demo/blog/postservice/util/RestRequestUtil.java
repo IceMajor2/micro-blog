@@ -2,6 +2,7 @@ package com.demo.blog.postservice.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,16 @@ public class RestRequestUtil {
     }
 
     public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, Class<T> responseType) {
-        return get(url, httpMethod, null, responseType, null);
+        return get(url, httpMethod, null, responseType, new Object[0]);
+    }
+
+    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, ParameterizedTypeReference<T> responseType) {
+        return get(url, httpMethod, null, responseType, new Object[0]);
+    }
+
+    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Object... params) {
+        String built = buildURL(url, params);
+        return testRestTemplate.exchange(built, httpMethod, requestEntity, responseType, params);
     }
 
     public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, Class<T> responseType, Object... params) {
