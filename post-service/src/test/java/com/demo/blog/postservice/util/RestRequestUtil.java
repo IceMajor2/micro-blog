@@ -19,26 +19,30 @@ public class RestRequestUtil {
         RestRequestUtil.testRestTemplate = testRestTemplate;
     }
 
-    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, Class<T> responseType) {
-        return get(url, httpMethod, null, responseType, new Object[0]);
+    public static <T> ResponseEntity<T> get(String url, Class<T> responseType) {
+        return get(url, null, responseType, new Object[0]);
     }
 
-    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, ParameterizedTypeReference<T> responseType) {
-        return get(url, httpMethod, null, responseType, new Object[0]);
+    public static <T> ResponseEntity<T> get(String url, ParameterizedTypeReference<T> responseType) {
+        return get(url, null, responseType, new Object[0]);
     }
 
-    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Object... params) {
+    public static <T> ResponseEntity<T> get(String url, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Object... params) {
         String built = buildURL(url, params);
-        return testRestTemplate.exchange(built, httpMethod, requestEntity, responseType, params);
+        return testRestTemplate.exchange(built, HttpMethod.GET, requestEntity, responseType, params);
     }
 
-    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, Class<T> responseType, Object... params) {
-        return get(url, httpMethod, null, responseType, params);
+    public static <T> ResponseEntity<T> get(String url, Class<T> responseType, Object... params) {
+        return get(url, null, responseType, params);
     }
 
-    public static <T> ResponseEntity<T> get(String url, HttpMethod httpMethod, HttpEntity<?> requestEntity, Class<T> responseType, Object... params) {
+    public static <T> ResponseEntity<T> get(String url, HttpEntity<?> requestEntity, Class<T> responseType, Object... params) {
         String built = buildURL(url, params);
-        return testRestTemplate.exchange(built, httpMethod, requestEntity, responseType, params);
+        return testRestTemplate.exchange(built, HttpMethod.GET, requestEntity, responseType, params);
+    }
+
+    public static <T> ResponseEntity<T> post(String url, Object request, Class<T> responseType) {
+        return testRestTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), responseType);
     }
 
     private static String buildURL(String url, Object[] params) {
