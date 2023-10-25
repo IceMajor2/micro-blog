@@ -22,4 +22,8 @@ public class CategoryTestRepository {
     public static Iterable<Category> getAllCategoriesSorted() {
         return categoryRepository.findByOrderByNameAsc();
     }
+
+    public static long getCategoriesSize() {
+        return categoryRepository.count();
+    }
 }
