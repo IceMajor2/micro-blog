@@ -1,6 +1,7 @@
 package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
+import com.demo.blog.postservice.category.dto.CategoryResponse;
 
 public class CategoryBuilder {
 
@@ -19,6 +20,12 @@ public class CategoryBuilder {
 
     public CategoryBuilder fromRequest(CategoryRequest request) {
         this.name = request.name();
+        return this;
+    }
+
+    public CategoryBuilder fromResponse(CategoryResponse response) {
+        this.id = response.id();
+        this.name = response.name();
         return this;
     }
 
