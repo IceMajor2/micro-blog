@@ -37,7 +37,6 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryResponse> addCategory(@RequestBody @Valid CategoryRequest request) {
-        // TODO: add header 'Location' and test
         CategoryResponse response = categoryService.add(request);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
