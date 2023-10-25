@@ -6,6 +6,7 @@ import com.demo.blog.postservice.category.exception.CategoryAlreadyExistsExcepti
 import com.demo.blog.postservice.category.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +40,9 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Set<CategoryResponse> getAll() {
-        return categoryRepository.findByOrderByNameAsc().stream()
+        return Streamable.of(categoryRepository.findByOrderByNameAsc())
                 .map(CategoryResponse::new)
+                .stream()
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
