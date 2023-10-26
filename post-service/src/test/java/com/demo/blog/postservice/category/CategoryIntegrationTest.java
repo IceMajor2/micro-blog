@@ -2,9 +2,11 @@ package com.demo.blog.postservice.category;
 
 import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
+import com.demo.blog.postservice.exception.ApiExceptionDTO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,6 +14,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.*;
+import static com.demo.blog.postservice.category.CategoryRequestTest.NOT_BLANK_MSG;
 import static com.demo.blog.postservice.util.CategoryTestRepository.*;
 import static com.demo.blog.postservice.util.RestRequestUtil.get;
 import static com.demo.blog.postservice.util.RestRequestUtil.post;
@@ -72,6 +75,23 @@ public class CategoryIntegrationTest {
 
             // assert
             assertThat(actual).isValidPostResponse(expected);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {" \t \n  ", "", "       "})
+        @NullSource
+        void shouldReturnExceptionOnNameBlank(String invalidCategoryName) {
+            // arrange
+            CategoryRequest request = new CategoryRequest(invalidCategoryName);
+
+            // act & assert
+            var actual = post(API_CATEGORY, request, ApiExceptionDTO.class);
+
+            // assert
+            assertThatException(actual)
+                    .isBadRequest()
+                    .withMessage(NOT_BLANK_MSG)
+                    .withPath(API_CATEGORY);
         }
 
         @Test
