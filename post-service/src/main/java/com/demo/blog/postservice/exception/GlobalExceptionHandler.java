@@ -25,7 +25,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         String path = getPath(request);
         String message = getMessage(e.getFieldErrors());
-        return ResponseEntity.badRequest().body(new ApiException(HttpStatus.BAD_REQUEST, message, path));
+        ApiException exception = new ApiException(HttpStatus.BAD_REQUEST, message, path);
+        return ResponseEntity.badRequest().body(new ApiExceptionDTO(exception));
     }
 
     private String getPath(WebRequest request) {
