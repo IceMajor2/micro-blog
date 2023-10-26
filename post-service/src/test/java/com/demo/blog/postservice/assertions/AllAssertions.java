@@ -14,12 +14,12 @@ public class AllAssertions extends Assertions {
         return CategoryAssert.assertThat(actual);
     }
 
-    public static CategoryResponseEntityAssert assertThat(ResponseEntity<CategoryResponse> actual) {
-        return CategoryResponseEntityAssert.assertThat(actual);
+    public static CategoryRestAssert assertThat(ResponseEntity<CategoryResponse> actual) {
+        return CategoryRestAssert.assertThat(actual);
     }
 
-    public static CategoryResponseEntityAssert.CategoriesResponseEntityAssert assertThatCategories(ResponseEntity<Iterable<CategoryResponse>> actual) {
-        return CategoryResponseEntityAssert.CategoriesResponseEntityAssert.assertThat(actual);
+    public static CategoryRestAssert.CategoryIterableRestAssert assertThatCategories(ResponseEntity<Iterable<CategoryResponse>> actual) {
+        return CategoryRestAssert.CategoryIterableRestAssert.assertThat(actual);
     }
 
     public static HttpResponseAssert assertThatResponse(ResponseEntity<?> actual) {
