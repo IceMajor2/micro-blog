@@ -18,15 +18,15 @@ import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
 public class CategoryRequestTest {
 
     private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-    private static final String EXP_NOT_BLANK_MSG = "Name must be specified";
-    private static final String EXP_NAME_TOO_LONG_MSG = "Category name cannot exceed 32 characters";
+    public static final String NOT_BLANK_MSG = "Name must be specified";
+    public static final String NAME_TOO_LONG_MSG = "Category name cannot exceed 32 characters";
 
     @ParameterizedTest
     @ValueSource(strings = {"", "  \t  \n\t", "      "})
     @NullSource
     void shouldThrowExceptionOnBlankCategory(String categoryName) {
         CategoryRequest request = new CategoryRequest(categoryName);
-        assertThat(validate(request)).containsOnlyExceptionMessages(EXP_NOT_BLANK_MSG);
+        assertThat(validate(request)).containsOnlyExceptionMessages(NOT_BLANK_MSG);
     }
 
     @ParameterizedTest
@@ -37,7 +37,7 @@ public class CategoryRequestTest {
     })
     void shouldThrowExceptionOnCategoryNameLongerThan32Chars(String tooLongName) {
         CategoryRequest request = new CategoryRequest(tooLongName);
-        assertThat(validate(request)).containsOnlyExceptionMessages(EXP_NAME_TOO_LONG_MSG);
+        assertThat(validate(request)).containsOnlyExceptionMessages(NAME_TOO_LONG_MSG);
     }
 
     @ParameterizedTest
