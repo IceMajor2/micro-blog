@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.*;
 import static com.demo.blog.postservice.category.CategoryRequestTest.NOT_BLANK_MSG;
@@ -19,7 +20,8 @@ import static com.demo.blog.postservice.util.CategoryTestRepository.*;
 import static com.demo.blog.postservice.util.RestRequestUtil.get;
 import static com.demo.blog.postservice.util.RestRequestUtil.post;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.sql.init.mode=never")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("integration-test")
 @TestClassOrder(ClassOrderer.Random.class)
 public class CategoryIntegrationTest {
 
