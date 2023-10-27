@@ -28,6 +28,7 @@ public class CategoryIntegrationTest {
 
     private static final String API_CATEGORY = "/api/category";
     private static final String API_CATEGORY_ID = "/api/category/{id}";
+    private static final String API_CATEGORY_NAME = "/api/category?name={name}";
     private static final String API_CATEGORY_SLASH = API_CATEGORY + '/';
 
     public static final String CATEGORY_EXISTS_MSG_TEMPL = "Category '%s' already exists";
@@ -76,6 +77,19 @@ public class CategoryIntegrationTest {
                     .isNotFound()
                     .withMessage(CATEGORY_NOT_FOUND_MSG_TEMPL.formatted(id))
                     .withPath(API_CATEGORY_SLASH + id);
+        }
+
+        @Test
+        void shouldReturnCategoryOnGetByName() {
+            // arrange
+            CategoryResponse expected = new CategoryResponse(getCategory(4L));
+            String categoryName = new String(expected.name());
+
+            // act
+            var actual = get(API_CATEGORY_NAME, CategoryResponse.class, categoryName);
+
+            // assert
+            assertThat(actual).isValidGetResponse(expected);
         }
     }
 
