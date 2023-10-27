@@ -18,7 +18,7 @@ interface CategoryService {
 
     CategoryResponse add(CategoryRequest request);
 
-    CategoryResponse replace(CategoryRequest request);
+    CategoryResponse replace(Long id, CategoryRequest request);
 
     CategoryResponse delete(Long id);
 }
