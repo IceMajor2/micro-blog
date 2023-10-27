@@ -14,12 +14,12 @@ import org.springframework.data.util.Streamable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.demo.blog.postservice.assertions.AllAssertions.*;
+import static com.demo.blog.postservice.assertion.AllAssertions.*;
 import static com.demo.blog.postservice.category.CategoryRequestTest.NAME_TOO_LONG_MSG;
 import static com.demo.blog.postservice.category.CategoryRequestTest.NOT_BLANK_MSG;
-import static com.demo.blog.postservice.util.CategoryTestRepository.*;
-import static com.demo.blog.postservice.util.RestRequestUtil.get;
-import static com.demo.blog.postservice.util.RestRequestUtil.post;
+import static com.demo.blog.postservice.category.CategoryTestRepository.*;
+import static com.demo.blog.postservice.util.RestRequestUtils.get;
+import static com.demo.blog.postservice.util.RestRequestUtils.post;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
@@ -90,6 +90,19 @@ public class CategoryIntegrationTest {
 
             // assert
             assertThat(actual).isValidGetResponse(expected);
+        }
+
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.datasupply.StringDataSupply#blankStrings")
+        void shouldThrowExceptionOnCategoryNameMissing(String blankCategoryName) {
+            // act
+            var actual = get(API_CATEGORY_NAME, ApiExceptionDTO.class, blankCategoryName);
+
+            // assert
+            assertThatException(actual)
+                    .isBadRequest()
+                    .withMessage(NOT_BLANK_MSG)
+                    .withPath(API_CATEGORY);
         }
     }
 
