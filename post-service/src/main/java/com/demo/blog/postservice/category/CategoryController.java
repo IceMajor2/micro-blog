@@ -47,4 +47,9 @@ public class CategoryController {
                 .header(HttpHeaders.LOCATION, location.toString())
                 .body(response);
     }
+
+    @PutMapping("/{id}")
+    public CategoryResponse replaceCategory(@PathVariable("id") Long id, @RequestBody @Valid CategoryRequest request) {
+        return categoryService.replace(id, request);
+    }
 }
