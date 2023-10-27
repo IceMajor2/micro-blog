@@ -1,7 +1,5 @@
-package com.demo.blog.postservice.util;
+package com.demo.blog.postservice.category;
 
-import com.demo.blog.postservice.category.Category;
-import com.demo.blog.postservice.category.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
