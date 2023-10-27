@@ -15,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertions.AllAssertions.*;
+import static com.demo.blog.postservice.category.CategoryRequestTest.NAME_TOO_LONG_MSG;
 import static com.demo.blog.postservice.category.CategoryRequestTest.NOT_BLANK_MSG;
 import static com.demo.blog.postservice.util.CategoryTestRepository.*;
 import static com.demo.blog.postservice.util.RestRequestUtil.get;
@@ -142,6 +143,22 @@ public class CategoryIntegrationTest {
             assertThatException(actual)
                     .isConflict()
                     .withMessage(CATEGORY_EXISTS_MSG_TEMPL.formatted(existingCategoryName))
+                    .withPath(API_CATEGORY);
+        }
+
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#tooLongRequestNames")
+        void shouldThrowExceptionOnCategoryNameTooLong(String tooLongCategoryName) {
+            // arrange
+            CategoryRequest request = new CategoryRequest(tooLongCategoryName);
+
+            // act
+            var actual = post(API_CATEGORY, request, ApiExceptionDTO.class);
+
+            // assert
+            assertThatException(actual)
+                    .isBadRequest()
+                    .withMessage(NAME_TOO_LONG_MSG)
                     .withPath(API_CATEGORY);
         }
     }
