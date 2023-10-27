@@ -7,7 +7,7 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import static com.demo.blog.postservice.category.CategoryServiceTest.ANY_LONG;
+import static com.demo.blog.postservice.category.Constants.ANY_LONG;
 
 public class CategoryDataSupply {
 

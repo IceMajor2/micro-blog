@@ -14,13 +14,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Set;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.postservice.category.Constants.NAME_TOO_LONG_MSG;
+import static com.demo.blog.postservice.category.Constants.NOT_BLANK_MSG;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryRequestTest {
 
     private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-    public static final String NOT_BLANK_MSG = "Category name must be specified";
-    public static final String NAME_TOO_LONG_MSG = "Category name cannot exceed 32 characters";
 
     @ParameterizedTest
     @MethodSource("com.demo.blog.postservice.datasupply.StringDataSupply#blankStrings")

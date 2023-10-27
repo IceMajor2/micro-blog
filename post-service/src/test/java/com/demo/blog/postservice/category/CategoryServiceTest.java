@@ -21,6 +21,7 @@ import static com.demo.blog.postservice.assertion.AllAssertions.assertThatExcept
 import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.categories;
 import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.sortedCategories;
 import static org.mockito.Mockito.*;
+import static com.demo.blog.postservice.category.Constants.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -30,10 +31,6 @@ public class CategoryServiceTest {
     private CategoryServiceImpl SUT;
     @Mock
     private CategoryRepository repository;
-
-    public static final Long ANY_LONG = 1L;
-    public static final Long NEGATIVE_LONG = -1L;
-    public static final String ANY_STRING = "ANY_STRING";
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
