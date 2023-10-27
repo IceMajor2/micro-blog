@@ -1,4 +1,4 @@
-package com.demo.blog.postservice.assertions;
+package com.demo.blog.postservice.assertion;
 
 import com.demo.blog.postservice.exception.ApiException;
 import com.demo.blog.postservice.exception.ApiExceptionDTO;

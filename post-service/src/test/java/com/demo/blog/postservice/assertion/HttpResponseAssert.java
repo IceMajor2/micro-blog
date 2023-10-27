@@ -1,4 +1,4 @@
-package com.demo.blog.postservice.assertions;
+package com.demo.blog.postservice.assertion;
 
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;

@@ -1,5 +1,7 @@
-package com.demo.blog.postservice.assertions;
+package com.demo.blog.postservice.assertion;
 
+import com.demo.blog.postservice.category.assertion.CategoryAssert;
+import com.demo.blog.postservice.category.assertion.CategoryRestAssert;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import com.demo.blog.postservice.exception.ApiExceptionDTO;
 import jakarta.validation.ConstraintViolation;
