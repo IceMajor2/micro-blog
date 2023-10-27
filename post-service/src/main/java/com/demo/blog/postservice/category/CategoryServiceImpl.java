@@ -54,9 +54,9 @@ class CategoryServiceImpl implements CategoryService {
                 .build();
         if (categoryRepository.existsByName(category.getName()))
             throw new CategoryAlreadyExistsException(category.getName());
-        CategoryResponse response = new CategoryResponse(categoryRepository.save(category));
-        log.info(STR."Added category: '\{ response }'");
-        return response;
+        Category persisted = categoryRepository.save(category);
+        log.info(STR. "Added category: '\{ persisted }'" );
+        return new CategoryResponse(persisted);
     }
 
     @Override
@@ -64,13 +64,13 @@ class CategoryServiceImpl implements CategoryService {
     public CategoryResponse replace(Long id, CategoryRequest request) {
         Category toReplace = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
-        Category newCategory = new CategoryBuilder()
+        Category replacement = new CategoryBuilder()
                 .copy(toReplace)
                 .withName(request.name())
                 .build();
-        CategoryResponse response = new CategoryResponse(categoryRepository.save(newCategory));
-        log.info(STR."Replaced category: '\{ toReplace }' with: '\{ response }'");
-        return response;
+        Category replacementPersisted = categoryRepository.save(replacement);
+        log.info(STR. "Replaced category: '\{ toReplace }' with: '\{ replacementPersisted }'" );
+        return new CategoryResponse(replacementPersisted);
     }
 
     @Override
