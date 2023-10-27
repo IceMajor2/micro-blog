@@ -37,7 +37,16 @@ public class CategoryDataSupply {
                 CategoryRequest.builder().name("Python").build(),
                 CategoryRequest.builder().name("Backend").build(),
                 CategoryRequest.builder().name("Algorithms").build(),
+                CategoryRequest.builder().name("Procedural Programming Languages").build(),
                 CategoryRequest.builder().name("Data Structures").build()
+        );
+    }
+
+    static Stream<String> tooLongRequestNames() {
+        return Stream.of(
+                "THIRTY_THREE_CHARS_STRING_REQUEST", // 33 chars
+                "_THIRTY_MORE_CHARS_STRING_REQUEST_", // 34 chars
+                "_FORTY_MORE_MORE_CHARS_CHARS_STRING_REQUEST__"// 45 chars
         );
     }
 }
