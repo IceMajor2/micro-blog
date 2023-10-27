@@ -164,6 +164,35 @@ public class CategoryServiceTest {
         }
     }
 
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class PutRequests {
+
+        @Test
+        void shouldReplaceCategoryWithNewOne() {
+            // arrange
+            Category categoryToReplace = new CategoryBuilder()
+                    .withId(3L)
+                    .withName("Testing")
+                    .build();
+            CategoryRequest request = new CategoryRequest("IDE");
+            Category requestAsModel = new CategoryBuilder()
+                    .withId(3L)
+                    .withName("IDE")
+                    .build();
+            String expectedName = new String(request.name());
+            when(repository.findById(categoryToReplace.getId())).thenReturn(Optional.of(categoryToReplace));
+            when(repository.save(requestAsModel)).thenReturn(requestAsModel);
+
+            // act
+            CategoryResponse actual = SUT.replace(categoryToReplace.getId(), request);
+
+            // assert
+            assertThat(actual).isNamed(expectedName);
+            verify(repository, times(1)).save(requestAsModel);
+        }
+    }
+
     private Set<Category> toOrderedSet(Stream<Category> stream) {
         return stream.collect(Collectors.toCollection(LinkedHashSet::new));
     }
