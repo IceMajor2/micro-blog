@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
-import static com.demo.blog.postservice.assertions.AllAssertions.assertThatExceptionOfType;
+import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.postservice.assertion.AllAssertions.assertThatExceptionOfType;
 import static com.demo.blog.postservice.category.CategoryDataSupply.sortedCategories;
 import static org.mockito.Mockito.*;
 

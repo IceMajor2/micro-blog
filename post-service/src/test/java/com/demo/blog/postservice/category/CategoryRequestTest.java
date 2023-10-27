@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Set;
 
-import static com.demo.blog.postservice.assertions.AllAssertions.assertThat;
+import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryRequestTest {
