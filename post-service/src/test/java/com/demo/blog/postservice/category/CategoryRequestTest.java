@@ -7,6 +7,7 @@ import jakarta.validation.Validator;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -25,18 +26,20 @@ public class CategoryRequestTest {
     @ValueSource(strings = {"", "  \t  \n\t", "      "})
     @NullSource
     void shouldThrowExceptionOnBlankCategory(String categoryName) {
+        // arrange
         CategoryRequest request = new CategoryRequest(categoryName);
+
+        // act & assert
         assertThat(validate(request)).containsOnlyExceptionMessages(NOT_BLANK_MSG);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-            "THIRTY_THREE_CHARS_STRING_REQUEST",
-            "_THIRTY_MORE_CHARS_STRING_REQUEST_",
-            "_THIRTY_MORE_CHARS_STRING_REQUEST__"
-    })
+    @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#tooLongRequestNames")
     void shouldThrowExceptionOnCategoryNameLongerThan32Chars(String tooLongName) {
+        // arrange
         CategoryRequest request = new CategoryRequest(tooLongName);
+
+        // act & assert
         assertThat(validate(request)).containsOnlyExceptionMessages(NAME_TOO_LONG_MSG);
     }
 
@@ -46,7 +49,10 @@ public class CategoryRequestTest {
             "31_CHAR_STRING_REQUEST_ACCEPTED"
     })
     void shouldAcceptRequestsWithNamesEqualOrShorterThan32Chars(String rightSizeName) {
+        // arrange
         CategoryRequest request = new CategoryRequest(rightSizeName);
+
+        // act & assert
         assertThat(validate(request)).isValid();
     }
 
