@@ -61,8 +61,16 @@ class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = false)
-    public CategoryResponse replace(CategoryRequest request) {
-        return null;
+    public CategoryResponse replace(Long id, CategoryRequest request) {
+        Category toReplace = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(id));
+        Category newCategory = new CategoryBuilder()
+                .copy(toReplace)
+                .withName(request.name())
+                .build();
+        CategoryResponse response = new CategoryResponse(categoryRepository.save(newCategory));
+        log.info(STR."Replaced category: '\{ toReplace }' with: '\{ response }'");
+        return response;
     }
 
     @Override
