@@ -31,8 +31,9 @@ public class CategoryIntegrationTest {
     private static final String API_CATEGORY_NAME = "/api/category?name={name}";
     private static final String API_CATEGORY_SLASH = API_CATEGORY + '/';
 
-    public static final String CATEGORY_EXISTS_MSG_TEMPL = "Category '%s' already exists";
-    public static final String CATEGORY_NOT_FOUND_MSG_TEMPL = "Category of '%d' ID was not found";
+    private static final String CATEGORY_EXISTS_MSG_TEMPL = "Category '%s' already exists";
+    private static final String ID_NOT_FOUND_MSG_TEMPL = "Category of '%d' ID was not found";
+    private static final String NAME_NOT_FOUND_MSG_TEMPL = "Category '%s' was not found";
 
     private static final ParameterizedTypeReference<Iterable<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};
@@ -75,7 +76,7 @@ public class CategoryIntegrationTest {
             // assert
             assertThatException(actual)
                     .isNotFound()
-                    .withMessage(CATEGORY_NOT_FOUND_MSG_TEMPL.formatted(id))
+                    .withMessage(ID_NOT_FOUND_MSG_TEMPL.formatted(id))
                     .withPath(API_CATEGORY_SLASH + id);
         }
 
@@ -102,6 +103,19 @@ public class CategoryIntegrationTest {
             assertThatException(actual)
                     .isBadRequest()
                     .withMessage(NOT_BLANK_MSG)
+                    .withPath(API_CATEGORY);
+        }
+
+        @ParameterizedTest
+        @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#validNames")
+        void shouldThrowExceptionOnCategoryNotFound(String notExistingCategory) {
+            // act
+            var actual = get(API_CATEGORY_NAME, ApiExceptionDTO.class, notExistingCategory);
+
+            // assert
+            assertThatException(actual)
+                    .isNotFound()
+                    .withMessage(NAME_NOT_FOUND_MSG_TEMPL.formatted(notExistingCategory))
                     .withPath(API_CATEGORY);
         }
     }
@@ -141,7 +155,7 @@ public class CategoryIntegrationTest {
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {" \t \n  ", "", "       "})
+        @MethodSource("com.demo.blog.postservice.datasupply.StringDataSupply#blankStrings")
         @NullSource
         void shouldThrowExceptionOnNameBlank(String invalidCategoryName) {
             // arrange
