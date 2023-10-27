@@ -7,7 +7,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class RestRequestUtil {
@@ -28,8 +27,7 @@ public class RestRequestUtil {
     }
 
     public static <T> ResponseEntity<T> get(String url, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Object... params) {
-        String built = buildURL(url, params);
-        return testRestTemplate.exchange(built, HttpMethod.GET, requestEntity, responseType, params);
+        return testRestTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType, params);
     }
 
     public static <T> ResponseEntity<T> get(String url, Class<T> responseType, Object... params) {
@@ -37,16 +35,10 @@ public class RestRequestUtil {
     }
 
     public static <T> ResponseEntity<T> get(String url, HttpEntity<?> requestEntity, Class<T> responseType, Object... params) {
-        String built = buildURL(url, params);
-        return testRestTemplate.exchange(built, HttpMethod.GET, requestEntity, responseType, params);
+        return testRestTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType, params);
     }
 
     public static <T> ResponseEntity<T> post(String url, Object request, Class<T> responseType) {
         return testRestTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), responseType);
-    }
-
-    private static String buildURL(String url, Object[] params) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
-        return builder.build(params).toString();
     }
 }
