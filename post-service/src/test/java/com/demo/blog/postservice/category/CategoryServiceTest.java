@@ -14,10 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThatExceptionOfType;
-import static com.demo.blog.postservice.category.CategoryDataSupply.sortedCategories;
+import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.categories;
+import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.sortedCategories;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -29,16 +31,16 @@ public class CategoryServiceTest {
     @Mock
     private CategoryRepository repository;
 
-    static final Long ANY_LONG = 1L;
-    static final Long NEGATIVE_LONG = -1L;
-    static final String ANY_STRING = "ANY_STRING";
+    public static final Long ANY_LONG = 1L;
+    public static final Long NEGATIVE_LONG = -1L;
+    public static final String ANY_STRING = "ANY_STRING";
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
     class GetRequests {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#categories")
+        @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#categories")
         void shouldReturnCategoryOnGetWithParameter(Category category) {
             // arrange
             String expectedName = new String(category.getName());
@@ -112,17 +114,15 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
-            Set<Category> stubbedCategories = CategoryDataSupply.toSet(sortedCategories());
-            Set<CategoryResponse> expectedCategories = CategoryDataSupply.categories()
-                    .map(CategoryResponse::new)
-                    .collect(Collectors.toSet());
+            Set<Category> stubbedCategories = toOrderedSet(sortedCategories());
+            Set<CategoryResponse> expectedCategories = categories().map(CategoryResponse::new).collect(Collectors.toSet());
             when(repository.findByOrderByNameAsc()).thenReturn(stubbedCategories);
 
             // act
             Set<CategoryResponse> actual = SUT.getAll();
 
             // assert
-            assertThat(toList(actual))
+            assertThat(actual.stream().toList())
                     .isSortedAccordingTo(Comparator.comparing(CategoryResponse::name))
                     .containsAll(expectedCategories);
         }
@@ -133,7 +133,7 @@ public class CategoryServiceTest {
     class PostRequests {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#validRequests")
+        @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#validRequests")
         void shouldAcceptValidCategory(CategoryRequest request) {
             // arrange
             String expectedName = new String(request.name());
@@ -167,7 +167,7 @@ public class CategoryServiceTest {
         }
     }
 
-    private <T> List<T> toList(Set<T> set) {
-        return set.stream().collect(Collectors.toList());
+    private Set<Category> toOrderedSet(Stream<Category> stream) {
+        return stream.collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

@@ -34,7 +34,7 @@ public class CategoryRequestTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#tooLongRequestNames")
+    @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#tooLongRequestNames")
     void shouldThrowExceptionOnCategoryNameLongerThan32Chars(String tooLongName) {
         // arrange
         CategoryRequest request = new CategoryRequest(tooLongName);

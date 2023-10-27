@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static com.demo.blog.postservice.assertion.AllAssertions.*;
 import static com.demo.blog.postservice.category.CategoryRequestTest.NAME_TOO_LONG_MSG;
 import static com.demo.blog.postservice.category.CategoryRequestTest.NOT_BLANK_MSG;
-import static com.demo.blog.postservice.category.CategoryTestRepository.*;
+import static com.demo.blog.postservice.category.component.CategoryTestRepository.*;
 import static com.demo.blog.postservice.util.RestRequestUtils.get;
 import static com.demo.blog.postservice.util.RestRequestUtils.post;
 
@@ -111,7 +111,7 @@ public class CategoryIntegrationTest {
     class PostRequests {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#validRequests")
+        @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#validRequests")
         @DirtiesContext
         void shouldAddEntryOnValidRequest(CategoryRequest request) {
             // arrange
@@ -174,7 +174,7 @@ public class CategoryIntegrationTest {
         }
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.postservice.category.CategoryDataSupply#tooLongRequestNames")
+        @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#tooLongRequestNames")
         void shouldThrowExceptionOnCategoryNameTooLong(String tooLongCategoryName) {
             // arrange
             CategoryRequest request = new CategoryRequest(tooLongCategoryName);
