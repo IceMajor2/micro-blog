@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestRequestUtil {
+public class RestRequestUtils {
 
     private static TestRestTemplate testRestTemplate;
 
     @Autowired
     public void setTestRestTemplate(TestRestTemplate testRestTemplate) {
-        RestRequestUtil.testRestTemplate = testRestTemplate;
+        RestRequestUtils.testRestTemplate = testRestTemplate;
     }
 
     public static <T> ResponseEntity<T> get(String url, Class<T> responseType) {
