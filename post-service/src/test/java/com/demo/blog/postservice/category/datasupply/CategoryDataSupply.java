@@ -36,6 +36,15 @@ public class CategoryDataSupply {
         );
     }
 
+    static Stream<String> validNames() {
+        return Stream.of(
+                "Quality Assurance",
+                "Unit testing",
+                "Integration testing",
+                "Project-oriented learning"
+        );
+    }
+
     static Stream<String> tooLongRequestNames() {
         return Stream.of(
                 "THIRTY_THREE_CHARS_STRING_REQUEST", // 33 chars
