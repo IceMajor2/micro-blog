@@ -54,7 +54,7 @@ public class CategoryIntegrationTest {
         }
 
         @Test
-        void shouldReturnAllCategoriesOnGetAll() {
+        void shouldReturnAllCategoriesInAlphabeticOrder() {
             // arrange
             Iterable<CategoryResponse> expected = Streamable.of(getAllCategoriesSorted()).map(CategoryResponse::new);
 
