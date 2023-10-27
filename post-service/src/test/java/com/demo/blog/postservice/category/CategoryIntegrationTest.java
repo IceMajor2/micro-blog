@@ -28,6 +28,8 @@ public class CategoryIntegrationTest {
     private static final String API_CATEGORY = "/api/category";
     private static final String API_CATEGORY_ID = "/api/category/{id}";
 
+    public static final String CATEGORY_EXISTS_MSG_TEMPL = "Category '%s' already exists";
+
     private static final ParameterizedTypeReference<Iterable<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};
 
@@ -79,23 +81,6 @@ public class CategoryIntegrationTest {
             assertThat(actual).isValidPostResponse(expected);
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {" \t \n  ", "", "       "})
-        @NullSource
-        void shouldReturnExceptionOnNameBlank(String invalidCategoryName) {
-            // arrange
-            CategoryRequest request = new CategoryRequest(invalidCategoryName);
-
-            // act & assert
-            var actual = post(API_CATEGORY, request, ApiExceptionDTO.class);
-
-            // assert
-            assertThatException(actual)
-                    .isBadRequest()
-                    .withMessage(NOT_BLANK_MSG)
-                    .withPath(API_CATEGORY);
-        }
-
         @Test
         @DirtiesContext
         void shouldReturnLocationHeaderAndCreatedStatusCodeOnSuccessfulPost() {
@@ -110,6 +95,39 @@ public class CategoryIntegrationTest {
             assertThatResponse(actual)
                     .statusCodeIsCreated()
                     .locationHeaderContains(expectedLocation);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {" \t \n  ", "", "       "})
+        @NullSource
+        void shouldReturnExceptionOnNameBlank(String invalidCategoryName) {
+            // arrange
+            CategoryRequest request = new CategoryRequest(invalidCategoryName);
+
+            // act
+            var actual = post(API_CATEGORY, request, ApiExceptionDTO.class);
+
+            // assert
+            assertThatException(actual)
+                    .isBadRequest()
+                    .withMessage(NOT_BLANK_MSG)
+                    .withPath(API_CATEGORY);
+        }
+
+        @Test
+        void shouldReturnExceptionOnCategoryAlreadyExists() {
+            // arrange
+            String existingCategoryName = getCategory(2L).getName();
+            CategoryRequest request = new CategoryRequest(existingCategoryName);
+
+            // act
+            var actual = post(API_CATEGORY, request, ApiExceptionDTO.class);
+
+            // assert
+            assertThatException(actual)
+                    .isConflict()
+                    .withMessage(CATEGORY_EXISTS_MSG_TEMPL.formatted(existingCategoryName))
+                    .withPath(API_CATEGORY);
         }
     }
 }
