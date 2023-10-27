@@ -27,8 +27,10 @@ public class CategoryIntegrationTest {
 
     private static final String API_CATEGORY = "/api/category";
     private static final String API_CATEGORY_ID = "/api/category/{id}";
+    private static final String API_CATEGORY_SLASH = API_CATEGORY + '/';
 
     public static final String CATEGORY_EXISTS_MSG_TEMPL = "Category '%s' already exists";
+    public static final String CATEGORY_NOT_FOUND_MSG_TEMPL = "Category of '%d' ID was not found";
 
     private static final ParameterizedTypeReference<Iterable<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};
@@ -60,6 +62,19 @@ public class CategoryIntegrationTest {
 
             // assert
             assertThatCategories(actual).areValidGetAllResponse(expected);
+        }
+
+        @ParameterizedTest
+        @ValueSource(longs = {-35784L, 0L, 128411L})
+        void shouldThrowExceptionOnIdNotFound(long id) {
+            // act
+            var actual = get(API_CATEGORY_ID, ApiExceptionDTO.class, id);
+
+            // assert
+            assertThatException(actual)
+                    .isNotFound()
+                    .withMessage(CATEGORY_NOT_FOUND_MSG_TEMPL.formatted(id))
+                    .withPath(API_CATEGORY_SLASH + id);
         }
     }
 
@@ -100,7 +115,7 @@ public class CategoryIntegrationTest {
         @ParameterizedTest
         @ValueSource(strings = {" \t \n  ", "", "       "})
         @NullSource
-        void shouldReturnExceptionOnNameBlank(String invalidCategoryName) {
+        void shouldThrowExceptionOnNameBlank(String invalidCategoryName) {
             // arrange
             CategoryRequest request = new CategoryRequest(invalidCategoryName);
 
@@ -115,7 +130,7 @@ public class CategoryIntegrationTest {
         }
 
         @Test
-        void shouldReturnExceptionOnCategoryAlreadyExists() {
+        void shouldThrowExceptionOnCategoryAlreadyExists() {
             // arrange
             String existingCategoryName = getCategory(2L).getName();
             CategoryRequest request = new CategoryRequest(existingCategoryName);
