@@ -19,11 +19,11 @@ import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 public class CategoryRequestTest {
 
     private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-    public static final String NOT_BLANK_MSG = "Name must be specified";
+    public static final String NOT_BLANK_MSG = "Category name must be specified";
     public static final String NAME_TOO_LONG_MSG = "Category name cannot exceed 32 characters";
 
     @ParameterizedTest
-    @ValueSource(strings = {"", "  \t  \n\t", "      "})
+    @MethodSource("com.demo.blog.postservice.datasupply.StringDataSupply#blankStrings")
     @NullSource
     void shouldThrowExceptionOnBlankCategory(String categoryName) {
         // arrange
