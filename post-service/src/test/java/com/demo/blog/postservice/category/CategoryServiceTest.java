@@ -191,6 +191,26 @@ public class CategoryServiceTest {
             assertThat(actual).isNamed(expectedName);
             verify(repository, times(1)).save(requestAsModel);
         }
+
+        @Test
+        void shouldThrowExceptionWhenReplacingCategoryWithSameObject() {
+            // arrange
+            Category categoryToReplace = new CategoryBuilder()
+                    .withId(1L)
+                    .withName("Java")
+                    .build();
+            CategoryRequest request = new CategoryRequest("Java");
+            Category requestAsModel = new CategoryBuilder()
+                    .copy(categoryToReplace)
+                    .withName("Java")
+                    .build();
+            when(repository.findById(1L)).thenReturn(Optional.of(categoryToReplace));
+            when(repository.exists(requestAsModel)).thenReturn(true);
+
+            // act & assert
+            assertThatExceptionOfType(CategoryAlreadyExistsException.class)
+                    .isThrownBy(() -> SUT.replace(categoryToReplace.getId(), request));
+        }
     }
 
     private Set<Category> toOrderedSet(Stream<Category> stream) {

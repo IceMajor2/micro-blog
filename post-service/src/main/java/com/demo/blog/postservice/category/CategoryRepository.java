@@ -11,4 +11,8 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
     Iterable<Category> findByOrderByNameAsc();
 
     boolean existsByName(String name);
+
+    default boolean exists(Category category) {
+        return existsById(category.getId()) && existsByName(category.getName());
+    }
 }
