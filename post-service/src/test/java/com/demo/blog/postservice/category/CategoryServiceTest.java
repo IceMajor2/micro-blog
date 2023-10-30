@@ -225,6 +225,20 @@ public class CategoryServiceTest {
                     .isThrownBy(() -> SUT.replace(nonExistingId, request))
                     .withMessage(ID_NOT_FOUND_MSG_TEMPL.formatted(nonExistingId));
         }
+
+        @Test
+        void shouldThrowExceptionOnNullId() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.replace(null, new CategoryRequest("ANY_STRING")))
+                    .withMessage(ID_NULL_MSG);
+        }
+
+        @Test
+        void shouldThrowExceptionOnNullString() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.replace(1L, null))
+                    .withMessage(NAME_NULL_MSG);
+        }
     }
 
     private Set<Category> toOrderedSet(Stream<Category> stream) {
