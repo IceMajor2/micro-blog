@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThatExceptionOfType;
@@ -111,7 +110,7 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
-            Set<Category> stubbedCategories = toOrderedSet(sortedCategories());
+            Set<Category> stubbedCategories = sortedCategories().collect(Collectors.toCollection(LinkedHashSet::new));
             Set<CategoryResponse> expectedCategories = categories().map(CategoryResponse::new).collect(Collectors.toSet());
             when(repository.findByOrderByNameAsc()).thenReturn(stubbedCategories);
 
@@ -249,9 +248,5 @@ public class CategoryServiceTest {
                     .isThrownBy(() -> SUT.replace(1L, null))
                     .withMessage(NULL_REQUEST_MSG);
         }
-    }
-
-    private Set<Category> toOrderedSet(Stream<Category> stream) {
-        return stream.collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
