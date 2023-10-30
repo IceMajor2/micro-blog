@@ -25,4 +25,12 @@ public class CategoryAssert extends AbstractAssert<CategoryAssert, CategoryRespo
                 .isEqualTo(name);
         return this;
     }
+
+    public CategoryAssert hasId(Long expected) {
+        isNotNull();
+        Assertions.assertThat(actual.id())
+                .as("id")
+                .isEqualTo(expected);
+        return this;
+    }
 }

@@ -184,9 +184,10 @@ public class CategoryServiceTest {
                     .build();
             CategoryRequest request = new CategoryRequest("IDE");
             Category requestAsModel = new CategoryBuilder()
-                    .withId(3L)
+                    .copy(categoryToReplace)
                     .withName(new String(request.name()))
                     .build();
+            long expectedId = categoryToReplace.getId().longValue();
             String expectedName = new String(request.name());
             when(repository.findById(categoryToReplace.getId())).thenReturn(Optional.of(categoryToReplace));
             when(repository.save(requestAsModel)).thenReturn(requestAsModel);
@@ -195,7 +196,9 @@ public class CategoryServiceTest {
             CategoryResponse actual = SUT.replace(categoryToReplace.getId(), request);
 
             // assert
-            assertThat(actual).isNamed(expectedName);
+            assertThat(actual)
+                    .hasId(expectedId)
+                    .isNamed(expectedName);
             verify(repository, times(1)).save(requestAsModel);
         }
 
