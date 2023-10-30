@@ -17,9 +17,8 @@ import java.util.stream.Collectors;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThatExceptionOfType;
-import static com.demo.blog.postservice.category.Constants.*;
-import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.categories;
-import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.sortedCategories;
+import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.*;
+import static com.demo.blog.postservice.category.datasupply.Constants.*;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -153,13 +152,13 @@ public class CategoryServiceTest {
         @Test
         void shouldThrowExceptionOnConflict() {
             // arrange
-            CategoryRequest request = CategoryRequest.builder().name("Java").build();
+            CategoryRequest request = ANY_CATEGORY_REQUEST;
             when(repository.existsByName(request.name())).thenReturn(true);
 
             // act & arrange
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                     .isThrownBy(() -> SUT.add(request))
-                    .withMessage(EXISTS_MSG_T.formatted(request.name()) );
+                    .withMessage(EXISTS_MSG_T.formatted(request.name()));
         }
 
         @Test
@@ -254,5 +253,17 @@ public class CategoryServiceTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class DeleteRequests {
 
+        @Test
+        void shouldDeleteEntity() {
+            // arrange
+            Long deleteId = 1L;
+            when(repository.findById(deleteId)).thenReturn(Optional.of(ANY_CATEGORY));
+
+            // act
+            SUT.delete(deleteId);
+
+            // assert
+            verify(repository, times(1)).deleteById(deleteId);
+        }
     }
 }
