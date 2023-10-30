@@ -45,6 +45,19 @@ public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, Categ
         Assertions.assertThat(actual).isEqualTo(expected);
     }
 
+    /**
+     * This assertion includes:
+     * <ul>
+     *     <li>{@code actual} and {@code expected} objects' equality</li>
+     *     <li>{@code 200 OK} HTTP status code</li>
+     * </ul>
+     */
+    public void isValidPutResponse(CategoryResponse expected) {
+        isValidGetResponse(expected);
+//        HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
+//        Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
 
     public static class CategoryIterableRestAssert extends AbstractAssert<CategoryIterableRestAssert, Iterable<CategoryResponse>> {
 

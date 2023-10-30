@@ -41,4 +41,8 @@ public class RestRequestUtils {
     public static <T> ResponseEntity<T> post(String url, Object request, Class<T> responseType) {
         return testRestTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), responseType);
     }
+
+    public static <T> ResponseEntity<T> put(String url, Object request, Class<T> responseType, Object... params) {
+        return testRestTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), responseType, params);
+    }
 }
