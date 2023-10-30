@@ -11,7 +11,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.*;
-import static com.demo.blog.postservice.category.Constants.*;
+import static com.demo.blog.postservice.category.datasupply.Constants.*;
 import static com.demo.blog.postservice.category.component.CategoryTestRepository.getAllCategoriesSorted;
 import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategory;
 import static com.demo.blog.postservice.util.RestRequestUtils.get;

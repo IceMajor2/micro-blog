@@ -7,9 +7,16 @@ import com.demo.blog.postservice.category.dto.CategoryRequest;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import static com.demo.blog.postservice.category.Constants.ANY_LONG;
+import static com.demo.blog.postservice.category.datasupply.Constants.ANY_LONG;
+import static com.demo.blog.postservice.category.datasupply.Constants.ANY_STRING;
 
 public class CategoryDataSupply {
+
+    public static final CategoryRequest ANY_CATEGORY_REQUEST = new CategoryRequest(ANY_STRING);
+    public static final Category ANY_CATEGORY = new CategoryBuilder()
+            .withId(ANY_LONG)
+            .withName(ANY_STRING)
+            .build();
 
     public static Stream<Category> sortedCategories() {
         return categories()
@@ -47,9 +54,9 @@ public class CategoryDataSupply {
 
     static Stream<String> tooLongRequestNames() {
         return Stream.of(
-                "THIRTY_THREE_CHARS_STRING_REQUEST", // 33 chars
-                "_THIRTY_MORE_CHARS_STRING_REQUEST_", // 34 chars
-                "_FORTY_MORE_MORE_CHARS_CHARS_STRING_REQUEST__"// 45 chars
+                "THIRTY_THREE_CHARS_STRING_REQUEST",
+                "_THIRTY_MORE_CHARS_STRING_REQUEST_",
+                "_FORTY_MORE_MORE_CHARS_CHARS_STRING_REQUEST__"
         );
     }
 

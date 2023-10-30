@@ -14,7 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.*;
-import static com.demo.blog.postservice.category.Constants.*;
+import static com.demo.blog.postservice.category.datasupply.Constants.*;
 import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategoriesSize;
 import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategory;
 import static com.demo.blog.postservice.util.RestRequestUtils.post;

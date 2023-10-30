@@ -1,4 +1,4 @@
-package com.demo.blog.postservice.category;
+package com.demo.blog.postservice.category.datasupply;
 
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import org.springframework.core.ParameterizedTypeReference;

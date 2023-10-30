@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThatException;
-import static com.demo.blog.postservice.category.Constants.*;
+import static com.demo.blog.postservice.category.datasupply.Constants.*;
 import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategory;
 import static com.demo.blog.postservice.util.RestRequestUtils.put;
 

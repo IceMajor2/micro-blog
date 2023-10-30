@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.NullSource;
 import java.util.Set;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.postservice.category.Constants.BLANK_MSG;
-import static com.demo.blog.postservice.category.Constants.TOO_LONG_MSG;
+import static com.demo.blog.postservice.category.datasupply.Constants.BLANK_MSG;
+import static com.demo.blog.postservice.category.datasupply.Constants.TOO_LONG_MSG;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryRequestTest {
