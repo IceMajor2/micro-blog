@@ -257,7 +257,7 @@ public class CategoryServiceTest {
         void shouldDeleteEntity() {
             // arrange
             Long deleteId = 1L;
-            when(repository.findById(deleteId)).thenReturn(Optional.of(ANY_CATEGORY));
+            when(repository.existsById(deleteId)).thenReturn(true);
 
             // act
             SUT.delete(deleteId);
