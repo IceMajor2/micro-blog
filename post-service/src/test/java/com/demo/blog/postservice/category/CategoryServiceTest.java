@@ -178,7 +178,7 @@ public class CategoryServiceTest {
             CategoryRequest request = new CategoryRequest("IDE");
             Category requestAsModel = new CategoryBuilder()
                     .withId(3L)
-                    .withName("IDE")
+                    .withName(new String(request.name()))
                     .build();
             String expectedName = new String(request.name());
             when(repository.findById(categoryToReplace.getId())).thenReturn(Optional.of(categoryToReplace));
