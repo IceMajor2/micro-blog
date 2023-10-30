@@ -68,6 +68,8 @@ class CategoryServiceImpl implements CategoryService {
                 .copy(toReplace)
                 .withName(request.name())
                 .build();
+        if(categoryRepository.exists(replacement))
+            throw new CategoryAlreadyExistsException(replacement.getName());
         Category replacementPersisted = categoryRepository.save(replacement);
         log.info(STR. "Replaced category: '\{ toReplace }' with: '\{ replacementPersisted }'" );
         return new CategoryResponse(replacementPersisted);
