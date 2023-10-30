@@ -265,5 +265,12 @@ public class CategoryServiceTest {
             // assert
             verify(repository, times(1)).deleteById(deleteId);
         }
+
+        @Test
+        void shouldThrowExceptionOnNullId() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.delete(null))
+                    .withMessage(NULL_ID_MSG);
+        }
     }
 }
