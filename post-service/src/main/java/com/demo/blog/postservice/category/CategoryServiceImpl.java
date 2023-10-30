@@ -86,6 +86,7 @@ class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = false)
     public void delete(Long id) {
+        Objects.requireNonNull(id, NULL_ID_MSG);
         if(!categoryRepository.existsById(id))
             throw new CategoryNotFoundException(id);
         categoryRepository.deleteById(id);
