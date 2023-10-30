@@ -52,4 +52,11 @@ public class CategoryDataSupply {
                 "_FORTY_MORE_MORE_CHARS_CHARS_STRING_REQUEST__"// 45 chars
         );
     }
+
+    static Stream<String> justRightLengthRequestName() {
+        return Stream.of(
+                "32_CHARS_STRING_REQUEST_ACCEPTED",
+                "31_CHAR_STRING_REQUEST_ACCEPTED"
+        );
+    }
 }
