@@ -18,10 +18,10 @@ import java.util.stream.Stream;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThatExceptionOfType;
+import static com.demo.blog.postservice.category.Constants.*;
 import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.categories;
 import static com.demo.blog.postservice.category.datasupply.CategoryDataSupply.sortedCategories;
 import static org.mockito.Mockito.*;
-import static com.demo.blog.postservice.category.Constants.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -211,6 +211,19 @@ public class CategoryServiceTest {
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                     .isThrownBy(() -> SUT.replace(categoryToReplace.getId(), request))
                     .withMessage(CATEGORY_EXISTS_MSG_TEMPL.formatted(request.name()));
+        }
+
+        @Test
+        void shouldThrowExceptionWhenReplacingNonExistingCategory() {
+            // arrange
+            Long nonExistingId = 8532L;
+            CategoryRequest request = new CategoryRequest("Security");
+            when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+            // act & assert
+            assertThatExceptionOfType(CategoryNotFoundException.class)
+                    .isThrownBy(() -> SUT.replace(nonExistingId, request))
+                    .withMessage(ID_NOT_FOUND_MSG_TEMPL.formatted(nonExistingId));
         }
     }
 
