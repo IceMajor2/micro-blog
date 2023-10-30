@@ -162,6 +162,13 @@ public class CategoryServiceTest {
                     .isThrownBy(() -> SUT.add(request))
                     .withMessage(EXISTS_MSG_T.formatted(request.name()) );
         }
+
+        @Test
+        void shouldThrowExceptionOnNullRequest() {
+            assertThatExceptionOfType(NullPointerException.class)
+                    .isThrownBy(() -> SUT.add(null))
+                    .withMessage(NULL_REQUEST_MSG);
+        }
     }
 
     @Nested

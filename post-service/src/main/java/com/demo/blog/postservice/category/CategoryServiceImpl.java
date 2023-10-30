@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,18 +23,20 @@ class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    private static final String NULL_NAME_MSG = "Category name was null";
+    private static final String NULL_ID_MSG = "Category ID was null";
+    private static final String NULL_REQUEST_MSG = "Request was null";
+
     @Override
     public CategoryResponse getByName(String categoryName) {
-        if (categoryName == null)
-            throw new NullPointerException("Category name was null");
+        Objects.requireNonNull(categoryName, NULL_NAME_MSG);
         return new CategoryResponse(categoryRepository.findByName(categoryName)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryName)));
     }
 
     @Override
     public CategoryResponse getById(Long id) {
-        if (id == null)
-            throw new NullPointerException("Category ID was null");
+        Objects.requireNonNull(id, NULL_ID_MSG);
         return new CategoryResponse(categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id)));
     }
@@ -49,6 +52,7 @@ class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = false)
     public CategoryResponse add(CategoryRequest request) {
+        Objects.requireNonNull(request, NULL_REQUEST_MSG);
         Category category = new CategoryBuilder()
                 .fromRequest(request)
                 .build();
@@ -62,6 +66,10 @@ class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = false)
     public CategoryResponse replace(Long id, CategoryRequest request) {
+        // null check
+        Objects.requireNonNull(id, NULL_ID_MSG);
+        Objects.requireNonNull(request, NULL_REQUEST_MSG);
+
         Category toReplace = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
         Category replacement = new CategoryBuilder()
