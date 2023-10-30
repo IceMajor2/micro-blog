@@ -9,13 +9,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Set;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.postservice.category.Constants.TOO_LONG_MSG;
 import static com.demo.blog.postservice.category.Constants.BLANK_MSG;
+import static com.demo.blog.postservice.category.Constants.TOO_LONG_MSG;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryRequestTest {
@@ -44,10 +43,7 @@ public class CategoryRequestTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-            "32_CHARS_STRING_REQUEST_ACCEPTED",
-            "31_CHAR_STRING_REQUEST_ACCEPTED"
-    })
+    @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#justRightLengthRequestName")
     void shouldAcceptRequestsWithNamesEqualOrShorterThan32Chars(String rightSizeName) {
         // arrange
         CategoryRequest request = new CategoryRequest(rightSizeName);
