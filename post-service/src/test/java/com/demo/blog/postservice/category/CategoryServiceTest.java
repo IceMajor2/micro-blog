@@ -126,7 +126,7 @@ public class CategoryServiceTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
-    class PostRequests {
+    class AddRequests {
 
         @ParameterizedTest
         @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#validRequests")
@@ -172,7 +172,7 @@ public class CategoryServiceTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
-    class PutRequests {
+    class ReplaceRequests {
 
         @Test
         void shouldReplaceCategoryWithNewOne() {
@@ -248,5 +248,11 @@ public class CategoryServiceTest {
                     .isThrownBy(() -> SUT.replace(1L, null))
                     .withMessage(NULL_REQUEST_MSG);
         }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class DeleteRequests {
+
     }
 }
