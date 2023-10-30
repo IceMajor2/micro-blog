@@ -67,7 +67,7 @@ public class CategoryHttpPostTest {
         // assert
         assertThatException(actual)
                 .isBadRequest()
-                .withMessage(NOT_BLANK_MSG)
+                .withMessage(BLANK_MSG)
                 .withPath(API_CATEGORY);
     }
 
@@ -83,7 +83,7 @@ public class CategoryHttpPostTest {
         // assert
         assertThatException(actual)
                 .isConflict()
-                .withMessage(CATEGORY_EXISTS_MSG_TEMPL.formatted(existingCategoryName))
+                .withMessage(EXISTS_MSG_T.formatted(existingCategoryName))
                 .withPath(API_CATEGORY);
     }
 
@@ -99,7 +99,7 @@ public class CategoryHttpPostTest {
         // assert
         assertThatException(actual)
                 .isBadRequest()
-                .withMessage(NAME_TOO_LONG_MSG)
+                .withMessage(TOO_LONG_MSG)
                 .withPath(API_CATEGORY);
     }
 }

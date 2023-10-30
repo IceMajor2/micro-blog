@@ -14,8 +14,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Set;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.postservice.category.Constants.NAME_TOO_LONG_MSG;
-import static com.demo.blog.postservice.category.Constants.NOT_BLANK_MSG;
+import static com.demo.blog.postservice.category.Constants.TOO_LONG_MSG;
+import static com.demo.blog.postservice.category.Constants.BLANK_MSG;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryRequestTest {
@@ -30,7 +30,7 @@ public class CategoryRequestTest {
         CategoryRequest request = new CategoryRequest(categoryName);
 
         // act & assert
-        assertThat(validate(request)).containsOnlyExceptionMessages(NOT_BLANK_MSG);
+        assertThat(validate(request)).containsOnlyExceptionMessages(BLANK_MSG);
     }
 
     @ParameterizedTest
@@ -40,7 +40,7 @@ public class CategoryRequestTest {
         CategoryRequest request = new CategoryRequest(tooLongName);
 
         // act & assert
-        assertThat(validate(request)).containsOnlyExceptionMessages(NAME_TOO_LONG_MSG);
+        assertThat(validate(request)).containsOnlyExceptionMessages(TOO_LONG_MSG);
     }
 
     @ParameterizedTest

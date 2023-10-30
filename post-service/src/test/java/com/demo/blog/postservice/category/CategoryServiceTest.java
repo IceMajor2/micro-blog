@@ -55,14 +55,14 @@ public class CategoryServiceTest {
             String noSuchCategory = "NON_EXISTING_CATEGORY";
             assertThatExceptionOfType(CategoryNotFoundException.class)
                     .isThrownBy(() -> SUT.getByName(noSuchCategory))
-                    .withMessage(NAME_NOT_FOUND_MSG_TEMPL.formatted(noSuchCategory));
+                    .withMessage(NAME_NOT_FOUND_MSG_T.formatted(noSuchCategory));
         }
 
         @Test
         void shouldThrowExceptionOnNullCategoryName() {
             assertThatExceptionOfType(NullPointerException.class)
                     .isThrownBy(() -> SUT.getByName(null))
-                    .withMessage(NAME_NULL_MSG);
+                    .withMessage(NULL_NAME_MSG);
         }
 
         @Test
@@ -86,14 +86,14 @@ public class CategoryServiceTest {
         void shouldThrowExceptionOnNullId() {
             assertThatExceptionOfType(NullPointerException.class)
                     .isThrownBy(() -> SUT.getById(null))
-                    .withMessage(ID_NULL_MSG);
+                    .withMessage(NULL_ID_MSG);
         }
 
         @Test
         void shouldThrowExceptionOnIdNotFound() {
             assertThatExceptionOfType(CategoryNotFoundException.class)
                     .isThrownBy(() -> SUT.getById(NEGATIVE_LONG))
-                    .withMessage(ID_NOT_FOUND_MSG_TEMPL.formatted(NEGATIVE_LONG));
+                    .withMessage(ID_NOT_FOUND_MSG_T.formatted(NEGATIVE_LONG));
         }
 
         @Test
@@ -160,7 +160,7 @@ public class CategoryServiceTest {
             // act & arrange
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                     .isThrownBy(() -> SUT.add(request))
-                    .withMessage(CATEGORY_EXISTS_MSG_TEMPL.formatted(request.name()) );
+                    .withMessage(EXISTS_MSG_T.formatted(request.name()) );
         }
     }
 
@@ -210,7 +210,7 @@ public class CategoryServiceTest {
             // act & assert
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                     .isThrownBy(() -> SUT.replace(categoryToReplace.getId(), request))
-                    .withMessage(CATEGORY_EXISTS_MSG_TEMPL.formatted(request.name()));
+                    .withMessage(EXISTS_MSG_T.formatted(request.name()));
         }
 
         @Test
@@ -223,21 +223,21 @@ public class CategoryServiceTest {
             // act & assert
             assertThatExceptionOfType(CategoryNotFoundException.class)
                     .isThrownBy(() -> SUT.replace(nonExistingId, request))
-                    .withMessage(ID_NOT_FOUND_MSG_TEMPL.formatted(nonExistingId));
+                    .withMessage(ID_NOT_FOUND_MSG_T.formatted(nonExistingId));
         }
 
         @Test
         void shouldThrowExceptionOnNullId() {
             assertThatExceptionOfType(NullPointerException.class)
                     .isThrownBy(() -> SUT.replace(null, new CategoryRequest("ANY_STRING")))
-                    .withMessage(ID_NULL_MSG);
+                    .withMessage(NULL_ID_MSG);
         }
 
         @Test
         void shouldThrowExceptionOnNullString() {
             assertThatExceptionOfType(NullPointerException.class)
                     .isThrownBy(() -> SUT.replace(1L, null))
-                    .withMessage(NAME_NULL_MSG);
+                    .withMessage(NULL_REQUEST_MSG);
         }
     }
 

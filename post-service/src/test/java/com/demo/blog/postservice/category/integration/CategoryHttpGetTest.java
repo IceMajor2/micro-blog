@@ -47,7 +47,7 @@ public class CategoryHttpGetTest {
             // assert
             assertThatException(actual)
                     .isNotFound()
-                    .withMessage(ID_NOT_FOUND_MSG_TEMPL.formatted(id))
+                    .withMessage(ID_NOT_FOUND_MSG_T.formatted(id))
                     .withPath(API_CATEGORY_SLASH + id);
         }
     }
@@ -78,7 +78,7 @@ public class CategoryHttpGetTest {
             // assert
             assertThatException(actual)
                     .isBadRequest()
-                    .withMessage(NOT_BLANK_MSG)
+                    .withMessage(BLANK_MSG)
                     .withPath(API_CATEGORY);
         }
 
@@ -91,7 +91,7 @@ public class CategoryHttpGetTest {
             // assert
             assertThatException(actual)
                     .isNotFound()
-                    .withMessage(NAME_NOT_FOUND_MSG_TEMPL.formatted(notExistingCategory))
+                    .withMessage(NAME_NOT_FOUND_MSG_T.formatted(notExistingCategory))
                     .withPath(API_CATEGORY);
         }
     }
