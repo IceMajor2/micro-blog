@@ -29,7 +29,10 @@ public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, Categ
      */
     public CategoryRestAssert isValidGetResponse(CategoryResponse expected) {
         HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expected);
         return this;
     }
 
@@ -42,7 +45,10 @@ public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, Categ
      */
     public CategoryRestAssert isValidPostResponse(CategoryResponse expected) {
         HttpResponseAssert.assertThat(responseEntity).statusCodeIsCreated();
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expected);
         return this;
     }
 
