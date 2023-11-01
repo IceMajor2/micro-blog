@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -272,5 +273,13 @@ public class CategoryServiceTest {
                     .isThrownBy(() -> SUT.delete(null))
                     .withMessage(NULL_ID_MSG);
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {-2453, 0, 4366543})
+    void shouldThrowExceptionOnNotFoundId(Long id) {
+        assertThatExceptionOfType(CategoryNotFoundException.class)
+                .isThrownBy(() -> SUT.delete(id))
+                .withMessage(ID_NOT_FOUND_MSG_T.formatted(id));
     }
 }
