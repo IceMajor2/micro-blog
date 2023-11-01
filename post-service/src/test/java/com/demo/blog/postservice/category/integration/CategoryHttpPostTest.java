@@ -1,5 +1,6 @@
 package com.demo.blog.postservice.category.integration;
 
+import com.demo.blog.postservice.category.CategoryRepository;
 import com.demo.blog.postservice.category.dto.CategoryRequest;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import com.demo.blog.postservice.exception.ApiExceptionDTO;
@@ -9,14 +10,13 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.*;
 import static com.demo.blog.postservice.category.datasupply.Constants.*;
-import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategoriesSize;
-import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategory;
 import static com.demo.blog.postservice.util.RestRequestUtils.post;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,25 +24,35 @@ import static com.demo.blog.postservice.util.RestRequestUtils.post;
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryHttpPostTest {
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @ParameterizedTest
     @MethodSource("com.demo.blog.postservice.category.datasupply.CategoryDataSupply#validRequests")
     @DirtiesContext
     void shouldAddEntryOnValidRequest(CategoryRequest request) {
         // arrange
-        CategoryResponse expected = new CategoryResponse(getCategoriesSize() + 1, new String(request.name()));
+        Long expectedSize = categoryRepository.count() + 1;
+        CategoryResponse expected = new CategoryResponse(expectedSize, request.name());
 
         // act
         var actual = post(API_CATEGORY, request, CategoryResponse.class);
+        Long actualSize = categoryRepository.count();
+        CategoryResponse dbActual = new CategoryResponse(categoryRepository.findById(expectedSize).get());
 
         // assert
         assertThat(actual).isValidPostResponse(expected);
+        assertThat(actualSize).isEqualTo(expectedSize);
+        assertThat(dbActual).isEqualTo(expected);
     }
 
     @Test
     @DirtiesContext
     void shouldReturnLocationHeaderAndCreatedStatusCodeOnSuccessfulPost() {
         // arrange
-        String expectedLocation = "/api/category/" + (getCategoriesSize() + 1);
+        long expectedSize = categoryRepository.count() + 1L;
+        String expectedLocation = "/api/category/" + (expectedSize);
+
         CategoryRequest request = new CategoryRequest("Pascal");
 
         // act
@@ -74,7 +84,7 @@ public class CategoryHttpPostTest {
     @Test
     void shouldThrowExceptionOnCategoryAlreadyExists() {
         // arrange
-        String existingCategoryName = getCategory(2L).getName();
+        String existingCategoryName = categoryRepository.findById(2L).get().getName();
         CategoryRequest request = new CategoryRequest(existingCategoryName);
 
         // act

@@ -1,25 +1,28 @@
 package com.demo.blog.postservice.category.integration;
 
+import com.demo.blog.postservice.category.CategoryRepository;
 import com.demo.blog.postservice.category.dto.CategoryResponse;
 import com.demo.blog.postservice.exception.ApiExceptionDTO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.postservice.assertion.AllAssertions.*;
 import static com.demo.blog.postservice.category.datasupply.Constants.*;
-import static com.demo.blog.postservice.category.component.CategoryTestRepository.getAllCategoriesSorted;
-import static com.demo.blog.postservice.category.component.CategoryTestRepository.getCategory;
 import static com.demo.blog.postservice.util.RestRequestUtils.get;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
 @TestClassOrder(ClassOrderer.Random.class)
 public class CategoryHttpGetTest {
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
@@ -29,7 +32,7 @@ public class CategoryHttpGetTest {
         @ValueSource(longs = {1L, 3L})
         void shouldReturnCategoryOnGetId(Long id) {
             // arrange
-            CategoryResponse expected = new CategoryResponse(getCategory(id));
+            CategoryResponse expected = new CategoryResponse(categoryRepository.findById(id).get());
 
             // act
             var actual = get(API_CATEGORY_ID, CategoryResponse.class, id);
@@ -59,7 +62,7 @@ public class CategoryHttpGetTest {
         @Test
         void shouldReturnCategoryOnGetByName() {
             // arrange
-            CategoryResponse expected = new CategoryResponse(getCategory(4L));
+            CategoryResponse expected = new CategoryResponse(categoryRepository.findById(4L).get());
             String categoryName = new String(expected.name());
 
             // act
@@ -103,7 +106,8 @@ public class CategoryHttpGetTest {
         @Test
         void shouldReturnAllCategoriesInAlphabeticOrder() {
             // arrange
-            Iterable<CategoryResponse> expected = Streamable.of(getAllCategoriesSorted()).map(CategoryResponse::new);
+            Iterable<CategoryResponse> expected = Streamable.of(categoryRepository.findByOrderByNameAsc())
+                    .map(CategoryResponse::new);
 
             // act
             var actual = get(API_CATEGORY, PARAMETERIZED_TYPE_REFERENCE);
