@@ -2,12 +2,11 @@ package com.demo.blog.postservice.category.dto;
 
 import com.demo.blog.postservice.category.Category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
 
 import java.util.Objects;
 
 public record CategoryResponse(
-        @JsonIgnore @EqualsAndHashCode.Exclude Long id,
+        @JsonIgnore Long id,
         String name
 ) {
     public CategoryResponse(Category category) {
@@ -16,8 +15,8 @@ public record CategoryResponse(
 
     @Override
     public boolean equals(Object o) {
-        if(this == o) return true;
-        if(!(o instanceof CategoryResponse)) return false;
+        if (this == o) return true;
+        if (!(o instanceof CategoryResponse)) return false;
         CategoryResponse that = (CategoryResponse) o;
         return Objects.equals(name, that.name);
     }
