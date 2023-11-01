@@ -19,30 +19,40 @@ public class RestRequestUtils {
     }
 
     public static <T> ResponseEntity<T> get(String url, Class<T> responseType) {
-        return get(url, null, responseType, new Object[0]);
+        return exchange(url, HttpMethod.GET, null, responseType);
     }
 
     public static <T> ResponseEntity<T> get(String url, ParameterizedTypeReference<T> responseType) {
-        return get(url, null, responseType, new Object[0]);
-    }
-
-    public static <T> ResponseEntity<T> get(String url, HttpEntity<?> requestEntity, ParameterizedTypeReference<T> responseType, Object... params) {
-        return testRestTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType, params);
+        return exchange(url, HttpMethod.GET, null, responseType);
     }
 
     public static <T> ResponseEntity<T> get(String url, Class<T> responseType, Object... params) {
-        return get(url, null, responseType, params);
+        return exchange(url, HttpMethod.GET, null, responseType, params);
     }
 
     public static <T> ResponseEntity<T> get(String url, HttpEntity<?> requestEntity, Class<T> responseType, Object... params) {
-        return testRestTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType, params);
+        return exchange(url, HttpMethod.GET, requestEntity, responseType, params);
     }
 
     public static <T> ResponseEntity<T> post(String url, Object request, Class<T> responseType) {
-        return testRestTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), responseType);
+        return exchange(url, HttpMethod.POST, new HttpEntity<>(request), responseType);
     }
 
     public static <T> ResponseEntity<T> put(String url, Object request, Class<T> responseType, Object... params) {
-        return testRestTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), responseType, params);
+        return exchange(url, HttpMethod.PUT, new HttpEntity<>(request), responseType, params);
+    }
+
+    public static <T> ResponseEntity<T> delete(String url, Class<T> responseType, Object... params) {
+        return exchange(url, HttpMethod.DELETE, null, responseType, params);
+    }
+
+    private static <T> ResponseEntity<T> exchange(String url, HttpMethod method, HttpEntity<?> requestEntity,
+                                                  ParameterizedTypeReference<T> responseType, Object... params) {
+        return testRestTemplate.exchange(url, method, requestEntity, responseType, params);
+    }
+
+    private static <T> ResponseEntity<T> exchange(String url, HttpMethod method, HttpEntity<?> requestEntity,
+                                                  Class<T> responseType, Object... params) {
+        return testRestTemplate.exchange(url, method, requestEntity, responseType, params);
     }
 }
