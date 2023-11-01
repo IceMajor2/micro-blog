@@ -78,13 +78,49 @@ class CategoryResponseTest {
 
     @Test
     void hashCodeShouldBeSameForEqualObjects() {
+        // arrange
+        CategoryResponse response1 = new CategoryResponse(1L, "C#");
+        CategoryResponse response2 = new CategoryResponse(1L, "C#");
+
+        // act
+        int hash1 = response1.hashCode();
+        int hash2 = response2.hashCode();
+
+        // assert
+        assertThat(hash1).isEqualTo(hash2);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "1,Scala,2,Kotlin",
+            "1,Concurrency,1,Threads",
+            "1,Management,2,Management",
+            "2,Data,null,Data"
+    }, nullValues = "null")
+    void hashCodeShouldBeDifferentForDifferingObjects(Long id1, String name1, Long id2, String name2) {
+        // arrange
+        CategoryResponse response1 = new CategoryResponse(id1, name1);
+        CategoryResponse response2 = new CategoryResponse(id2, name2);
+
+        // act
+        int hash1 = response1.hashCode();
+        int hash2 = response2.hashCode();
+
+        // assert
+        assertThat(hash1).isNotEqualTo(hash2);
     }
 
     @Test
-    void hashCodeShouldBeDifferentForDifferingObjects() {
-    }
+    void hashCodeShouldStaySameOnIdMissingButOtherwiseEqual() {
+        // arrange
+        CategoryResponse response1 = new CategoryResponse(null, "C#");
+        CategoryResponse response2 = new CategoryResponse(null, "C#");
 
-    @Test
-    void hashCodeShouldNotBreakOnIdMissing() {
+        // act
+        int hash1 = response1.hashCode();
+        int hash2 = response2.hashCode();
+
+        // assert
+        assertThat(hash1).isEqualTo(hash2);
     }
 }
