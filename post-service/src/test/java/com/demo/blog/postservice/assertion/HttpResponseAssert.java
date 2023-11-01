@@ -42,4 +42,9 @@ public class HttpResponseAssert extends AbstractAssert<HttpResponseAssert, Respo
         statusCodeIs(HttpStatus.CREATED);
         return this;
     }
+
+    public HttpResponseAssert statusCodeIsNoContent() {
+        statusCodeIs(HttpStatus.NO_CONTENT);
+        return this;
+    }
 }
