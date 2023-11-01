@@ -52,4 +52,10 @@ public class CategoryController {
     public CategoryResponse replaceCategory(@PathVariable("id") Long id, @RequestBody @Valid CategoryRequest request) {
         return categoryService.replace(id, request);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) {
+        categoryService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
