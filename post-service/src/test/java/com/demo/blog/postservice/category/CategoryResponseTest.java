@@ -52,8 +52,28 @@ class CategoryResponseTest {
         assertThat(Objects.equals(response1, response2)).isFalse();
     }
 
+    @ParameterizedTest
+    @CsvSource(value = {
+            "null,Programming,1,Programming",
+            "5,Microservices,null,Microservices"
+    }, nullValues = "null")
+    void equalsShouldBeFalseIfOneEntityDoesNotHaveId(Long id1, String name1, Long id2, String name2) {
+        // arrange
+        CategoryResponse response1 = new CategoryResponse(id1, name1);
+        CategoryResponse response2 = new CategoryResponse(id2, name2);
+
+        // act & assert
+        assertThat(Objects.equals(response1, response2)).isFalse();
+    }
+
     @Test
-    void equalsShouldNotBreakOnIdMissing() {
+    void equalsShouldReturnTrueIfIdMissingButOtherwiseSame() {
+        // arrange
+        CategoryResponse response1 = new CategoryResponse(null, "Python");
+        CategoryResponse response2 = new CategoryResponse(null, "Python");
+
+        // act & assert
+        assertThat(Objects.equals(response1, response2)).isTrue();
     }
 
     @Test
