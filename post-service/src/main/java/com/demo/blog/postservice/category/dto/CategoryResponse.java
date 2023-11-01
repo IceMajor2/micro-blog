@@ -18,11 +18,11 @@ public record CategoryResponse(
         if (this == o) return true;
         if (!(o instanceof CategoryResponse)) return false;
         CategoryResponse that = (CategoryResponse) o;
-        return Objects.equals(name, that.name);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name, id    );
     }
 }
