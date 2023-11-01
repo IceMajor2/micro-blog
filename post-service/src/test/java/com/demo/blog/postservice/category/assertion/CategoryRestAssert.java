@@ -40,9 +40,10 @@ public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, Categ
      *     <li>{@code 201 Created} HTTP status code</li>
      * </ul>
      */
-    public void isValidPostResponse(CategoryResponse expected) {
+    public CategoryRestAssert isValidPostResponse(CategoryResponse expected) {
         HttpResponseAssert.assertThat(responseEntity).statusCodeIsCreated();
         Assertions.assertThat(actual).isEqualTo(expected);
+        return this;
     }
 
     /**
@@ -52,10 +53,16 @@ public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, Categ
      *     <li>{@code 200 OK} HTTP status code</li>
      * </ul>
      */
-    public void isValidPutResponse(CategoryResponse expected) {
+    public CategoryRestAssert isValidPutResponse(CategoryResponse expected) {
         isValidGetResponse(expected);
 //        HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
 //        Assertions.assertThat(actual).isEqualTo(expected);
+        return this;
+    }
+
+    public CategoryRestAssert isValidDeleteResponse() {
+        HttpResponseAssert.assertThat(responseEntity).statusCodeIsNoContent();
+        return this;
     }
 
 
