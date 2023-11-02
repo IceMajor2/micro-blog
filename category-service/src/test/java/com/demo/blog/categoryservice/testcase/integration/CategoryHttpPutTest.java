@@ -1,5 +1,6 @@
 package com.demo.blog.categoryservice.testcase.integration;
 
+import com.demo.blog.categoryservice.builder.CategoryBuilder;
 import com.demo.blog.categoryservice.model.Category;
 import com.demo.blog.categoryservice.repository.CategoryRepository;
 import com.demo.blog.categoryservice.dto.CategoryRequest;
@@ -14,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import static com.demo.blog.categoryservice.environment.assertion.AllAssertions.assertThat;
 import static com.demo.blog.categoryservice.environment.assertion.AllAssertions.assertThatException;
@@ -25,24 +30,38 @@ import static com.demo.blog.categoryservice.environment.util.RestRequestUtils.pu
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryHttpPutTest {
 
+    static MySQLContainer mysql = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.33"));
+
+    static {
+        mysql.start();
+    }
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        System.out.println("HGBDSFHJKSDF!");
+        dynamicPropertyRegistry.add("spring.datasource.url", mysql::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.username", mysql::getUsername);
+        dynamicPropertyRegistry.add("spring.datasource.password", mysql::getPassword);
+    }
+
     @Autowired
     private CategoryRepository categoryRepository;
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validRequests")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validCategoryRequests")
     @DirtiesContext
     void shouldReplaceEntryOnValidRequest(CategoryRequest request) {
         // arrange
         Long replaceId = 5L;
         CategoryResponse expected = new CategoryResponse(replaceId, request.name());
+        Category expectedDb = new CategoryBuilder().fromResponse(expected).build();
 
         // act
         var actual = put(API_CATEGORY_ID, request, CategoryResponse.class, replaceId);
-        CategoryResponse dbActual = new CategoryResponse(categoryRepository.findById(replaceId).get());
 
         // assert
         assertThat(actual).isValidPutResponse(expected);
-        assertThat(dbActual).isEqualTo(expected);
+        assertThat(categoryRepository).persisted(expectedDb);
     }
 
     @ParameterizedTest
@@ -96,7 +115,7 @@ public class CategoryHttpPutTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#tooLongRequestNames")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#tooLongCategoryNames")
     void shouldThrowExceptionOnCategoryNameTooLong(String tooLongCategoryName) {
         // arrange
         Long replaceId = 1L;
@@ -114,19 +133,19 @@ public class CategoryHttpPutTest {
 
     @ParameterizedTest
     @DirtiesContext
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#justRightLengthRequestName")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#justRightLengthCategoryNames")
     void shouldAcceptCorrectCategoryName(String validLongCategoryName) {
         // arrange
         Long replaceId = 1L;
         CategoryRequest request = new CategoryRequest(validLongCategoryName);
         CategoryResponse expected = new CategoryResponse(replaceId, request.name());
+        Category expectedDb = new CategoryBuilder().fromResponse(expected).build();
 
         // act
         var actual = put(API_CATEGORY_ID, request, CategoryResponse.class, replaceId);
-        CategoryResponse dbActual = new CategoryResponse(categoryRepository.findById(replaceId).get());
 
         // assert
         assertThat(actual).isValidPutResponse(expected);
-        assertThat(dbActual).isEqualTo(expected);
+        assertThat(categoryRepository).persisted(expectedDb);
     }
 }

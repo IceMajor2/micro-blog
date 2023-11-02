@@ -1,9 +1,11 @@
 package com.demo.blog.categoryservice.testcase.integration;
 
-import com.demo.blog.categoryservice.repository.CategoryRepository;
+import com.demo.blog.categoryservice.builder.CategoryBuilder;
 import com.demo.blog.categoryservice.dto.CategoryRequest;
 import com.demo.blog.categoryservice.dto.CategoryResponse;
 import com.demo.blog.categoryservice.exception.ApiExceptionDTO;
+import com.demo.blog.categoryservice.model.Category;
+import com.demo.blog.categoryservice.repository.CategoryRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -14,6 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import static com.demo.blog.categoryservice.environment.assertion.AllAssertions.*;
 import static com.demo.blog.categoryservice.environment.datasupply.category.Constants.*;
@@ -22,28 +28,43 @@ import static com.demo.blog.categoryservice.environment.util.RestRequestUtils.po
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
 @TestMethodOrder(MethodOrderer.Random.class)
+
 public class CategoryHttpPostTest {
+
+    static MySQLContainer mysql = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.33"));
+
+    static {
+        mysql.start();
+    }
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        System.out.println("HGBDSFHJKSDF!");
+        dynamicPropertyRegistry.add("spring.datasource.url", mysql::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.username", mysql::getUsername);
+        dynamicPropertyRegistry.add("spring.datasource.password", mysql::getPassword);
+    }
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validRequests")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validCategoryRequests")
     @DirtiesContext
     void shouldAddEntryOnValidRequest(CategoryRequest request) {
         // arrange
         Long expectedSize = categoryRepository.count() + 1;
         CategoryResponse expected = new CategoryResponse(expectedSize, request.name());
+        Category dbExpected = new CategoryBuilder().fromResponse(expected).build();
 
         // act
         var actual = post(API_CATEGORY, request, CategoryResponse.class);
-        Long actualSize = categoryRepository.count();
-        CategoryResponse dbActual = new CategoryResponse(categoryRepository.findById(expectedSize).get());
 
         // assert
         assertThat(actual).isValidPostResponse(expected);
-        assertThat(actualSize).isEqualTo(expectedSize);
-        assertThat(dbActual).isEqualTo(expected);
+        assertThat(categoryRepository)
+                .hasSize(expectedSize)
+                .persisted(dbExpected);
     }
 
     @Test
@@ -98,7 +119,7 @@ public class CategoryHttpPostTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#tooLongRequestNames")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#tooLongCategoryNames")
     void shouldThrowExceptionOnCategoryNameTooLong(String tooLongCategoryName) {
         // arrange
         CategoryRequest request = new CategoryRequest(tooLongCategoryName);

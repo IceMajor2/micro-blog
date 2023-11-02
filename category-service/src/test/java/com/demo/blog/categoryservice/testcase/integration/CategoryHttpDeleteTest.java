@@ -1,8 +1,8 @@
 package com.demo.blog.categoryservice.testcase.integration;
 
-import com.demo.blog.categoryservice.repository.CategoryRepository;
 import com.demo.blog.categoryservice.dto.CategoryResponse;
 import com.demo.blog.categoryservice.exception.ApiExceptionDTO;
+import com.demo.blog.categoryservice.repository.CategoryRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import static com.demo.blog.categoryservice.environment.assertion.AllAssertions.assertThat;
 import static com.demo.blog.categoryservice.environment.assertion.AllAssertions.assertThatException;
@@ -22,6 +26,20 @@ import static com.demo.blog.categoryservice.environment.util.RestRequestUtils.de
 @ActiveProfiles("integration-test")
 @TestMethodOrder(MethodOrderer.Random.class)
 public class CategoryHttpDeleteTest {
+
+    static MySQLContainer mysql = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.33"));
+
+    static {
+        mysql.start();
+    }
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        System.out.println("HGBDSFHJKSDF!");
+        dynamicPropertyRegistry.add("spring.datasource.url", mysql::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.username", mysql::getUsername);
+        dynamicPropertyRegistry.add("spring.datasource.password", mysql::getPassword);
+    }
 
     @Autowired
     private CategoryRepository categoryRepository;
