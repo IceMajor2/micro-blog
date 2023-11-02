@@ -14,7 +14,7 @@ import static com.demo.blog.categoryservice.environment.assertion.AllAssertions.
 class CategoryResponseTest {
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#categories")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validCategories")
     void constructorWithCategoryParamTest(Category category) {
         // arrange
         CategoryResponse expected = new CategoryResponse(category.getId(), category.getName());

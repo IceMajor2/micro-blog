@@ -1,39 +1,41 @@
 package com.demo.blog.categoryservice.environment.datasupply.category;
 
-import com.demo.blog.categoryservice.model.Category;
 import com.demo.blog.categoryservice.builder.CategoryBuilder;
 import com.demo.blog.categoryservice.dto.CategoryRequest;
+import com.demo.blog.categoryservice.model.Category;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-import static com.demo.blog.categoryservice.environment.datasupply.category.Constants.ANY_LONG;
-import static com.demo.blog.categoryservice.environment.datasupply.category.Constants.ANY_STRING;
-
 public class CategoryDataSupply {
 
-    public static final CategoryRequest ANY_CATEGORY_REQUEST = new CategoryRequest(ANY_STRING);
-    public static final Category ANY_CATEGORY = new CategoryBuilder()
-            .withId(ANY_LONG)
-            .withName(ANY_STRING)
+    public static final CategoryRequest THREADS_CATEGORY_REQUEST = new CategoryRequest("Threads");
+    public static final CategoryRequest CONCURRENCY_CATEGORY_REQUEST = new CategoryRequest("Concurrency");
+    public static final Category THREADS_CATEGORY = new CategoryBuilder()
+            .withId(1L)
+            .withName("Threads")
+            .build();
+    public static final Category CONCURRENCY_CATEGORY = new CategoryBuilder()
+            .withId(2L)
+            .withName("Concurrency")
             .build();
 
-    public static Stream<Category> sortedCategories() {
-        return categories()
+    public static Stream<Category> sortedValidCategories() {
+        return validCategories()
                 .sorted(Comparator.comparing(Category::getName));
     }
 
-    public static Stream<Category> categories() {
+    public static Stream<Category> validCategories() {
         return Stream.of(
-                new CategoryBuilder().withId(ANY_LONG).withName("Java").build(),
-                new CategoryBuilder().withId(ANY_LONG).withName("Threads").build(),
-                new CategoryBuilder().withId(ANY_LONG).withName("Security").build(),
-                new CategoryBuilder().withId(ANY_LONG).withName("Microservices").build(),
-                new CategoryBuilder().withId(ANY_LONG).withName("Project Management").build()
+                new CategoryBuilder().withId(1L).withName("Java").build(),
+                new CategoryBuilder().withId(1L).withName("Threads").build(),
+                new CategoryBuilder().withId(1L).withName("Security").build(),
+                new CategoryBuilder().withId(1L).withName("Microservices").build(),
+                new CategoryBuilder().withId(1L).withName("Project Management").build()
         );
     }
 
-    static Stream<CategoryRequest> validRequests() {
+    static Stream<CategoryRequest> validCategoryRequests() {
         return Stream.of(
                 CategoryRequest.builder().name("Python").build(),
                 CategoryRequest.builder().name("Backend").build(),
@@ -43,7 +45,7 @@ public class CategoryDataSupply {
         );
     }
 
-    static Stream<String> validNames() {
+    static Stream<String> validCategoryNames() {
         return Stream.of(
                 "Quality Assurance",
                 "Unit testing",
@@ -52,7 +54,7 @@ public class CategoryDataSupply {
         );
     }
 
-    static Stream<String> tooLongRequestNames() {
+    static Stream<String> tooLongCategoryNames() {
         return Stream.of(
                 "THIRTY_THREE_CHARS_STRING_REQUEST",
                 "_THIRTY_MORE_CHARS_STRING_REQUEST_",
@@ -60,7 +62,7 @@ public class CategoryDataSupply {
         );
     }
 
-    static Stream<String> justRightLengthRequestName() {
+    static Stream<String> justRightLengthCategoryNames() {
         return Stream.of(
                 "32_CHARS_STRING_REQUEST_ACCEPTED",
                 "31_CHAR_STRING_REQUEST_ACCEPTED"

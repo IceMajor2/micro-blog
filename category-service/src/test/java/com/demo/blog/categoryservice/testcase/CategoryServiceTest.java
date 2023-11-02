@@ -32,6 +32,7 @@ public class CategoryServiceTest {
 
     @InjectMocks
     private CategoryServiceImpl SUT;
+
     @Mock
     private CategoryRepository repository;
 
@@ -40,7 +41,7 @@ public class CategoryServiceTest {
     class GetRequests {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#categories")
+        @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validCategories")
         void shouldReturnCategoryOnGetWithParameter(Category category) {
             // arrange
             String expectedName = new String(category.getName());
@@ -70,16 +71,12 @@ public class CategoryServiceTest {
 
         @Test
         void shouldReturnCategoryOnGetWithPathVariable() {
-            // arange
-            String expectedName = new String(ANY_STRING);
-            Category category = new CategoryBuilder()
-                    .withId(ANY_LONG)
-                    .withName(ANY_STRING)
-                    .build();
-            when(repository.findById(ANY_LONG)).thenReturn(Optional.of(category));
+            // arrange
+            String expectedName = new String(THREADS_CATEGORY.getName());
+            when(repository.findById(THREADS_CATEGORY.getId())).thenReturn(Optional.of(THREADS_CATEGORY));
 
             // act
-            CategoryResponse actual = SUT.getById(ANY_LONG);
+            CategoryResponse actual = SUT.getById(THREADS_CATEGORY.getId());
 
             // assert
             assertThat(actual).isNamed(expectedName);
@@ -114,8 +111,8 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
-            Set<Category> stubbedCategories = sortedCategories().collect(Collectors.toCollection(LinkedHashSet::new));
-            Set<CategoryResponse> expectedCategories = categories().map(CategoryResponse::new).collect(Collectors.toSet());
+            Set<Category> stubbedCategories = sortedValidCategories().collect(Collectors.toCollection(LinkedHashSet::new));
+            Set<CategoryResponse> expectedCategories = validCategories().map(CategoryResponse::new).collect(Collectors.toSet());
             when(repository.findByOrderByNameAsc()).thenReturn(stubbedCategories);
 
             // act
@@ -133,13 +130,13 @@ public class CategoryServiceTest {
     class AddRequests {
 
         @ParameterizedTest
-        @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validRequests")
+        @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#validCategoryRequests")
         void shouldAcceptValidCategory(CategoryRequest request) {
             // arrange
             String expectedName = new String(request.name());
             Category stub = new CategoryBuilder()
                     .withId(ANY_LONG)
-                    .withName(expectedName)
+                    .withName(new String(request.name()))
                     .build();
             Category requestAsModel = new CategoryBuilder()
                     .fromRequest(request)
@@ -157,13 +154,12 @@ public class CategoryServiceTest {
         @Test
         void shouldThrowExceptionOnConflict() {
             // arrange
-            CategoryRequest request = ANY_CATEGORY_REQUEST;
-            when(repository.existsByName(request.name())).thenReturn(true);
+            when(repository.existsByName(THREADS_CATEGORY_REQUEST.name())).thenReturn(true);
 
             // act & arrange
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
-                    .isThrownBy(() -> SUT.add(request))
-                    .withMessage(EXISTS_MSG_T.formatted(request.name()));
+                    .isThrownBy(() -> SUT.add(THREADS_CATEGORY_REQUEST))
+                    .withMessage(EXISTS_MSG_T.formatted(THREADS_CATEGORY_REQUEST.name()));
         }
 
         @Test
@@ -181,61 +177,57 @@ public class CategoryServiceTest {
         @Test
         void shouldReplaceCategoryWithNewOne() {
             // arrange
-            Category categoryToReplace = new CategoryBuilder()
-                    .withId(3L)
-                    .withName("Testing")
+            Category threadsToReplace = THREADS_CATEGORY;
+            CategoryRequest concurrencyAsReplacement = CONCURRENCY_CATEGORY_REQUEST;
+            Category concurrencyReplacementModel = new CategoryBuilder()
+                    .copy(THREADS_CATEGORY)
+                    .withName(CONCURRENCY_CATEGORY_REQUEST.name())
                     .build();
-            CategoryRequest request = new CategoryRequest("IDE");
-            Category requestAsModel = new CategoryBuilder()
-                    .copy(categoryToReplace)
-                    .withName(new String(request.name()))
-                    .build();
-            long expectedId = categoryToReplace.getId().longValue();
-            String expectedName = new String(request.name());
-            when(repository.findById(categoryToReplace.getId())).thenReturn(Optional.of(categoryToReplace));
-            when(repository.save(requestAsModel)).thenReturn(requestAsModel);
+
+            long expectedId = threadsToReplace.getId().longValue();
+            String expectedName = new String(concurrencyAsReplacement.name());
+
+            when(repository.findById(threadsToReplace.getId())).thenReturn(Optional.of(threadsToReplace));
+            when(repository.save(concurrencyReplacementModel)).thenReturn(concurrencyReplacementModel);
 
             // act
-            CategoryResponse actual = SUT.replace(categoryToReplace.getId(), request);
+            CategoryResponse actual = SUT.replace(threadsToReplace.getId(), concurrencyAsReplacement);
 
             // assert
             assertThat(actual)
                     .hasId(expectedId)
                     .isNamed(expectedName);
-            verify(repository, times(1)).save(requestAsModel);
+            verify(repository, times(1)).save(concurrencyReplacementModel);
         }
 
         @Test
         void shouldThrowExceptionWhenReplacingCategoryWithSameObject() {
             // arrange
-            Category categoryToReplace = new CategoryBuilder()
-                    .withId(1L)
-                    .withName("Java")
+            Category threadsToReplace = THREADS_CATEGORY;
+            CategoryRequest threadsAsReplacement = THREADS_CATEGORY_REQUEST;
+            Category threadsReplacementModel = new CategoryBuilder()
+                    .copy(threadsToReplace)
+                    .withName(new String(threadsAsReplacement.name()))
                     .build();
-            CategoryRequest request = new CategoryRequest("Java");
-            Category requestAsModel = new CategoryBuilder()
-                    .copy(categoryToReplace)
-                    .withName("Java")
-                    .build();
-            when(repository.findById(1L)).thenReturn(Optional.of(categoryToReplace));
-            when(repository.exists(requestAsModel)).thenReturn(true);
+
+            when(repository.findById(threadsToReplace.getId())).thenReturn(Optional.of(threadsToReplace));
+            when(repository.exists(threadsReplacementModel)).thenReturn(true);
 
             // act & assert
             assertThatExceptionOfType(CategoryAlreadyExistsException.class)
-                    .isThrownBy(() -> SUT.replace(categoryToReplace.getId(), request))
-                    .withMessage(EXISTS_MSG_T.formatted(request.name()));
+                    .isThrownBy(() -> SUT.replace(threadsToReplace.getId(), threadsAsReplacement))
+                    .withMessage(EXISTS_MSG_T.formatted(threadsAsReplacement.name()));
         }
 
         @Test
         void shouldThrowExceptionWhenReplacingNonExistingCategory() {
             // arrange
             Long nonExistingId = 8532L;
-            CategoryRequest request = new CategoryRequest("Security");
             when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
 
             // act & assert
             assertThatExceptionOfType(CategoryNotFoundException.class)
-                    .isThrownBy(() -> SUT.replace(nonExistingId, request))
+                    .isThrownBy(() -> SUT.replace(nonExistingId, THREADS_CATEGORY_REQUEST))
                     .withMessage(ID_NOT_FOUND_MSG_T.formatted(nonExistingId));
         }
 

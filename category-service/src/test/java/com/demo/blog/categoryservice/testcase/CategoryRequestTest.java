@@ -24,16 +24,16 @@ public class CategoryRequestTest {
     @ParameterizedTest
     @MethodSource("com.demo.blog.categoryservice.environment.datasupply.StringDataSupply#blankStrings")
     @NullSource
-    void shouldThrowExceptionOnBlankCategory(String categoryName) {
+    void shouldThrowExceptionOnBlankCategory(String blankName) {
         // arrange
-        CategoryRequest request = new CategoryRequest(categoryName);
+        CategoryRequest request = new CategoryRequest(blankName);
 
         // act & assert
         assertThat(validate(request)).containsOnlyExceptionMessages(BLANK_MSG);
     }
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#tooLongRequestNames")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#tooLongCategoryNames")
     void shouldThrowExceptionOnCategoryNameLongerThan32Chars(String tooLongName) {
         // arrange
         CategoryRequest request = new CategoryRequest(tooLongName);
@@ -43,7 +43,7 @@ public class CategoryRequestTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#justRightLengthRequestName")
+    @MethodSource("com.demo.blog.categoryservice.environment.datasupply.category.CategoryDataSupply#justRightLengthCategoryNames")
     void shouldAcceptRequestsWithNamesEqualOrShorterThan32Chars(String rightSizeName) {
         // arrange
         CategoryRequest request = new CategoryRequest(rightSizeName);
