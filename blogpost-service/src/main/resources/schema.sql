@@ -27,12 +27,3 @@ CREATE TABLE IF NOT EXISTS post_category (
     FOREIGN KEY (post_id) REFERENCES post(id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
-
-CREATE TABLE IF NOT EXISTS comment (
-    post    BIGINT NOT NULL,
-    username    VARCHAR(32) NOT NULL,-- UNIQUE
-    body    TEXT NOT NULL,
-    published_on    TIMESTAMP NOT NULL,
-    updated_on  TIMESTAMP,
-    FOREIGN KEY (post) REFERENCES post(id)
-);
