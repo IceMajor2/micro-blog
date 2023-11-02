@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.demo.blog</groupId>
-    <artifactId>category-service</artifactId>
+    <artifactId>blogpost-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>category-service</name>
-    <description>Category service for the blog application</description>
+    <name>blogpost-service</name>
+    <description>Blog post service for the blog application</description>
     <properties>
         <java.version>21</java.version>
     </properties>
