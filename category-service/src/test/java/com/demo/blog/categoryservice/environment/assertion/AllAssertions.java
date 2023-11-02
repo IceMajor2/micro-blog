@@ -1,9 +1,11 @@
 package com.demo.blog.categoryservice.environment.assertion;
 
-import com.demo.blog.categoryservice.environment.assertion.category.CategoryAssert;
-import com.demo.blog.categoryservice.environment.assertion.category.CategoryRestAssert;
 import com.demo.blog.categoryservice.dto.CategoryResponse;
+import com.demo.blog.categoryservice.environment.assertion.category.CategoryAssert;
+import com.demo.blog.categoryservice.environment.assertion.category.CategoryRepositoryAssert;
+import com.demo.blog.categoryservice.environment.assertion.category.CategoryRestAssert;
 import com.demo.blog.categoryservice.exception.ApiExceptionDTO;
+import com.demo.blog.categoryservice.repository.CategoryRepository;
 import jakarta.validation.ConstraintViolation;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,10 @@ public class AllAssertions extends Assertions {
 
     public static CategoryRestAssert.CategoryIterableRestAssert assertThatCategories(ResponseEntity<Iterable<CategoryResponse>> actual) {
         return CategoryRestAssert.CategoryIterableRestAssert.assertThat(actual);
+    }
+
+    public static CategoryRepositoryAssert assertThat(CategoryRepository actual) {
+        return CategoryRepositoryAssert.assertThat(actual);
     }
 
     public static HttpResponseAssert assertThatResponse(ResponseEntity<?> actual) {
