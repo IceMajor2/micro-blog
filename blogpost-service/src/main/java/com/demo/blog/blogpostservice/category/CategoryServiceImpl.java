@@ -10,9 +10,8 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,11 +41,11 @@ class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Set<CategoryResponse> getAll() {
+    public List<CategoryResponse> getAllOrderedByName() {
         return Streamable.of(categoryRepository.findByOrderByNameAsc())
-                .map(CategoryResponse::new)
                 .stream()
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+                .map(CategoryResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -76,7 +75,7 @@ class CategoryServiceImpl implements CategoryService {
                 .copy(toReplace)
                 .withName(request.name())
                 .build();
-        if(categoryRepository.exists(replacement))
+        if (categoryRepository.exists(replacement))
             throw new CategoryAlreadyExistsException(replacement.getName());
         Category replacementPersisted = categoryRepository.save(replacement);
         log.info(STR. "Replaced category: '\{ toReplace }' with: '\{ replacementPersisted }'" );
@@ -87,7 +86,7 @@ class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = false)
     public void delete(Long id) {
         Objects.requireNonNull(id, NULL_ID_MSG);
-        if(!categoryRepository.existsById(id))
+        if (!categoryRepository.existsById(id))
             throw new CategoryNotFoundException(id);
         categoryRepository.deleteById(id);
     }

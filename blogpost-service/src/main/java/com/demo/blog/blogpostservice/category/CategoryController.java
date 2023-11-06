@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/category")
@@ -31,8 +31,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Set<CategoryResponse> getCategories() {
-        return categoryService.getAll();
+    public List<CategoryResponse> getCategories() {
+        return categoryService.getAllOrderedByName();
     }
 
     @PostMapping
