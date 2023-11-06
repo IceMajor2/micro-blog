@@ -1,6 +1,7 @@
 package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.command.CommandFactory;
+import com.demo.blog.blogpostservice.post.assertion.PostAssert;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import org.junit.jupiter.api.ClassOrderer;
@@ -12,11 +13,13 @@ import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.validPostsSortedByPublishedOnDesc;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -33,23 +36,38 @@ class PostServiceTest {
     class GetRequests {
 
         @Test
-        void shouldReturnCollectionOfAllPosts() {
+        void shouldReturnPost() {
             // arrange
-            List<Post> stubbedPosts = List.of(
-                    new Post("Title", "Body", AggregateReference.to(5L)),
-                    new Post("Title DOS", "Body X", AggregateReference.to(1L))
-            );
-            List<PostResponse> expectedPosts = List.of(
-                    new PostResponse(null, "Title", "Body"),
-                    new PostResponse(null, "Title DOS", "Body X")
-            );
+            long expectedId = DOCKER_POST.getId().longValue();
+            String expectedTitle = new String(DOCKER_POST.getTitle());
+            String expectedBody = new String(DOCKER_POST.getBody());
+            when(commandFactory.create(PostCommandCode.GET_POST, DOCKER_POST.getId()).execute())
+                    .thenReturn(DOCKER_POST);
+
+            // act
+            PostResponse actual = SUT.getById(DOCKER_POST.getId());
+
+            // assert
+            assertThat(actual)
+                    .hasId(expectedId)
+                    .hasTitle(expectedTitle)
+                    .hasBody(expectedBody);
+        }
+
+        @Test
+        void shouldReturnCollectionOfAllPostsSortedByPublishDateDesc() {
+            // arrange
+            List<Post> stubbedPosts = validPostsSortedByPublishedOnDesc().collect(Collectors.toList());
+            List<PostResponse> expectedPosts = validPostsSortedByPublishedOnDesc().map(PostResponse::new).toList();
             when(commandFactory.create(PostCommandCode.GET_ALL_POSTS).execute()).thenReturn(stubbedPosts);
 
             // act
-            List<PostResponse> actual = SUT.getAll();
+            List<PostResponse> actual = SUT.getAllOrderedByPublishedDateDesc();
 
             // assert
-            assertThat(actual).containsExactlyElementsOf(expectedPosts);
+            assertThat(actual)
+                    .isSortedAccordingTo(PostAssert.PUBLISHED_ON_COMPARATOR)
+                    .containsAll(expectedPosts);
         }
     }
 }
