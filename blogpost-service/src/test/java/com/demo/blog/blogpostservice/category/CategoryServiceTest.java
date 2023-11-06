@@ -98,7 +98,7 @@ public class CategoryServiceTest {
             when(repository.findByOrderByNameAsc()).thenReturn(Collections.emptySet());
 
             // act
-            Set<CategoryResponse> actual = SUT.getAll();
+            List<CategoryResponse> actual = SUT.getAllOrderedByName();
 
             // assert
             assertThat(actual).isEmpty();
@@ -107,12 +107,12 @@ public class CategoryServiceTest {
         @Test
         void shouldReturnListOfAllCategoriesSortedInAlphabeticOrder() {
             // arrange
-            Set<Category> stubbedCategories = sortedValidCategories().collect(Collectors.toCollection(LinkedHashSet::new));
-            Set<CategoryResponse> expectedCategories = validCategories().map(CategoryResponse::new).collect(Collectors.toSet());
+            List<Category> stubbedCategories = sortedValidCategories().collect(Collectors.toList());
+            List<CategoryResponse> expectedCategories = validCategories().map(CategoryResponse::new).collect(Collectors.toList());
             when(repository.findByOrderByNameAsc()).thenReturn(stubbedCategories);
 
             // act
-            Set<CategoryResponse> actual = SUT.getAll();
+            List<CategoryResponse> actual = SUT.getAllOrderedByName();
 
             // assert
             assertThat(actual.stream().toList())

@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -35,18 +35,18 @@ class PostServiceTest {
         @Test
         void shouldReturnCollectionOfAllPosts() {
             // arrange
-            Set<Post> stubbedPosts = Set.of(
+            List<Post> stubbedPosts = List.of(
                     new Post("Title", "Body", AggregateReference.to(5L)),
                     new Post("Title DOS", "Body X", AggregateReference.to(1L))
             );
-            Set<PostResponse> expectedPosts = Set.of(
+            List<PostResponse> expectedPosts = List.of(
                     new PostResponse(null, "Title", "Body"),
                     new PostResponse(null, "Title DOS", "Body X")
             );
             when(commandFactory.create(PostCommandCode.GET_ALL_POSTS).execute()).thenReturn(stubbedPosts);
 
             // act
-            Set<PostResponse> actual = SUT.getAll();
+            List<PostResponse> actual = SUT.getAll();
 
             // assert
             assertThat(actual).containsExactlyElementsOf(expectedPosts);
