@@ -20,12 +20,20 @@ public class PostServiceImpl implements PostService {
     private final CommandFactory commandFactory;
 
     @Override
-    public List<PostResponse> getAll() {
+    public PostResponse getById(Long id) {
+        Post post = (Post) commandFactory
+                .create(PostCommandCode.GET_POST, id)
+                .execute();
+        return new PostResponse(post);
+    }
+
+    @Override
+    public List<PostResponse> getAllOrderedByPublishedDateDesc() {
         List<Post> posts = (List<Post>) commandFactory
                 .create(PostCommandCode.GET_ALL_POSTS)
                 .execute();
         return posts.stream()
-                .map(post -> new PostResponse(post.getId(), post.getTitle(), post.getBody()))
+                .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
 }

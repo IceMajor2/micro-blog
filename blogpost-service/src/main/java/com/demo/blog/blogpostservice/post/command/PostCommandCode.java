@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PostCommandCode implements CommandCode {
 
-    GET_ALL_POSTS("P_1");
+    GET_ALL_POSTS("P_GET_ALL"), GET_POST("P_GET_ID");
 
     final String code;
 

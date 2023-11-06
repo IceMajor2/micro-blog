@@ -8,5 +8,7 @@ import java.util.List;
 @Validated
 public interface PostService {
 
-    List<PostResponse> getAll();
+    List<PostResponse> getAllOrderedByPublishedDateDesc();
+
+    PostResponse getById(Long id);
 }

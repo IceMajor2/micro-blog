@@ -4,20 +4,15 @@ import com.demo.blog.blogpostservice.command.Command;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Streamable;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class GetAllPostsCommand implements Command {
+public class GetPostCommand implements Command {
 
     private final PostRepository postRepository;
+    private final Long postId;
 
     @Override
-    public List<Post> execute() {
-        return Streamable.of(postRepository.findAll())
-                .stream()
-                .collect(Collectors.toList());
+    public Post execute() {
+        return null;
     }
 }
