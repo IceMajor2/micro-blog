@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.post.assertion;
+package com.demo.blog.blogpostservice.post.assertion.domain;
 
 import com.demo.blog.blogpostservice.post.Post;
 import org.assertj.core.api.AbstractListAssert;
@@ -30,12 +30,14 @@ public class PostListAssert extends AbstractListAssert<PostListAssert, List<Post
     }
 
     public PostListAssert isSortedByNewest() {
+        isNotNull();
         Assertions.assertThat(actual)
                 .isSortedAccordingTo(PostAssert.PUBLISHED_ON_COMPARATOR);
         return this;
     }
 
     public ListAssert<Post> ignoringDateFields() {
+        isNotNull();
         return Assertions.assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("publishedOn", "updatedOn");
     }

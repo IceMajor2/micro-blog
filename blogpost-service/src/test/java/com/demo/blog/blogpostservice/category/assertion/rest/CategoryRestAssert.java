@@ -1,10 +1,9 @@
-package com.demo.blog.blogpostservice.category.assertion;
+package com.demo.blog.blogpostservice.category.assertion.rest;
 
 import com.demo.blog.blogpostservice.assertion.HttpResponseAssert;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
-import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 
 public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, CategoryResponse> {
@@ -61,41 +60,11 @@ public class CategoryRestAssert extends AbstractAssert<CategoryRestAssert, Categ
      */
     public CategoryRestAssert isValidPutResponse(CategoryResponse expected) {
         isValidGetResponse(expected);
-//        HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
-//        Assertions.assertThat(actual).isEqualTo(expected);
         return this;
     }
 
     public CategoryRestAssert isValidDeleteResponse() {
         HttpResponseAssert.assertThat(responseEntity).statusCodeIsNoContent();
         return this;
-    }
-
-
-    public static class CategoryIterableRestAssert extends AbstractAssert<CategoryIterableRestAssert, Iterable<CategoryResponse>> {
-
-        private ResponseEntity<Iterable<CategoryResponse>> responseEntity;
-
-        CategoryIterableRestAssert(ResponseEntity<Iterable<CategoryResponse>> actual) {
-            super(actual.getBody(), CategoryIterableRestAssert.class);
-            this.responseEntity = actual;
-        }
-
-        public static CategoryIterableRestAssert assertThat(ResponseEntity<Iterable<CategoryResponse>> actual) {
-            return new CategoryIterableRestAssert(actual);
-        }
-
-        public CategoryIterableRestAssert containsExactlyElementsOf(Iterable<CategoryResponse> expected) {
-            Assertions.assertThat(actual)
-                    .usingElementComparator(CategoryAssert.CATEGORY_RESPONSE_COMPARATOR)
-                    .containsExactlyElementsOf(Streamable.of(expected));
-            return this;
-        }
-
-        public CategoryIterableRestAssert areValidGetAllResponse(Iterable<CategoryResponse> expected) {
-            HttpResponseAssert.assertThat(responseEntity).statusCodeIsOK();
-            containsExactlyElementsOf(expected);
-            return this;
-        }
     }
 }

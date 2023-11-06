@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.category.assertion;
+package com.demo.blog.blogpostservice.category.assertion.dto;
 
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.assertj.core.api.AbstractAssert;
@@ -6,19 +6,19 @@ import org.assertj.core.api.Assertions;
 
 import java.util.Comparator;
 
-public class CategoryAssert extends AbstractAssert<CategoryAssert, CategoryResponse> {
+public class CategoryResponseAssert extends AbstractAssert<CategoryResponseAssert, CategoryResponse> {
 
     public static final Comparator<CategoryResponse> CATEGORY_RESPONSE_COMPARATOR = Comparator.comparing(CategoryResponse::name);
 
-    public CategoryAssert(CategoryResponse actual) {
-        super(actual, CategoryAssert.class);
+    public CategoryResponseAssert(CategoryResponse actual) {
+        super(actual, CategoryResponseAssert.class);
     }
 
-    public static CategoryAssert assertThat(CategoryResponse actual) {
-        return new CategoryAssert(actual);
+    public static CategoryResponseAssert assertThat(CategoryResponse actual) {
+        return new CategoryResponseAssert(actual);
     }
 
-    public CategoryAssert isNamed(String name) {
+    public CategoryResponseAssert isNamed(String name) {
         isNotNull();
         Assertions.assertThat(actual.name())
                 .as("name")
@@ -26,7 +26,7 @@ public class CategoryAssert extends AbstractAssert<CategoryAssert, CategoryRespo
         return this;
     }
 
-    public CategoryAssert hasId(Long expected) {
+    public CategoryResponseAssert hasId(Long expected) {
         isNotNull();
         Assertions.assertThat(actual.id())
                 .as("id")

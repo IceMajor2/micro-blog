@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.post.assertion;
+package com.demo.blog.blogpostservice.post.assertion.dto;
 
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import org.assertj.core.api.AbstractAssert;
