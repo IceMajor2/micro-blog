@@ -13,6 +13,6 @@ public class GetPostCommand implements Command {
 
     @Override
     public Post execute() {
-        return null;
+        return postRepository.findById(postId).get();
     }
 }
