@@ -14,8 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatException;
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.*;
 import static com.demo.blog.blogpostservice.category.Constants.*;
 import static com.demo.blog.blogpostservice.util.RestRequestUtils.delete;
 
@@ -39,7 +38,7 @@ public class CategoryHttpDeleteTest extends BaseIntegrationTest {
         Long actualSize = categoryRepository.count();
 
         // assert
-        assertThat(actual).isValidDeleteResponse();
+        assertThatCategoryRestResponse(actual).isValidDeleteResponse();
         assertThat(actualSize)
                 .withFailMessage("Category was not deleted from the repository")
                 .isEqualTo(expectedSize);

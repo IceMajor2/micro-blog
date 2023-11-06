@@ -1,6 +1,6 @@
 package com.demo.blog.blogpostservice.category;
 
-import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
+import com.demo.blog.blogpostservice.category.assertion.dto.CategoryResponseAssert;
 import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.category.exception.CategoryAlreadyExistsException;
@@ -119,7 +119,7 @@ public class CategoryServiceTest {
 
             // assert
             assertThat(actual.stream().toList())
-                    .isSortedAccordingTo(CategoryAssert.CATEGORY_RESPONSE_COMPARATOR)
+                    .isSortedAccordingTo(CategoryResponseAssert.CATEGORY_RESPONSE_COMPARATOR)
                     .containsAll(expectedCategories);
         }
     }

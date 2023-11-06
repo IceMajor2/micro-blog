@@ -17,8 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
-import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatException;
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.*;
 import static com.demo.blog.blogpostservice.category.Constants.*;
 import static com.demo.blog.blogpostservice.util.RestRequestUtils.put;
 
@@ -43,7 +42,7 @@ public class CategoryHttpPutTest extends BaseIntegrationTest {
         var actual = put(API_CATEGORY_ID, request, CategoryResponse.class, replaceId);
 
         // assert
-        assertThat(actual).isValidPutResponse(expected);
+        assertThatCategoryRestResponse(actual).isValidPutResponse(expected);
         assertThat(categoryRepository).persisted(expectedDb);
     }
 
@@ -128,7 +127,7 @@ public class CategoryHttpPutTest extends BaseIntegrationTest {
         var actual = put(API_CATEGORY_ID, request, CategoryResponse.class, replaceId);
 
         // assert
-        assertThat(actual).isValidPutResponse(expected);
+        assertThatCategoryRestResponse(actual).isValidPutResponse(expected);
         assertThat(categoryRepository).persisted(expectedDb);
     }
 }

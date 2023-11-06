@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.*;
 import static com.demo.blog.blogpostservice.category.Constants.*;
 import static com.demo.blog.blogpostservice.util.RestRequestUtils.get;
@@ -39,7 +41,7 @@ public class CategoryHttpGetTest extends BaseIntegrationTest {
             var actual = get(API_CATEGORY_ID, CategoryResponse.class, id);
 
             // assert
-            assertThat(actual).isValidGetResponse(expected);
+            assertThatCategoryRestResponse(actual).isValidGetResponse(expected);
         }
 
         @ParameterizedTest
@@ -70,7 +72,7 @@ public class CategoryHttpGetTest extends BaseIntegrationTest {
             var actual = get(API_CATEGORY_NAME, CategoryResponse.class, categoryName);
 
             // assert
-            assertThat(actual).isValidGetResponse(expected);
+            assertThatCategoryRestResponse(actual).isValidGetResponse(expected);
         }
 
         @ParameterizedTest
@@ -107,14 +109,16 @@ public class CategoryHttpGetTest extends BaseIntegrationTest {
         @Test
         void shouldReturnAllCategoriesInAlphabeticOrder() {
             // arrange
-            Iterable<CategoryResponse> expected = Streamable.of(categoryRepository.findByOrderByNameAsc())
-                    .map(CategoryResponse::new);
+            List<CategoryResponse> expected = Streamable.of(categoryRepository.findByOrderByNameAsc())
+                    .stream()
+                    .map(CategoryResponse::new)
+                    .toList();
 
             // act
             var actual = get(API_CATEGORY, PARAMETERIZED_TYPE_REFERENCE);
 
             // assert
-            assertThatCategories(actual).areValidGetAllResponse(expected);
+            assertThatCategoriesRestResponse(actual).isValidGetAllResponse(expected);
         }
     }
 }

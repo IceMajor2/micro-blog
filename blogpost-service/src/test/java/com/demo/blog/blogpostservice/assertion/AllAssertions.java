@@ -1,16 +1,17 @@
 package com.demo.blog.blogpostservice.assertion;
 
 import com.demo.blog.blogpostservice.category.CategoryRepository;
-import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
-import com.demo.blog.blogpostservice.category.assertion.CategoryRepositoryAssert;
-import com.demo.blog.blogpostservice.category.assertion.CategoryRestAssert;
+import com.demo.blog.blogpostservice.category.assertion.dto.CategoryResponseAssert;
+import com.demo.blog.blogpostservice.category.assertion.repository.CategoryRepositoryAssert;
+import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestAssert;
+import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestListAssert;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.assertion.PostAssert;
-import com.demo.blog.blogpostservice.post.assertion.PostListAssert;
-import com.demo.blog.blogpostservice.post.assertion.PostResponseAssert;
-import com.demo.blog.blogpostservice.post.assertion.PostResponseListAssert;
+import com.demo.blog.blogpostservice.post.assertion.domain.PostAssert;
+import com.demo.blog.blogpostservice.post.assertion.domain.PostListAssert;
+import com.demo.blog.blogpostservice.post.assertion.dto.PostResponseAssert;
+import com.demo.blog.blogpostservice.post.assertion.dto.PostResponseListAssert;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import jakarta.validation.ConstraintViolation;
 import org.assertj.core.api.Assertions;
@@ -21,16 +22,9 @@ import java.util.Set;
 
 public class AllAssertions extends Assertions {
 
-    public static CategoryAssert assertThat(CategoryResponse actual) {
-        return CategoryAssert.assertThat(actual);
-    }
-
-    public static CategoryRestAssert assertThat(ResponseEntity<CategoryResponse> actual) {
-        return CategoryRestAssert.assertThat(actual);
-    }
-
-    public static CategoryRestAssert.CategoryIterableRestAssert assertThatCategories(ResponseEntity<Iterable<CategoryResponse>> actual) {
-        return CategoryRestAssert.CategoryIterableRestAssert.assertThat(actual);
+    // No generics
+    public static CategoryResponseAssert assertThat(CategoryResponse actual) {
+        return CategoryResponseAssert.assertThat(actual);
     }
 
     public static CategoryRepositoryAssert assertThat(CategoryRepository actual) {
@@ -41,16 +35,14 @@ public class AllAssertions extends Assertions {
         return PostAssert.assertThat(actual);
     }
 
-    public static PostListAssert assertThatPosts(List<Post> actual) {
-        return PostListAssert.assertThat(actual);
-    }
-
     public static PostResponseAssert assertThat(PostResponse actual) {
         return PostResponseAssert.assertThat(actual);
     }
 
-    public static PostResponseListAssert assertThatPostResponses(List<PostResponse> actual) {
-        return PostResponseListAssert.assertThat(actual);
+    // Generics + SINGULAR
+
+    public static CategoryRestAssert assertThatCategoryRestResponse(ResponseEntity<CategoryResponse> actual) {
+        return CategoryRestAssert.assertThat(actual);
     }
 
     public static HttpResponseAssert assertThatResponse(ResponseEntity<?> actual) {
@@ -59,6 +51,20 @@ public class AllAssertions extends Assertions {
 
     public static RestExceptionAssert assertThatException(ResponseEntity<ApiExceptionDTO> actual) {
         return RestExceptionAssert.assertThatException(actual);
+    }
+
+    // Generics + PLURAL
+
+    public static CategoryRestListAssert assertThatCategoriesRestResponse(ResponseEntity<List<CategoryResponse>> actual) {
+        return CategoryRestListAssert.assertThat(actual);
+    }
+
+    public static PostListAssert assertThatPosts(List<Post> actual) {
+        return PostListAssert.assertThat(actual);
+    }
+
+    public static PostResponseListAssert assertThatPostResponses(List<PostResponse> actual) {
+        return PostResponseListAssert.assertThat(actual);
     }
 
     public static JakartaValidationAssert assertThat(Set<ConstraintViolation<Object>> actual) {
