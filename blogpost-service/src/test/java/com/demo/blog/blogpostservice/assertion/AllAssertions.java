@@ -1,11 +1,13 @@
 package com.demo.blog.blogpostservice.assertion;
 
-import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
+import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
 import com.demo.blog.blogpostservice.category.assertion.CategoryRepositoryAssert;
 import com.demo.blog.blogpostservice.category.assertion.CategoryRestAssert;
+import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
-import com.demo.blog.blogpostservice.category.CategoryRepository;
+import com.demo.blog.blogpostservice.post.Post;
+import com.demo.blog.blogpostservice.post.assertion.PostAssert;
 import com.demo.blog.blogpostservice.post.assertion.PostResponseAssert;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import jakarta.validation.ConstraintViolation;
@@ -30,6 +32,10 @@ public class AllAssertions extends Assertions {
 
     public static CategoryRepositoryAssert assertThat(CategoryRepository actual) {
         return CategoryRepositoryAssert.assertThat(actual);
+    }
+
+    public static PostAssert assertThat(Post actual) {
+        return PostAssert.assertThat(actual);
     }
 
     public static PostResponseAssert assertThat(PostResponse actual) {
