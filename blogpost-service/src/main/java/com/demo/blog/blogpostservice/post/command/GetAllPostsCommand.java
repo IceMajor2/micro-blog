@@ -16,7 +16,7 @@ public class GetAllPostsCommand implements Command {
 
     @Override
     public List<Post> execute() {
-        return Streamable.of(postRepository.findAll())
+        return Streamable.of(postRepository.findByOrderByPublishedOnDesc())
                 .stream()
                 .collect(Collectors.toList());
     }
