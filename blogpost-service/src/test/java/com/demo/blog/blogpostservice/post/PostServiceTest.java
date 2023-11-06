@@ -1,7 +1,6 @@
 package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.command.CommandFactory;
-import com.demo.blog.blogpostservice.post.assertion.PostResponseAssert;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import org.junit.jupiter.api.ClassOrderer;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatPostResponses;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.validPostsSortedByPublishedOnDesc;
 import static org.mockito.Mockito.when;
@@ -65,12 +65,9 @@ class PostServiceTest {
             List<PostResponse> actual = SUT.getAllOrderedByPublishedDateDesc();
 
             // assert
-            assertThat(actual)
-                    .isSortedAccordingTo(PostResponseAssert.PUBLISHED_ON_COMPARATOR)
-                    // ignoring dates because their difference
-                    // may be very subtle comparing to stub
-                    .usingRecursiveFieldByFieldElementComparatorIgnoringFields("publishedOn")
-                    .usingRecursiveFieldByFieldElementComparatorIgnoringFields("updatedOn")
+            assertThatPostResponses(actual)
+                    .isSortedByNewest()
+                    .ignoringDateFields()
                     .containsAll(expectedPosts);
         }
     }
