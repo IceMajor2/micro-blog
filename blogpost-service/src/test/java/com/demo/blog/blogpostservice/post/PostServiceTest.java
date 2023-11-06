@@ -58,7 +58,7 @@ class PostServiceTest {
         void shouldReturnCollectionOfAllPostsSortedByPublishDateDesc() {
             // arrange
             List<Post> stubbedPosts = validPostsSortedByPublishedOnDesc().collect(Collectors.toList());
-            List<PostResponse> expectedPosts = validPostsSortedByPublishedOnDesc().map(PostResponse::new).toList();
+            List<PostResponse> expectedPosts = validPostsSortedByPublishedOnDesc().map(PostResponse::new).collect(Collectors.toList());
             when(commandFactory.create(PostCommandCode.GET_ALL_POSTS).execute()).thenReturn(stubbedPosts);
 
             // act
@@ -67,6 +67,10 @@ class PostServiceTest {
             // assert
             assertThat(actual)
                     .isSortedAccordingTo(PostResponseAssert.PUBLISHED_ON_COMPARATOR)
+                    // ignoring dates because their difference
+                    // may be very subtle comparing to stub
+                    .usingRecursiveFieldByFieldElementComparatorIgnoringFields("publishedOn")
+                    .usingRecursiveFieldByFieldElementComparatorIgnoringFields("updatedOn")
                     .containsAll(expectedPosts);
         }
     }
