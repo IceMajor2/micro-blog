@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.category;
 
+import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
 import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.category.exception.CategoryAlreadyExistsException;
@@ -13,7 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
@@ -116,7 +119,7 @@ public class CategoryServiceTest {
 
             // assert
             assertThat(actual.stream().toList())
-                    .isSortedAccordingTo(Comparator.comparing(CategoryResponse::name))
+                    .isSortedAccordingTo(CategoryAssert.CATEGORY_RESPONSE_COMPARATOR)
                     .containsAll(expectedCategories);
         }
     }
