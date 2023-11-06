@@ -6,7 +6,7 @@ import com.demo.blog.blogpostservice.category.assertion.CategoryRepositoryAssert
 import com.demo.blog.blogpostservice.category.assertion.CategoryRestAssert;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
-import com.demo.blog.blogpostservice.post.assertion.PostAssert;
+import com.demo.blog.blogpostservice.post.assertion.PostResponseAssert;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import jakarta.validation.ConstraintViolation;
 import org.assertj.core.api.Assertions;
@@ -32,8 +32,8 @@ public class AllAssertions extends Assertions {
         return CategoryRepositoryAssert.assertThat(actual);
     }
 
-    public static PostAssert assertThat(PostResponse actual) {
-        return PostAssert.assertThat(actual);
+    public static PostResponseAssert assertThat(PostResponse actual) {
+        return PostResponseAssert.assertThat(actual);
     }
 
     public static HttpResponseAssert assertThatResponse(ResponseEntity<?> actual) {

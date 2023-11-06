@@ -1,7 +1,7 @@
 package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.command.CommandFactory;
-import com.demo.blog.blogpostservice.post.assertion.PostAssert;
+import com.demo.blog.blogpostservice.post.assertion.PostResponseAssert;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import org.junit.jupiter.api.ClassOrderer;
@@ -66,7 +66,7 @@ class PostServiceTest {
 
             // assert
             assertThat(actual)
-                    .isSortedAccordingTo(PostAssert.PUBLISHED_ON_COMPARATOR)
+                    .isSortedAccordingTo(PostResponseAssert.PUBLISHED_ON_COMPARATOR)
                     .containsAll(expectedPosts);
         }
     }

@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 
-public class PostAssert extends AbstractAssert<PostAssert, PostResponse> {
+public class PostResponseAssert extends AbstractAssert<PostResponseAssert, PostResponse> {
 
     public static final Comparator<PostResponse> PUBLISHED_ON_COMPARATOR = (post1, post2) -> {
         LocalDateTime date1 = LocalDateTime.parse(post1.publishedOn());
@@ -15,15 +15,15 @@ public class PostAssert extends AbstractAssert<PostAssert, PostResponse> {
         return date2.compareTo(date1);
     };
 
-    public PostAssert(PostResponse actual) {
-        super(actual, PostAssert.class);
+    public PostResponseAssert(PostResponse actual) {
+        super(actual, PostResponseAssert.class);
     }
 
-    public static PostAssert assertThat(PostResponse actual) {
-        return new PostAssert(actual);
+    public static PostResponseAssert assertThat(PostResponse actual) {
+        return new PostResponseAssert(actual);
     }
 
-    public PostAssert hasId(long expected) {
+    public PostResponseAssert hasId(long expected) {
         isNotNull();
         Assertions.assertThat(actual.id())
                 .as("id")
@@ -31,7 +31,7 @@ public class PostAssert extends AbstractAssert<PostAssert, PostResponse> {
         return this;
     }
 
-    public PostAssert hasTitle(String expected) {
+    public PostResponseAssert hasTitle(String expected) {
         isNotNull();
         Assertions.assertThat(actual.title())
                 .as("title")
@@ -39,7 +39,7 @@ public class PostAssert extends AbstractAssert<PostAssert, PostResponse> {
         return this;
     }
 
-    public PostAssert hasBody(String expected) {
+    public PostResponseAssert hasBody(String expected) {
         isNotNull();
         Assertions.assertThat(actual.body())
                 .as("body")
