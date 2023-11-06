@@ -8,12 +8,15 @@ import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.assertion.PostAssert;
+import com.demo.blog.blogpostservice.post.assertion.PostListAssert;
 import com.demo.blog.blogpostservice.post.assertion.PostResponseAssert;
+import com.demo.blog.blogpostservice.post.assertion.PostResponseListAssert;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import jakarta.validation.ConstraintViolation;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Set;
 
 public class AllAssertions extends Assertions {
@@ -38,8 +41,16 @@ public class AllAssertions extends Assertions {
         return PostAssert.assertThat(actual);
     }
 
+    public static PostListAssert assertThatPosts(List<Post> actual) {
+        return PostListAssert.assertThat(actual);
+    }
+
     public static PostResponseAssert assertThat(PostResponse actual) {
         return PostResponseAssert.assertThat(actual);
+    }
+
+    public static PostResponseListAssert assertThatPostResponses(List<PostResponse> actual) {
+        return PostResponseListAssert.assertThat(actual);
     }
 
     public static HttpResponseAssert assertThatResponse(ResponseEntity<?> actual) {
