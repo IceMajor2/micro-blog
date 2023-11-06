@@ -3,6 +3,8 @@ package com.demo.blog.blogpostservice.category;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.springframework.core.ParameterizedTypeReference;
 
+import java.util.List;
+
 public class Constants {
 
     public static final String API_CATEGORY = "/api/category";
@@ -24,6 +26,6 @@ public class Constants {
     public static final Long NEGATIVE_LONG = -1L;
     public static final String ANY_STRING = "ANY_STRING";
 
-    public static final ParameterizedTypeReference<Iterable<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
+    public static final ParameterizedTypeReference<List<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};
 }
