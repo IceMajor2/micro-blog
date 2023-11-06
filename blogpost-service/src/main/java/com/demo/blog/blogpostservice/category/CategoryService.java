@@ -5,7 +5,7 @@ import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Set;
+import java.util.List;
 
 @Validated
 interface CategoryService {
@@ -14,7 +14,7 @@ interface CategoryService {
 
     CategoryResponse getByName(@NotBlank(message = "Category name must be specified") String name);
 
-    Set<CategoryResponse> getAll();
+    List<CategoryResponse> getAllOrderedByName();
 
     CategoryResponse add(CategoryRequest request);
 
