@@ -46,4 +46,13 @@ class GetAllPostsCommandTest {
                 .ignoringDateFields()
                 .containsAll(expectedPosts);
     }
+
+    @Test
+    void shouldReturnEmptyListOnEmptyRepository() {
+        // act
+        List<Post> actual = SUT.execute();
+
+        // assert
+        assertThatPosts(actual).isEmpty();
+    }
 }
