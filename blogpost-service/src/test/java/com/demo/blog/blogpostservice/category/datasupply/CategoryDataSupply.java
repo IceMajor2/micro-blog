@@ -19,6 +19,10 @@ public class CategoryDataSupply {
             .withId(2L)
             .withName("Concurrency")
             .build();
+    public static final Category CONTAINERS_CATEGORY = new CategoryBuilder()
+            .withId(3L)
+            .withName("Containers")
+            .build();
 
     public static Stream<Category> sortedValidCategories() {
         return validCategories()
