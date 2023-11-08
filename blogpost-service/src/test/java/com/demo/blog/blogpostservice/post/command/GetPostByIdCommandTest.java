@@ -22,16 +22,16 @@ import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
-class GetPostCommandTest {
+class GetPostByIdCommandTest {
 
-    private GetPostCommand SUT;
+    private GetPostByIdCommand SUT;
 
     private PostRepository postRepository = mock(PostRepository.class);
 
     @Test
     void shouldReturnPost() {
         // arrange
-        SUT = new GetPostCommand(postRepository, DOCKER_POST.getId());
+        SUT = new GetPostByIdCommand(postRepository, DOCKER_POST.getId());
         long expectedId = DOCKER_POST.getId().longValue();
         String expectedTitle = new String(DOCKER_POST.getTitle());
         String expectedBody = new String(DOCKER_POST.getBody());
@@ -51,7 +51,7 @@ class GetPostCommandTest {
     @ValueSource(longs = {-562349, 0, 1245643})
     void shouldThrowExceptionOnNotFoundId(long id) {
         // arrange
-        SUT = new GetPostCommand(postRepository, id);
+        SUT = new GetPostByIdCommand(postRepository, id);
         when(postRepository.findById(id)).thenReturn(Optional.empty());
 
         // act && assert
