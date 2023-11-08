@@ -2,7 +2,6 @@ package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.category.Category;
-import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ public class PostBuilder {
     private String body;
     private LocalDateTime publishedOn;
     private LocalDateTime updatedOn;
-    private Set<PostCategory> categories = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
     private AggregateReference<Author, Long> author;
 
     public PostBuilder withId(long id) {
@@ -72,7 +71,7 @@ public class PostBuilder {
     }
 
     public PostBuilder withCategory(Category category) {
-        // TODO
+        this.categories.add(category);
         return this;
     }
 
@@ -94,9 +93,11 @@ public class PostBuilder {
         post.setTitle(title);
         post.setAuthor(author);
         post.setBody(body);
-        post.setCategories(categories);
         post.setPublishedOn(publishedOn);
         post.setUpdatedOn(updatedOn);
+        for(Category category : categories) {
+            post.addCategory(category);
+        }
         return post;
     }
 }
