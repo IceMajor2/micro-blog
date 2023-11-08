@@ -5,14 +5,13 @@ import com.demo.blog.blogpostservice.post.PostBuilder;
 
 import java.util.stream.Stream;
 
-import static com.demo.blog.blogpostservice.category.Constants.ANY_LONG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
 
 public class PostDataSupply {
 
     public static final Post DOCKER_POST = new PostBuilder()
             .withId(1L)
-            .withAuthor(ANY_LONG)
+            .withAuthor(10L)
             .withTitle("Dockerizing a Spring Boot application")
             .withBody("Step 1. Install Docker")
             .withCategories(CONTAINERS_CATEGORY)
