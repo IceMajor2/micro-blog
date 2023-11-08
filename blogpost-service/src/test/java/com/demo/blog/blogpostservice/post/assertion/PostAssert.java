@@ -1,6 +1,7 @@
 package com.demo.blog.blogpostservice.post.assertion.domain;
 
 import com.demo.blog.blogpostservice.post.Post;
+import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
@@ -26,7 +27,7 @@ public class PostAssert extends AbstractAssert<PostAssert, Post> {
         return this;
     }
 
-    public PostAssert hasTitle(String expected) {
+    public PostAssert isTitled(String expected) {
         isNotNull();
         Assertions.assertThat(actual.getTitle())
                 .as("title")
@@ -39,6 +40,31 @@ public class PostAssert extends AbstractAssert<PostAssert, Post> {
         Assertions.assertThat(actual.getBody())
                 .as("body")
                 .isEqualTo(expected);
+        return this;
+    }
+
+    public PostAssert categorizedAs(Iterable<PostCategory> expected) {
+        isNotNull();
+        Assertions.assertThat(actual.getCategories())
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyElementsOf(expected);
+        return this;
+    }
+
+    public PostAssert writtenBy(Long expectedAuthorId) {
+        isNotNull();
+        Assertions.assertThat(actual.getAuthor().getId())
+                .isEqualTo(expectedAuthorId);
+        return this;
+    }
+
+    public PostAssert isFieldByFieldEqualTo(Post expected) {
+        isNotNull();
+        hasId(expected.getId());
+        isTitled(expected.getTitle());
+        hasBody(expected.getTitle());
+        categorizedAs(expected.getCategories());
+        writtenBy(expected.getAuthor().getId());
         return this;
     }
 }

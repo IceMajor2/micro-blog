@@ -8,11 +8,8 @@ import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestListAss
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.assertion.domain.PostAssert;
-import com.demo.blog.blogpostservice.post.assertion.domain.PostListAssert;
-import com.demo.blog.blogpostservice.post.assertion.dto.PostResponseAssert;
-import com.demo.blog.blogpostservice.post.assertion.dto.PostResponseListAssert;
-import com.demo.blog.blogpostservice.post.dto.PostResponse;
+import com.demo.blog.blogpostservice.post.assertion.PostAssert;
+import com.demo.blog.blogpostservice.post.assertion.PostListAssert;
 import jakarta.validation.ConstraintViolation;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +30,6 @@ public class AllAssertions extends Assertions {
 
     public static PostAssert assertThat(Post actual) {
         return PostAssert.assertThat(actual);
-    }
-
-    public static PostResponseAssert assertThat(PostResponse actual) {
-        return PostResponseAssert.assertThat(actual);
     }
 
     // Generics + SINGULAR
@@ -61,10 +54,6 @@ public class AllAssertions extends Assertions {
 
     public static PostListAssert assertThatPosts(List<Post> actual) {
         return PostListAssert.assertThat(actual);
-    }
-
-    public static PostResponseListAssert assertThatPostResponses(List<PostResponse> actual) {
-        return PostResponseListAssert.assertThat(actual);
     }
 
     public static JakartaValidationAssert assertThat(Set<ConstraintViolation<Object>> actual) {
