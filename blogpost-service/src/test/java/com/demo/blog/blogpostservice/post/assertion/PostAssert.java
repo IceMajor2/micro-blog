@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.post.assertion.domain;
+package com.demo.blog.blogpostservice.post.assertion;
 
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.postcategory.PostCategory;
@@ -55,16 +55,6 @@ public class PostAssert extends AbstractAssert<PostAssert, Post> {
         isNotNull();
         Assertions.assertThat(actual.getAuthor().getId())
                 .isEqualTo(expectedAuthorId);
-        return this;
-    }
-
-    public PostAssert isFieldByFieldEqualTo(Post expected) {
-        isNotNull();
-        hasId(expected.getId());
-        isTitled(expected.getTitle());
-        hasBody(expected.getTitle());
-        categorizedAs(expected.getCategories());
-        writtenBy(expected.getAuthor().getId());
         return this;
     }
 }

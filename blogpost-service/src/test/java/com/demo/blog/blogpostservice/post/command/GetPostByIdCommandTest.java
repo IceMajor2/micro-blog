@@ -14,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.blogpostservice.category.Constants.ANY_LONG;
-import static com.demo.blog.blogpostservice.post.Constants.ID_NOT_FOUND_MSG_T;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.ID_NOT_FOUND_MSG_T;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.mock;
@@ -32,7 +31,7 @@ class GetPostCommandTest {
     @Test
     void shouldReturnPost() {
         // arrange
-        SUT = new GetPostCommand(postRepository, ANY_LONG);
+        SUT = new GetPostCommand(postRepository, DOCKER_POST.getId());
         long expectedId = DOCKER_POST.getId().longValue();
         String expectedTitle = new String(DOCKER_POST.getTitle());
         String expectedBody = new String(DOCKER_POST.getBody());
@@ -44,7 +43,7 @@ class GetPostCommandTest {
         // assert
         assertThat(actual)
                 .hasId(expectedId)
-                .hasTitle(expectedTitle)
+                .isTitled(expectedTitle)
                 .hasBody(expectedBody);
     }
 
