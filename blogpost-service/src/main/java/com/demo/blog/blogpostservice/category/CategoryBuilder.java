@@ -35,10 +35,4 @@ public class CategoryBuilder {
         category.setName(name);
         return category;
     }
-
-    public CategoryBuilder copy(Category category) {
-        this.id = category.getId();
-        this.name = category.getName();
-        return this;
-    }
 }

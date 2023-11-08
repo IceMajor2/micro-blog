@@ -72,7 +72,7 @@ class CategoryServiceImpl implements CategoryService {
         Category toReplace = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
         Category replacement = new CategoryBuilder()
-                .copy(toReplace)
+                .withId(toReplace.getId().longValue())
                 .withName(request.name())
                 .build();
         if (categoryRepository.exists(replacement))

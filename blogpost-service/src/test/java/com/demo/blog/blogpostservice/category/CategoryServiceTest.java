@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatExceptionOfType;
-import static com.demo.blog.blogpostservice.category.Constants.*;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.*;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
+import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
+import static com.demo.blog.blogpostservice.datasupply.Constants.NEGATIVE_LONG;
 import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -179,7 +181,7 @@ public class CategoryServiceTest {
             Category threadsToReplace = THREADS_CATEGORY;
             CategoryRequest concurrencyAsReplacement = CONCURRENCY_CATEGORY_REQUEST;
             Category concurrencyReplacementModel = new CategoryBuilder()
-                    .copy(THREADS_CATEGORY)
+                    .withId(THREADS_CATEGORY.getId().longValue())
                     .withName(CONCURRENCY_CATEGORY_REQUEST.name())
                     .build();
 
@@ -205,7 +207,7 @@ public class CategoryServiceTest {
             Category threadsToReplace = THREADS_CATEGORY;
             CategoryRequest threadsAsReplacement = THREADS_CATEGORY_REQUEST;
             Category threadsReplacementModel = new CategoryBuilder()
-                    .copy(threadsToReplace)
+                    .withId(threadsToReplace.getId().longValue())
                     .withName(new String(threadsAsReplacement.name()))
                     .build();
 
