@@ -1,11 +1,11 @@
-package com.demo.blog.blogpostservice.category;
+package com.demo.blog.blogpostservice.category.datasupply;
 
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.List;
 
-public class Constants {
+public class CategoryConstants {
 
     public static final String API_CATEGORY = "/api/category";
     public static final String API_CATEGORY_ID = "/api/category/{id}";
@@ -21,10 +21,6 @@ public class Constants {
     public static final String NULL_NAME_MSG = "Category name was null";
     public static final String NULL_ID_MSG = "Category ID was null";
     public static final String NULL_REQUEST_MSG = "Request was null";
-
-    public static final Long ANY_LONG = 1L;
-    public static final Long NEGATIVE_LONG = -1L;
-    public static final String ANY_STRING = "ANY_STRING";
 
     public static final ParameterizedTypeReference<List<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};

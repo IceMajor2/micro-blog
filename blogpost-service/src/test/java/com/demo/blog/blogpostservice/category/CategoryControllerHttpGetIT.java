@@ -1,6 +1,5 @@
-package com.demo.blog.blogpostservice.category.integration;
+package com.demo.blog.blogpostservice.category;
 
-import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.config.BaseIntegrationTest;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
@@ -16,13 +15,13 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.*;
-import static com.demo.blog.blogpostservice.category.Constants.*;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.*;
 import static com.demo.blog.blogpostservice.util.RestRequestUtils.get;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
 @TestClassOrder(ClassOrderer.Random.class)
-public class CategoryHttpGetTest extends BaseIntegrationTest {
+public class CategoryControllerHttpGetIT extends BaseIntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;

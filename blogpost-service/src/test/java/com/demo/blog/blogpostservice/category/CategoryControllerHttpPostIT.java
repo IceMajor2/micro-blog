@@ -1,8 +1,5 @@
-package com.demo.blog.blogpostservice.category.integration;
+package com.demo.blog.blogpostservice.category;
 
-import com.demo.blog.blogpostservice.category.Category;
-import com.demo.blog.blogpostservice.category.CategoryBuilder;
-import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.config.BaseIntegrationTest;
@@ -19,13 +16,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.*;
-import static com.demo.blog.blogpostservice.category.Constants.*;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.*;
 import static com.demo.blog.blogpostservice.util.RestRequestUtils.post;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
 @TestMethodOrder(MethodOrderer.Random.class)
-public class CategoryHttpPostTest extends BaseIntegrationTest {
+public class CategoryControllerHttpPostIT extends BaseIntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
