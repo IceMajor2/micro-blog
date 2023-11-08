@@ -21,7 +21,7 @@ public class ReplaceCategoryCommand implements Command {
     @Override
     public Category execute() {
         // null check
-        Objects.requireNonNull(oldCategory, CategoryExceptionMessage.NULL_ID_MSG.getMessage());
+        Objects.requireNonNull(oldCategory, CategoryExceptionMessage.NULL_OLD_CATEGORY_MSG.getMessage());
         Objects.requireNonNull(newCategory, CategoryExceptionMessage.NULL_REQUEST_MSG.getMessage());
 
         Category replacement = new CategoryBuilder()
