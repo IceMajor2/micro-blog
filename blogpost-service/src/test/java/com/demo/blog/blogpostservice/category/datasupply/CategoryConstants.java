@@ -21,6 +21,7 @@ public class CategoryConstants {
     public static final String NULL_NAME_MSG = "Category name was null";
     public static final String NULL_ID_MSG = "Category ID was null";
     public static final String NULL_REQUEST_MSG = "Request was null";
+    public static final String NULL_OLD_CATEGORY_MSG = "Category specified to be replaced was null";
 
     public static final ParameterizedTypeReference<List<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};
