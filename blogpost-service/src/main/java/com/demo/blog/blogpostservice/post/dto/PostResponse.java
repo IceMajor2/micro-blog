@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.post.dto;
 
+import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.author.dto.AuthorResponse;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.post.Post;
@@ -19,6 +20,11 @@ public record PostResponse(
 ) {
     public PostResponse(Post post) {
         this(post.getId(), post.getTitle(), null, null,
+                post.getPublishedOn().toString(), null, post.getBody());
+    }
+
+    public PostResponse(Post post, Author author) {
+        this(post.getId(), post.getTitle(), new AuthorResponse(author), null,
                 post.getPublishedOn().toString(), null, post.getBody());
     }
 }
