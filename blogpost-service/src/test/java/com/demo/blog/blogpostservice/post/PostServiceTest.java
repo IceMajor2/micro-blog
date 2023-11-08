@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.post;
 
+import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
@@ -13,13 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatPostResponses;
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
-import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.validPostsSortedByPublishedOnDesc;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -41,34 +38,41 @@ class PostServiceTest {
             long expectedId = DOCKER_POST.getId().longValue();
             String expectedTitle = new String(DOCKER_POST.getTitle());
             String expectedBody = new String(DOCKER_POST.getBody());
+
             when(commandFactory.create(PostCommandCode.GET_POST, DOCKER_POST.getId()).execute())
                     .thenReturn(DOCKER_POST);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getAuthor().getId()).execute())
+                    .thenReturn(ANY_AUTHOR);
 
             // act
             PostResponse actual = SUT.getById(DOCKER_POST.getId());
 
             // assert
-            assertThat(actual)
-                    .hasId(expectedId)
-                    .hasTitle(expectedTitle)
-                    .hasBody(expectedBody);
+            assertThat(actual.id()).isEqualTo(expectedId);
+            assertThat(actual.title()).isEqualTo(expectedTitle);
+            assertThat(actual.body()).isEqualTo(expectedBody);
         }
 
         @Test
-        void shouldReturnCollectionOfAllPostsSortedByPublishDateDesc() {
+        void shouldMapAuthor() {
             // arrange
-            List<Post> stubbedPosts = validPostsSortedByPublishedOnDesc().collect(Collectors.toList());
-            List<PostResponse> expectedPosts = validPostsSortedByPublishedOnDesc().map(PostResponse::new).collect(Collectors.toList());
-            when(commandFactory.create(PostCommandCode.GET_ALL_POSTS).execute()).thenReturn(stubbedPosts);
+            String expectedAuthorName = new String(ANY_AUTHOR.getUsername());
+
+            when(commandFactory.create(PostCommandCode.GET_POST, DOCKER_POST.getId()).execute())
+                    .thenReturn(DOCKER_POST);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getAuthor().getId()).execute())
+                    .thenReturn(ANY_AUTHOR);
 
             // act
-            List<PostResponse> actual = SUT.getAllOrderedByPublishedDateDesc();
+            PostResponse actual = SUT.getById(DOCKER_POST.getId());
 
             // assert
-            assertThatPostResponses(actual)
-                    .isSortedByNewest()
-                    .ignoringDateFields()
-                    .containsAll(expectedPosts);
+            assertThat(actual.author().name()).isEqualTo(expectedAuthorName);
+        }
+
+        @Test
+        void shouldMapCategories() {
+            // arrange
         }
     }
 }
