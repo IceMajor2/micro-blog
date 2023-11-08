@@ -1,6 +1,8 @@
 package com.demo.blog.blogpostservice.assertion;
 
+import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
+import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
 import com.demo.blog.blogpostservice.category.assertion.dto.CategoryResponseAssert;
 import com.demo.blog.blogpostservice.category.assertion.repository.CategoryRepositoryAssert;
 import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestAssert;
@@ -20,6 +22,10 @@ import java.util.Set;
 public class AllAssertions extends Assertions {
 
     // No generics
+    public static CategoryAssert assertThat(Category actual) {
+        return CategoryAssert.assertThat(actual);
+    }
+
     public static CategoryResponseAssert assertThat(CategoryResponse actual) {
         return CategoryResponseAssert.assertThat(actual);
     }
