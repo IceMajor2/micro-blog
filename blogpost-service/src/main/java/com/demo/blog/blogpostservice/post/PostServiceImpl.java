@@ -1,5 +1,7 @@
 package com.demo.blog.blogpostservice.post;
 
+import com.demo.blog.blogpostservice.author.Author;
+import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
@@ -24,7 +26,10 @@ public class PostServiceImpl implements PostService {
         Post post = (Post) commandFactory
                 .create(PostCommandCode.GET_POST, id)
                 .execute();
-        return new PostResponse(post);
+        Author author = (Author) commandFactory
+                .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
+                .execute();
+        return new PostResponse(post, author);
     }
 
     @Override

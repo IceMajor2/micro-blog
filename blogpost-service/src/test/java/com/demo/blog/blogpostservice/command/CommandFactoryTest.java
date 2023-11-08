@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.command;
 
+import com.demo.blog.blogpostservice.author.AuthorRepository;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.command.GetAllPostsCommand;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
@@ -20,11 +21,13 @@ class CommandFactoryTest {
     private CommandFactory SUT;
 
     private PostRepository postRepository;
+    private AuthorRepository authorRepository;
 
     @BeforeEach
     void setUp() {
         postRepository = mock(PostRepository.class);
-        SUT = new CommandFactory(postRepository);
+        authorRepository = mock(AuthorRepository.class);
+        SUT = new CommandFactory(postRepository, authorRepository);
     }
 
     @Test
