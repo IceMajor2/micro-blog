@@ -14,15 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.THREADS_CATEGORY;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
 import static org.mockito.Mockito.when;
@@ -122,17 +121,9 @@ class PostServiceTest {
 
             // assert
             assertThat(actual)
-                    .isSortedAccordingTo(publishedDateDesc())
+                    .isSortedAccordingTo(PUBLISHED_DESC_COMPARATOR)
                     .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
                     .containsExactlyInAnyOrderElementsOf(expected);
         }
-    }
-
-    private static Comparator<PostResponse> publishedDateDesc() {
-        return (p1, p2) -> {
-            LocalDateTime d1 = LocalDateTime.parse(p1.publishedOn());
-            LocalDateTime d2 = LocalDateTime.parse(p2.publishedOn());
-            return d2.compareTo(d1);
-        };
     }
 }
