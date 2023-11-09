@@ -38,7 +38,7 @@ public class CommandFactory {
                 return new DeleteCategoryCommand(categoryRepository, (Long) params[0]);
             case PostCommandCode.GET_ALL_POSTS:
                 return new GetAllPostsCommand(postRepository);
-            case PostCommandCode.GET_POST:
+            case PostCommandCode.GET_POST_BY_ID:
                 return new GetPostByIdCommand(postRepository, (Long) params[0]);
             case AuthorCommandCode.GET_AUTHOR:
                 return new GetAuthorByIdCommand(authorRepository, (Long) params[0]);

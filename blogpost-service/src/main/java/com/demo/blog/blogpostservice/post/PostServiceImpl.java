@@ -24,7 +24,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getById(Long id) {
         Post post = (Post) commandFactory
-                .create(PostCommandCode.GET_POST, id)
+                .create(PostCommandCode.GET_POST_BY_ID, id)
                 .execute();
         Author author = (Author) commandFactory
                 .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())

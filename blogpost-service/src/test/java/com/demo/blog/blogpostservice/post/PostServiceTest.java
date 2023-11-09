@@ -39,7 +39,7 @@ class PostServiceTest {
             String expectedTitle = new String(DOCKER_POST.getTitle());
             String expectedBody = new String(DOCKER_POST.getBody());
 
-            when(commandFactory.create(PostCommandCode.GET_POST, DOCKER_POST.getId()).execute())
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, DOCKER_POST.getId()).execute())
                     .thenReturn(DOCKER_POST);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getAuthor().getId()).execute())
                     .thenReturn(ANY_AUTHOR);
@@ -58,7 +58,7 @@ class PostServiceTest {
             // arrange
             String expectedAuthorName = new String(ANY_AUTHOR.getUsername());
 
-            when(commandFactory.create(PostCommandCode.GET_POST, DOCKER_POST.getId()).execute())
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, DOCKER_POST.getId()).execute())
                     .thenReturn(DOCKER_POST);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getAuthor().getId()).execute())
                     .thenReturn(ANY_AUTHOR);
