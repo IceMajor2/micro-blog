@@ -1,18 +1,19 @@
 package com.demo.blog.blogpostservice.post.exception;
 
-public enum PostExceptionMessage {
+import com.demo.blog.blogpostservice.exception.ExceptionMessage;
 
-    // TODO: use enumerated in custom exceptions
-    // TODO: create an interface for this enum
+public enum PostExceptionMessage implements ExceptionMessage {
 
+    ID_NOT_FOUND_T("Post of '%d' ID was not found"),
     NULL_ID_MSG("Post ID was null");
 
-    final String message;
+    private final String message;
 
     PostExceptionMessage(String message) {
         this.message = message;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

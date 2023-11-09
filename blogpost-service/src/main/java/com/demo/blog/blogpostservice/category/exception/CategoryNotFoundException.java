@@ -3,16 +3,17 @@ package com.demo.blog.blogpostservice.category.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static java.lang.StringTemplate.STR;
+import static com.demo.blog.blogpostservice.category.exception.CategoryExceptionMessage.NOT_FOUND_ID_MSG_T;
+import static com.demo.blog.blogpostservice.category.exception.CategoryExceptionMessage.NOT_FOUND_NAME_MSG_T;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class CategoryNotFoundException extends RuntimeException {
 
     public CategoryNotFoundException(String categoryName) {
-        super(STR."Category '\{ categoryName }' was not found");
+        super(NOT_FOUND_NAME_MSG_T.getMessage().formatted(categoryName));
     }
 
     public CategoryNotFoundException(Long categoryId) {
-        super(STR."Category of '\{ categoryId }' ID was not found");
+        super(NOT_FOUND_ID_MSG_T.getMessage().formatted(categoryId));
     }
 }
