@@ -2,6 +2,7 @@ package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
+import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +30,10 @@ public class PostServiceImpl implements PostService {
         Author author = (Author) commandFactory
                 .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
                 .execute();
-        return new PostResponse(post, author, Collections.emptyList());
+        List<Category> categories = (List<Category>) commandFactory
+                .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                .execute();
+        return new PostResponse(post, author, categories);
     }
 
     @Override

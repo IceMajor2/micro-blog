@@ -10,6 +10,7 @@ import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.command.GetAllPostsCommand;
 import com.demo.blog.blogpostservice.post.command.GetPostByIdCommand;
+import com.demo.blog.blogpostservice.post.command.GetPostCategoriesCommand;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,8 @@ public class CommandFactory {
                 return new GetAllPostsCommand(postRepository);
             case PostCommandCode.GET_POST_BY_ID:
                 return new GetPostByIdCommand(postRepository, (Long) params[0]);
+            case PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME:
+                return new GetPostCategoriesCommand(categoryRepository, postRepository, (Long) params[0]);
             case AuthorCommandCode.GET_AUTHOR:
                 return new GetAuthorByIdCommand(authorRepository, (Long) params[0]);
             default:
