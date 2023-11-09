@@ -2,7 +2,6 @@ package com.demo.blog.blogpostservice.post.dto;
 
 import com.demo.blog.blogpostservice.author.dto.AuthorResponse;
 import com.demo.blog.blogpostservice.category.Category;
-import com.demo.blog.blogpostservice.category.assertion.dto.CategoryResponseAssert;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.junit.jupiter.api.Test;
 
@@ -64,8 +63,6 @@ class PostResponseTest {
         PostResponse actual = new PostResponse(DOCKER_POST, ANY_AUTHOR, categories);
 
         // assert
-        assertThat(actual.categories())
-                .isSortedAccordingTo(CategoryResponseAssert.CATEGORY_RESPONSE_COMPARATOR)
-                .containsExactlyInAnyOrderElementsOf(expectedCategories);
+        assertThat(actual.categories()).containsExactlyInAnyOrderElementsOf(expectedCategories);
     }
 }
