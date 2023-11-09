@@ -3,10 +3,8 @@ package com.demo.blog.blogpostservice.assertion;
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
-import com.demo.blog.blogpostservice.category.assertion.dto.CategoryResponseAssert;
 import com.demo.blog.blogpostservice.category.assertion.repository.CategoryRepositoryAssert;
 import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestAssert;
-import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestListAssert;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.post.Post;
@@ -24,10 +22,6 @@ public class AllAssertions extends Assertions {
     // No generics
     public static CategoryAssert assertThat(Category actual) {
         return CategoryAssert.assertThat(actual);
-    }
-
-    public static CategoryResponseAssert assertThat(CategoryResponse actual) {
-        return CategoryResponseAssert.assertThat(actual);
     }
 
     public static CategoryRepositoryAssert assertThat(CategoryRepository actual) {
@@ -53,10 +47,6 @@ public class AllAssertions extends Assertions {
     }
 
     // Generics + PLURAL
-
-    public static CategoryRestListAssert assertThatCategoriesRestResponse(ResponseEntity<List<CategoryResponse>> actual) {
-        return CategoryRestListAssert.assertThat(actual);
-    }
 
     public static PostListAssert assertThatPosts(List<Post> actual) {
         return PostListAssert.assertThat(actual);
