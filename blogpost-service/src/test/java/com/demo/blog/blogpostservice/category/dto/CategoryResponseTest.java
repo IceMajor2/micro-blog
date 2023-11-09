@@ -6,8 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Objects;
-
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 
 class CategoryResponseTest {
@@ -22,9 +20,8 @@ class CategoryResponseTest {
         CategoryResponse actual = new CategoryResponse(category);
 
         // assert
-        assertThat(actual)
-                .hasId(expected.id())
-                .isNamed(expected.name());
+        assertThat(actual.id()).isEqualTo(expected.id());
+        assertThat(actual.name()).isEqualTo(expected.name());
     }
 
     @Test
@@ -34,7 +31,7 @@ class CategoryResponseTest {
         CategoryResponse response2 = new CategoryResponse(1L, "Java");
 
         // act & assert
-        assertThat(Objects.equals(response1, response2)).isTrue();
+        assertThat(response1).isEqualTo(response2);
     }
 
     @ParameterizedTest
@@ -49,7 +46,7 @@ class CategoryResponseTest {
         CategoryResponse response2 = new CategoryResponse(id2, name2);
 
         // act & assert
-        assertThat(Objects.equals(response1, response2)).isFalse();
+        assertThat(response1).isNotEqualTo(response2);
     }
 
     @ParameterizedTest
@@ -63,7 +60,7 @@ class CategoryResponseTest {
         CategoryResponse response2 = new CategoryResponse(id2, name2);
 
         // act & assert
-        assertThat(Objects.equals(response1, response2)).isFalse();
+        assertThat(response1).isNotEqualTo(response2);
     }
 
     @Test
@@ -73,7 +70,7 @@ class CategoryResponseTest {
         CategoryResponse response2 = new CategoryResponse(null, "Python");
 
         // act & assert
-        assertThat(Objects.equals(response1, response2)).isTrue();
+        assertThat(response1).isEqualTo(response2);
     }
 
     @Test
