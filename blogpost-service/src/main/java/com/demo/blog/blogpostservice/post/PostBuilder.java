@@ -70,6 +70,11 @@ public class PostBuilder {
         return this;
     }
 
+    public PostBuilder updatedNow() {
+        this.updatedOn = LocalDateTime.now();
+        return this;
+    }
+
     public PostBuilder withCategory(Category category) {
         this.categories.add(category);
         return this;
