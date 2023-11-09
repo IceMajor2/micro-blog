@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
 @TestClassOrder(ClassOrderer.Random.class)
-public class DataSourceInitializerTest extends BaseIntegrationTest {
+public class DataSourceInitializerIT extends BaseIntegrationTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
