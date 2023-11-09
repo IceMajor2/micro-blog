@@ -18,6 +18,13 @@ public class PostDataSupply {
             .publishedThirtyMinsAgo()
             .updatedNow()
             .build();
+    public static final Post SPRING_POST = new PostBuilder()
+            .withId(2L)
+            .withAuthor(3L)
+            .withTitle("Spring & Spring Boot: what's the difference?")
+            .withBody("Oftentimes, both of the terms are used interchangeably. However, ...")
+            .publishedHourAgo()
+            .build();
 
     public static Stream<Post> validPostsSortedByPublishedOnDesc() {
         return Stream.of(

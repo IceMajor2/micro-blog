@@ -28,7 +28,7 @@ class PostResponseTest {
                 null, expectedPublishedDate, expectedUpdatedDate, expectedBody);
 
         // act
-        PostResponse actual = new PostResponse(DOCKER_POST);
+        PostResponse actual = new PostResponse(DOCKER_POST, ANY_AUTHOR, Collections.emptyList());
 
         // assert
         assertThat(actual)

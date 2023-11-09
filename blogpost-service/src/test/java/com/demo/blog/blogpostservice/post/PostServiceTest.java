@@ -14,7 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
@@ -22,6 +24,7 @@ import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.A
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.THREADS_CATEGORY;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -96,5 +99,40 @@ class PostServiceTest {
                     .isSortedAccordingTo(CategoryResponseAssert.CATEGORY_RESPONSE_COMPARATOR)
                     .containsExactlyInAnyOrderElementsOf(expected);
         }
+    }
+
+    @Nested
+    class GetByName {
+
+        @Test
+        void shouldMapPostInList() {
+            // arrange
+            Post newer = new PostBuilder().from(DOCKER_POST).publishedFifteenMinsAgo().build();
+            Post older = new PostBuilder().from(SPRING_POST).publishedThirtyMinsAgo().build();
+            List<PostResponse> expected = List.of(
+                    new PostResponse(older.getId().longValue(), new String(older.getTitle()), null, null, null, null, new String(older.getBody())),
+                    new PostResponse(newer.getId().longValue(), new String(newer.getTitle()), null, null, null, null, new String(newer.getBody()))
+            );
+            List<Post> stub = List.of(newer, older);
+
+            when(commandFactory.create(PostCommandCode.GET_ALL_POSTS).execute()).thenReturn(stub);
+
+            // act
+            List<PostResponse> actual = SUT.getAllOrderedByPublishedDateDesc();
+
+            // assert
+            assertThat(actual)
+                    .isSortedAccordingTo(publishedDateDesc())
+                    .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
+                    .containsExactlyInAnyOrderElementsOf(expected);
+        }
+    }
+
+    private static Comparator<PostResponse> publishedDateDesc() {
+        return (p1, p2) -> {
+            LocalDateTime d1 = LocalDateTime.parse(p1.publishedOn());
+            LocalDateTime d2 = LocalDateTime.parse(p2.publishedOn());
+            return d2.compareTo(d1);
+        };
     }
 }
