@@ -20,18 +20,6 @@ public record PostResponse(
         @JsonInclude(JsonInclude.Include.NON_NULL) String updatedOn,
         String body
 ) {
-    public PostResponse(Post post) {
-        this(
-                post.getId(),
-                post.getTitle(),
-                null,
-                null,
-                post.getPublishedOn().toString(),
-                post.getUpdatedOn() == null ? null : post.getUpdatedOn().toString(),
-                post.getBody()
-        );
-    }
-
     public PostResponse(Post post, Author author, Iterable<Category> categories) {
         this(
                 post.getId(),
