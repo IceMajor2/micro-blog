@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
@@ -43,6 +45,8 @@ class PostServiceTest {
                     .thenReturn(DOCKER_POST);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getAuthor().getId()).execute())
                     .thenReturn(ANY_AUTHOR);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, DOCKER_POST.getId()).execute())
+                    .thenReturn(Collections.emptyList());
 
             // act
             PostResponse actual = SUT.getById(DOCKER_POST.getId());
@@ -62,6 +66,8 @@ class PostServiceTest {
                     .thenReturn(DOCKER_POST);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getAuthor().getId()).execute())
                     .thenReturn(ANY_AUTHOR);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, DOCKER_POST.getId()).execute())
+                    .thenReturn(Collections.emptyList());
 
             // act
             PostResponse actual = SUT.getById(DOCKER_POST.getId());
