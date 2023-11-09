@@ -48,7 +48,7 @@ class PostServiceTest {
         }
 
         @Test
-        void getByIdShouldCorrectlyMapPostDTO() {
+        void shouldMapPost() {
             // arrange
             long expectedId = DOCKER_POST.getId().longValue();
             String expectedTitle = new String(DOCKER_POST.getTitle());
@@ -92,6 +92,7 @@ class PostServiceTest {
 
             // assert
             assertThat(actual.categories())
+                    .isNotEmpty()
                     .isSortedAccordingTo(CategoryResponseAssert.CATEGORY_RESPONSE_COMPARATOR)
                     .containsExactlyInAnyOrderElementsOf(expected);
         }
