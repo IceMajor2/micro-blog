@@ -40,6 +40,5 @@ public record PostResponse(
                 post.getUpdatedOn() == null ? null : post.getUpdatedOn().toString(),
                 post.getBody()
         );
-        System.out.println(post.getUpdatedOn());
     }
 }
