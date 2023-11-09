@@ -1,0 +1,43 @@
+package com.demo.blog.blogpostservice;
+
+import com.demo.blog.blogpostservice.category.Category;
+import com.demo.blog.blogpostservice.category.CategoryBuilder;
+import com.demo.blog.blogpostservice.category.CategoryRepository;
+import com.demo.blog.blogpostservice.post.Post;
+import com.demo.blog.blogpostservice.post.PostBuilder;
+import com.demo.blog.blogpostservice.post.PostRepository;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+@Component
+@ConditionalOnProperty(prefix = "runner", name = "enable", havingValue = "true", matchIfMissing = false)
+public class TestRunner {
+
+    @Bean
+    ApplicationRunner runner(CategoryRepository categoryRepository, PostRepository postRepository) {
+        return args -> {
+            categoryRepository.deleteAll();
+            postRepository.deleteAll();
+
+            Category testing = new CategoryBuilder()
+                    .withName("Testing")
+                    .build();
+            categoryRepository.save(testing);
+
+            Post mocking = new PostBuilder()
+                    .withTitle("Introduction to mocking")
+                    .withBody("If you want to extend your testing skills...")
+                    .publishedNow()
+                    .withCategory(testing)
+                    .build();
+            postRepository.save(mocking);
+
+            System.out.println(mocking);
+            System.out.println(testing);
+
+            System.out.println(categoryRepository.findByPostId(mocking.getId()));
+        };
+    }
+}
