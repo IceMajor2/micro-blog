@@ -3,6 +3,7 @@ package com.demo.blog.blogpostservice.category.datasupply;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.springframework.core.ParameterizedTypeReference;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class CategoryConstants {
@@ -22,6 +23,8 @@ public class CategoryConstants {
     public static final String NULL_ID_MSG = "Category ID was null";
     public static final String NULL_REQUEST_MSG = "Request was null";
     public static final String NULL_OLD_CATEGORY_MSG = "Category specified to be replaced was null";
+
+    public static final Comparator<CategoryResponse> CATEGORY_RESPONSE_COMPARATOR = Comparator.comparing(CategoryResponse::name);
 
     public static final ParameterizedTypeReference<List<CategoryResponse>> PARAMETERIZED_TYPE_REFERENCE =
             new ParameterizedTypeReference<>() {};

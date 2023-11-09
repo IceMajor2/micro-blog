@@ -2,7 +2,7 @@ package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.category.Category;
-import com.demo.blog.blogpostservice.category.assertion.dto.CategoryResponseAssert;
+import com.demo.blog.blogpostservice.category.datasupply.CategoryConstants;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
@@ -21,7 +21,7 @@ import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.THREADS_CATEGORY;
-import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
 import static org.mockito.Mockito.when;
@@ -95,7 +95,7 @@ class PostServiceTest {
             // assert
             assertThat(actual.categories())
                     .isNotEmpty()
-                    .isSortedAccordingTo(CategoryResponseAssert.CATEGORY_RESPONSE_COMPARATOR)
+                    .isSortedAccordingTo(CategoryConstants.CATEGORY_RESPONSE_COMPARATOR)
                     .containsExactlyInAnyOrderElementsOf(expected);
         }
     }
@@ -121,7 +121,7 @@ class PostServiceTest {
 
             // assert
             assertThat(actual)
-                    .isSortedAccordingTo(PUBLISHED_DESC_COMPARATOR)
+                    .isSortedAccordingTo(PUBLISHED_DESC_COMPARATOR_DTO)
                     .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
                     .containsExactlyInAnyOrderElementsOf(expected);
         }

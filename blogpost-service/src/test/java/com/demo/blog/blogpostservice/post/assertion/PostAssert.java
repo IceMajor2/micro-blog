@@ -5,11 +5,7 @@ import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
-import java.util.Comparator;
-
 public class PostAssert extends AbstractAssert<PostAssert, Post> {
-
-    public static final Comparator<Post> PUBLISHED_ON_COMPARATOR = Comparator.comparing(Post::getPublishedOn).reversed();
 
     public PostAssert(Post actual) {
         super(actual, PostAssert.class);

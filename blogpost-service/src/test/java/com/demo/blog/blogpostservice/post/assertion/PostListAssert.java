@@ -1,6 +1,7 @@
 package com.demo.blog.blogpostservice.post.assertion;
 
 import com.demo.blog.blogpostservice.post.Post;
+import com.demo.blog.blogpostservice.post.datasupply.PostConstants;
 import org.assertj.core.api.AbstractListAssert;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ListAssert;
@@ -32,7 +33,7 @@ public class PostListAssert extends AbstractListAssert<PostListAssert, List<Post
     public PostListAssert isSortedByNewest() {
         isNotNull();
         Assertions.assertThat(actual)
-                .isSortedAccordingTo(PostAssert.PUBLISHED_ON_COMPARATOR);
+                .isSortedAccordingTo(PostConstants.PUBLISHED_DESC_COMPARATOR);
         return this;
     }
 
