@@ -19,12 +19,27 @@ public record PostResponse(
         String body
 ) {
     public PostResponse(Post post) {
-        this(post.getId(), post.getTitle(), null, null,
-                post.getPublishedOn().toString(), null, post.getBody());
+        this(
+                post.getId(),
+                post.getTitle(),
+                null,
+                null,
+                post.getPublishedOn().toString(),
+                post.getUpdatedOn() == null ? null : post.getUpdatedOn().toString(),
+                post.getBody()
+        );
     }
 
     public PostResponse(Post post, Author author) {
-        this(post.getId(), post.getTitle(), new AuthorResponse(author), null,
-                post.getPublishedOn().toString(), null, post.getBody());
+        this(
+                post.getId(),
+                post.getTitle(),
+                new AuthorResponse(author),
+                null,
+                post.getPublishedOn().toString(),
+                post.getUpdatedOn() == null ? null : post.getUpdatedOn().toString(),
+                post.getBody()
+        );
+        System.out.println(post.getUpdatedOn());
     }
 }
