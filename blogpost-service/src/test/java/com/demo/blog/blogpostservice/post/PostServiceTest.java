@@ -30,10 +30,10 @@ class PostServiceTest {
     private CommandFactory commandFactory;
 
     @Nested
-    class GetRequests {
+    class GetById {
 
         @Test
-        void shouldReturnPost() {
+        void getByIdShouldCorrectlyMapPostDTO() {
             // arrange
             long expectedId = DOCKER_POST.getId().longValue();
             String expectedTitle = new String(DOCKER_POST.getTitle());
