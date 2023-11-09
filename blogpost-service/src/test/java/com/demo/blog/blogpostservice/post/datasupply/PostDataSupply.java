@@ -15,7 +15,8 @@ public class PostDataSupply {
             .withTitle("Dockerizing a Spring Boot application")
             .withBody("Step 1. Install Docker")
             .withCategories(CONTAINERS_CATEGORY)
-            .publishedNow()
+            .publishedThirtyMinsAgo()
+            .updatedNow()
             .build();
 
     public static Stream<Post> validPostsSortedByPublishedOnDesc() {
