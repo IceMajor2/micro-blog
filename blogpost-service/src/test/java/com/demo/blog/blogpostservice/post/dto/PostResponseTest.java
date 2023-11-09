@@ -66,6 +66,6 @@ class PostResponseTest {
         // assert
         assertThat(actual.categories())
                 .isSortedAccordingTo(CategoryResponseAssert.CATEGORY_RESPONSE_COMPARATOR)
-                .containsExactlyElementsOf(expectedCategories);
+                .containsExactlyInAnyOrderElementsOf(expectedCategories);
     }
 }
