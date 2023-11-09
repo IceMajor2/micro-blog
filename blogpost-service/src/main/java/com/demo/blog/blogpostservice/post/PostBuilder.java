@@ -2,7 +2,9 @@ package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.category.Category;
+import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.util.Streamable;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -17,7 +19,7 @@ public class PostBuilder {
     private String body;
     private LocalDateTime publishedOn;
     private LocalDateTime updatedOn;
-    private Set<Category> categories = new HashSet<>();
+    private Set<PostCategory> categories = new HashSet<>();
     private AggregateReference<Author, Long> author;
 
     public PostBuilder withId(long id) {
@@ -75,8 +77,22 @@ public class PostBuilder {
         return this;
     }
 
-    public PostBuilder withCategory(Category category) {
+    public PostBuilder withCategory(PostCategory category) {
         this.categories.add(category);
+        return this;
+    }
+
+    public PostBuilder withCategory(Category category) {
+        final PostCategory postCategory = new PostCategory();
+        postCategory.setCategoryId(AggregateReference.to(category.getId()));
+        this.categories.add(postCategory);
+        return this;
+    }
+
+    public PostBuilder withCategories(PostCategory... categories) {
+        for (PostCategory category : categories) {
+            withCategory(category);
+        }
         return this;
     }
 
@@ -87,8 +103,25 @@ public class PostBuilder {
         return this;
     }
 
+    public PostBuilder replacingCategories(Iterable<Category> categories) {
+        this.categories.clear();
+        withCategories(Streamable.of(categories).toList().toArray(new Category[0]));
+        return this;
+    }
+
     public PostBuilder withAuthor(long authorId) {
         this.author = AggregateReference.to(authorId);
+        return this;
+    }
+
+    public PostBuilder from(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.body = post.getBody();
+        this.publishedOn = post.getPublishedOn();
+        this.updatedOn = post.getUpdatedOn();
+        this.categories = post.getCategories();
+        this.author = post.getAuthor();
         return this;
     }
 
@@ -96,13 +129,11 @@ public class PostBuilder {
         Post post = new Post();
         post.setId(id);
         post.setTitle(title);
-        post.setAuthor(author);
         post.setBody(body);
         post.setPublishedOn(publishedOn);
         post.setUpdatedOn(updatedOn);
-        for(Category category : categories) {
-            post.addCategory(category);
-        }
+        post.setCategories(categories);
+        post.setAuthor(author);
         return post;
     }
 }
