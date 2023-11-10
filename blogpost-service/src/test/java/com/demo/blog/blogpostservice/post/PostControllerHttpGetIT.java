@@ -1,0 +1,56 @@
+package com.demo.blog.blogpostservice.post;
+
+import com.demo.blog.blogpostservice.author.Author;
+import com.demo.blog.blogpostservice.author.AuthorRepository;
+import com.demo.blog.blogpostservice.category.Category;
+import com.demo.blog.blogpostservice.category.CategoryRepository;
+import com.demo.blog.blogpostservice.config.BaseIntegrationTest;
+import com.demo.blog.blogpostservice.post.dto.PostResponse;
+import com.demo.blog.blogpostservice.util.RestRequestUtils;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatResponse;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.API_POST_ID;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("integration-test")
+@TestClassOrder(ClassOrderer.Random.class)
+public class PostControllerHttpGetIT extends BaseIntegrationTest {
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class GetById {
+
+        @ParameterizedTest
+        @ValueSource(longs = {1L, 2L, 3L})
+        void shouldReturnCategoryOnGetId(Long postId) {
+            // arrange
+            Post expectedPost = postRepository.findById(postId).get();
+            Author expectedAuthor = authorRepository.findById(expectedPost.getAuthor().getId()).get();
+            Iterable<Category> categories = categoryRepository.findByPostId(postId);
+            PostResponse expected = new PostResponse(expectedPost, expectedAuthor, categories);
+
+            // act
+            var actual = RestRequestUtils.get(API_POST_ID, PostResponse.class, postId);
+
+            // assert
+            assertThatResponse(actual)
+                    .statusCodeIsOK()
+                    .ignoringIdEqualTo(expected);
+        }
+    }
+}
