@@ -1,6 +1,7 @@
 package com.demo.blog.blogpostservice.category;
 
 import com.demo.blog.blogpostservice.category.command.CategoryCommandCode;
+import com.demo.blog.blogpostservice.category.datasupply.CategoryConstants;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import org.junit.jupiter.api.ClassOrderer;
@@ -12,8 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONCURRENCY_CATEGORY;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -40,14 +43,12 @@ class CategoryServiceTest {
         CategoryResponse actual = SUT.getByName(CONCURRENCY_CATEGORY.getName());
 
         // assert
-        assertThat(actual)
-                .usingRecursiveComparison()
-                .comparingOnlyFields("id", "name")
-                .isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     void getByIdShouldMapCategory() {
+        // arrange
         long expectedId = CONCURRENCY_CATEGORY.getId().longValue();
         String expectedName = new String(CONCURRENCY_CATEGORY.getName());
         CategoryResponse expected = new CategoryResponse(expectedId, expectedName);
@@ -59,9 +60,60 @@ class CategoryServiceTest {
         CategoryResponse actual = SUT.getById(CONCURRENCY_CATEGORY.getId());
 
         // assert
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void getAllOrderedByNameShouldMapCategory() {
+        // arrange
+        List<Category> stub = List.of(CONTAINERS_CATEGORY, THREADS_CATEGORY);
+        List<CategoryResponse> expected = List.of(
+                new CategoryResponse(CONTAINERS_CATEGORY.getId().longValue(), new String(CONTAINERS_CATEGORY.getName())),
+                new CategoryResponse(THREADS_CATEGORY.getId().longValue(), new String(THREADS_CATEGORY.getName()))
+        );
+
+        when(commandFactory.create(CategoryCommandCode.GET_CATEGORIES_SORTED_BY_NAME).execute())
+                .thenReturn(stub);
+
+        // act
+        List<CategoryResponse> actual = SUT.getAllOrderedByName();
+
+        // assert
         assertThat(actual)
-                .usingRecursiveComparison()
-                .comparingOnlyFields("id", "name")
-                .isEqualTo(expected);
+                .isSortedAccordingTo(CategoryConstants.CATEGORY_RESPONSE_COMPARATOR)
+                .containsExactlyInAnyOrderElementsOf(expected);
+    }
+
+    @Test
+    void addShouldMapCategory() {
+        // arrange
+        CategoryResponse expected = new CategoryResponse(THREADS_CATEGORY.getId().longValue(), new String(THREADS_CATEGORY.getName()));
+
+        when(commandFactory.create(CategoryCommandCode.ADD_CATEGORY, THREADS_CATEGORY_REQUEST).execute())
+                .thenReturn(THREADS_CATEGORY);
+
+        // act
+        CategoryResponse actual = SUT.add(THREADS_CATEGORY_REQUEST);
+
+        // assert
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void replaceShouldMapCategory() {
+        // arrange
+        Long replaceId = THREADS_CATEGORY.getId();
+        CategoryResponse expected = new CategoryResponse(THREADS_CATEGORY.getId().longValue(), new String(THREADS_CATEGORY.getName()));
+
+        when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, replaceId).execute())
+                .thenReturn(CONTAINERS_CATEGORY);
+        when(commandFactory.create(CategoryCommandCode.REPLACE_CATEGORY, CONTAINERS_CATEGORY, THREADS_CATEGORY_REQUEST).execute())
+                .thenReturn(THREADS_CATEGORY);
+
+        // act
+        CategoryResponse actual = SUT.replace(replaceId, THREADS_CATEGORY_REQUEST);
+
+        // assert
+        assertThat(actual).isEqualTo(expected);
     }
 }
