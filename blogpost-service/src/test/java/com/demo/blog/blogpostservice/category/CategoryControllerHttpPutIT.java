@@ -39,7 +39,9 @@ public class CategoryControllerHttpPutIT extends BaseIntegrationTest {
         var actual = put(API_CATEGORY_ID, request, CategoryResponse.class, replaceId);
 
         // assert
-        assertThatCategoryRestResponse(actual).isValidPutResponse(expected);
+        assertThatResponse(actual)
+                .statusCodeIsOK()
+                .ignoringIdEqualTo(expected);
         assertThat(categoryRepository).persisted(expectedDb);
     }
 
@@ -124,7 +126,9 @@ public class CategoryControllerHttpPutIT extends BaseIntegrationTest {
         var actual = put(API_CATEGORY_ID, request, CategoryResponse.class, replaceId);
 
         // assert
-        assertThatCategoryRestResponse(actual).isValidPutResponse(expected);
+        assertThatResponse(actual)
+                .statusCodeIsOK()
+                .ignoringIdEqualTo(expected);
         assertThat(categoryRepository).persisted(expectedDb);
     }
 }

@@ -37,7 +37,8 @@ public class CategoryControllerHttpDeleteIT extends BaseIntegrationTest {
         Long actualSize = categoryRepository.count();
 
         // assert
-        assertThatCategoryRestResponse(actual).isValidDeleteResponse();
+        assertThatResponse(actual)
+                .statusCodeIsNoContent();
         assertThat(actualSize)
                 .withFailMessage("Category was not deleted from the repository")
                 .isEqualTo(expectedSize);

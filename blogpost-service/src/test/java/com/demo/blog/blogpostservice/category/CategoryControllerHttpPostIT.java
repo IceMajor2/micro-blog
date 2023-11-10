@@ -40,7 +40,9 @@ public class CategoryControllerHttpPostIT extends BaseIntegrationTest {
         var actual = post(API_CATEGORY, request, CategoryResponse.class);
 
         // assert
-        assertThatCategoryRestResponse(actual).isValidPostResponse(expected);
+        assertThatResponse(actual)
+                .statusCodeIsCreated()
+                .ignoringIdEqualTo(expected);
         assertThat(categoryRepository)
                 .hasSize(expectedSize)
                 .persisted(dbExpected);

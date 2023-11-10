@@ -40,7 +40,9 @@ public class CategoryControllerHttpGetIT extends BaseIntegrationTest {
             var actual = get(API_CATEGORY_ID, CategoryResponse.class, id);
 
             // assert
-            assertThatCategoryRestResponse(actual).isValidGetResponse(expected);
+            assertThatResponse(actual)
+                    .statusCodeIsOK()
+                    .ignoringIdEqualTo(expected);
         }
 
         @ParameterizedTest
@@ -71,7 +73,9 @@ public class CategoryControllerHttpGetIT extends BaseIntegrationTest {
             var actual = get(API_CATEGORY_NAME, CategoryResponse.class, categoryName);
 
             // assert
-            assertThatCategoryRestResponse(actual).isValidGetResponse(expected);
+            assertThatResponse(actual)
+                    .statusCodeIsOK()
+                    .ignoringIdEqualTo(expected);
         }
 
         @ParameterizedTest
@@ -117,7 +121,9 @@ public class CategoryControllerHttpGetIT extends BaseIntegrationTest {
             var actual = get(API_CATEGORY, PARAMETERIZED_TYPE_REFERENCE);
 
             // assert
-           // TODO: fix assertThatCategoriesRestResponse(actual).isValidGetAllResponse(expected);
+            assertThatResponse(actual)
+                    .statusCodeIsOK()
+                    .ignoringIdContainsExactlyElementsOf(expected);
         }
     }
 }

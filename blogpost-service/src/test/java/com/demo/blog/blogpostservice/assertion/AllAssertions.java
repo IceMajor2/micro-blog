@@ -4,8 +4,6 @@ import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.assertion.CategoryAssert;
 import com.demo.blog.blogpostservice.category.assertion.repository.CategoryRepositoryAssert;
-import com.demo.blog.blogpostservice.category.assertion.rest.CategoryRestAssert;
-import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.assertion.PostAssert;
@@ -33,10 +31,6 @@ public class AllAssertions extends Assertions {
     }
 
     // Generics + SINGULAR
-
-    public static CategoryRestAssert assertThatCategoryRestResponse(ResponseEntity<CategoryResponse> actual) {
-        return CategoryRestAssert.assertThat(actual);
-    }
 
     public static HttpResponseAssert assertThatResponse(ResponseEntity<?> actual) {
         return HttpResponseAssert.assertThat(actual);

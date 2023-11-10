@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.assertion;
 
+import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,24 @@ public class HttpResponseAssert extends AbstractAssert<HttpResponseAssert, Respo
 
     public HttpResponseAssert statusCodeIsNoContent() {
         statusCodeIs(HttpStatus.NO_CONTENT);
+        return this;
+    }
+
+    public HttpResponseAssert ignoringIdEqualTo(CategoryResponse expected) {
+        isNotNull();
+        Assertions.assertThat(actual.getBody())
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(expected);
+        return this;
+    }
+
+    public HttpResponseAssert ignoringIdContainsExactlyElementsOf(Iterable<CategoryResponse> expected) {
+        isNotNull();
+        Iterable<CategoryResponse> actualBody = (Iterable<CategoryResponse>) actual.getBody();
+        Assertions.assertThat(actualBody)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyElementsOf(expected);
         return this;
     }
 }
