@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.category.assertion.repository;
+package com.demo.blog.blogpostservice.category.assertion;
 
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
