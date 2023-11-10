@@ -2,11 +2,19 @@ package com.demo.blog.blogpostservice.category;
 
 import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
+import com.demo.blog.blogpostservice.post.Post;
+import com.demo.blog.blogpostservice.postcategory.PostCategory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CategoryBuilder {
 
     private Long id;
     private String name;
+    private Set<PostCategory> posts = new HashSet<>();
 
     public CategoryBuilder withId(long id) {
         this.id = id;
@@ -34,5 +42,17 @@ public class CategoryBuilder {
         category.setId(id);
         category.setName(name);
         return category;
+    }
+
+    public CategoryBuilder addPost(Post post) {
+        final PostCategory postCategory = new PostCategory();
+        postCategory.setPostId(AggregateReference.to(post.getId()));
+        this.posts.add(postCategory);
+        return this;
+    }
+
+    public CategoryBuilder addPosts(Post... posts) {
+        Arrays.stream(posts).forEach(this::addPost);
+        return this;
     }
 }
