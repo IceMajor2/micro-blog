@@ -60,6 +60,7 @@ class AddCategoryCommandTest {
         assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(EXISTS_MSG_T.formatted(THREADS_CATEGORY_REQUEST.name()));
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -69,5 +70,6 @@ class AddCategoryCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(NULL_REQUEST_MSG);
+        verify(repository, never()).save(any());
     }
 }

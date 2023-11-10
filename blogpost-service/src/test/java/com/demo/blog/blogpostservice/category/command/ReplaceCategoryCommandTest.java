@@ -67,6 +67,7 @@ class ReplaceCategoryCommandTest {
         assertThatExceptionOfType(CategoryAlreadyExistsException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(EXISTS_MSG_T.formatted(threadsReplacementModel.getName()));
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -76,6 +77,7 @@ class ReplaceCategoryCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(NULL_OLD_CATEGORY_MSG);
+        verify(repository, never()).save(any());
     }
 
     @Test
@@ -85,5 +87,6 @@ class ReplaceCategoryCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(NULL_REQUEST_MSG);
+        verify(repository, never()).save(any());
     }
 }

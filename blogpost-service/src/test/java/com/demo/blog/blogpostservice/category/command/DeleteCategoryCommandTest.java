@@ -47,6 +47,7 @@ class DeleteCategoryCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(NULL_ID_MSG);
+        verify(repository, never()).delete(any());
     }
 
     @ParameterizedTest
@@ -57,5 +58,6 @@ class DeleteCategoryCommandTest {
         assertThatExceptionOfType(CategoryNotFoundException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(ID_NOT_FOUND_MSG_T.formatted(id));
+        verify(repository, never()).delete(any());
     }
 }
