@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS author (
     id  BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    username    VARCHAR(32) NOT NULL,-- UNIQUE
+    username    VARCHAR(32) NOT NULL UNIQUE,
     email   VARCHAR(96) NOT NULL
 );
 
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS post (
     body    TEXT NOT NULL,
     published_on    TIMESTAMP NOT NULL,
     updated_on  TIMESTAMP,
-    author  BIGINT,
+    author  BIGINT NOT NULL,
     FOREIGN KEY (author) REFERENCES author(id)
 );
 
