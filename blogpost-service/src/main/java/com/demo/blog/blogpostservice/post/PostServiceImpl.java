@@ -11,9 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,11 +38,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> getAllOrderedByPublishedDateDesc() {
+        List<PostResponse> responses = new ArrayList<>();
         List<Post> posts = (List<Post>) commandFactory
                 .create(PostCommandCode.GET_ALL_POSTS)
                 .execute();
-        return posts.stream()
-                .map(post -> new PostResponse(post, new Author("", ""), Collections.emptyList()))
-                .collect(Collectors.toList());
+        for (Post post : posts) {
+            Author author = (Author) commandFactory
+                    .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
+                    .execute();
+            List<Category> categories = (List<Category>) commandFactory
+                    .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                    .execute();
+            responses.add(new PostResponse(post, author, categories));
+        }
+        return responses;
     }
 }
