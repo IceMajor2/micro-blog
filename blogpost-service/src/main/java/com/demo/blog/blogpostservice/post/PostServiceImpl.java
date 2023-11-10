@@ -7,6 +7,8 @@ import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
+import com.demo.blog.blogpostservice.postcategory.dto.PostCategoryRequest;
+import com.demo.blog.blogpostservice.postcategory.dto.PostCategoryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse add(PostRequest request, Author author) {
+        return null;
+    }
+
+    @Override
+    public PostCategoryResponse addCategory(PostCategoryRequest request) {
         return null;
     }
 }

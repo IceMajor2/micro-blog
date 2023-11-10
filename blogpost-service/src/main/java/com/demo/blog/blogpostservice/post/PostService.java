@@ -3,6 +3,8 @@ package com.demo.blog.blogpostservice.post;
 import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
+import com.demo.blog.blogpostservice.postcategory.dto.PostCategoryRequest;
+import com.demo.blog.blogpostservice.postcategory.dto.PostCategoryResponse;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface PostService {
     PostResponse getById(Long id);
 
     PostResponse add(PostRequest request, Author author);
+
+    PostCategoryResponse addCategory(PostCategoryRequest request);
 }
