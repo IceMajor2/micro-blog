@@ -36,16 +36,11 @@ public class Post {
         this.publishedOn = LocalDateTime.now();
     }
 
-    void addCategory(Category category) {
+    public void addCategory(Category category) {
         final PostCategory postCategory = new PostCategory();
         postCategory.setCategoryId(AggregateReference.to(category.getId()));
         categories.add(postCategory);
     }
-
-//    void addComment(Comment comment) {
-//        this.comments.add(comment);
-//        comment.setPost(this);
-//    }
 
     // TODO: write 'remove' methods
 }
