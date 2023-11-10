@@ -89,13 +89,6 @@ public class PostBuilder {
         return this;
     }
 
-    public PostBuilder withCategories(PostCategory... categories) {
-        for (PostCategory category : categories) {
-            withCategory(category);
-        }
-        return this;
-    }
-
     public PostBuilder withCategories(Category... categories) {
         for (Category category : categories) {
             withCategory(category);
