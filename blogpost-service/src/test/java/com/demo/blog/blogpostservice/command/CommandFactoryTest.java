@@ -12,6 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
+import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
+import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_STRING;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST_REQUEST;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +39,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnGetCategoryByIdCommand() {
             // act
-            Command actual = SUT.create(CategoryCommandCode.GET_CATEGORY_BY_ID);
+            Command actual = SUT.create(CategoryCommandCode.GET_CATEGORY_BY_ID, ANY_LONG);
 
             // assert
             assertThat(actual).isInstanceOf(GetCategoryByIdCommand.class);
@@ -43,7 +48,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnGetCategoryByNameCommand() {
             // act
-            Command actual = SUT.create(CategoryCommandCode.GET_CATEGORY_BY_NAME);
+            Command actual = SUT.create(CategoryCommandCode.GET_CATEGORY_BY_NAME, ANY_STRING);
 
             // assert
             assertThat(actual).isInstanceOf(GetCategoryByNameCommand.class);
@@ -61,7 +66,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnAddCategoryCommand() {
             // act
-            Command actual = SUT.create(CategoryCommandCode.ADD_CATEGORY);
+            Command actual = SUT.create(CategoryCommandCode.ADD_CATEGORY, THREADS_CATEGORY_REQUEST);
 
             // assert
             assertThat(actual).isInstanceOf(AddCategoryCommand.class);
@@ -70,7 +75,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnReplaceCategoryCommand() {
             // act
-            Command actual = SUT.create(CategoryCommandCode.REPLACE_CATEGORY);
+            Command actual = SUT.create(CategoryCommandCode.REPLACE_CATEGORY, THREADS_CATEGORY, CONCURRENCY_CATEGORY_REQUEST);
 
             // assert
             assertThat(actual).isInstanceOf(ReplaceCategoryCommand.class);
@@ -79,7 +84,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnDeleteCategoryCommand() {
             // act
-            Command actual = SUT.create(CategoryCommandCode.DELETE_CATEGORY);
+            Command actual = SUT.create(CategoryCommandCode.DELETE_CATEGORY, ANY_LONG);
 
             // assert
             assertThat(actual).isInstanceOf(DeleteCategoryCommand.class);
@@ -101,7 +106,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnGetPostByIdCommand() {
             // act
-            Command actual = SUT.create(PostCommandCode.GET_POST_BY_ID);
+            Command actual = SUT.create(PostCommandCode.GET_POST_BY_ID, ANY_LONG);
 
             // assert
             assertThat(actual).isInstanceOf(GetPostByIdCommand.class);
@@ -110,7 +115,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnGetPostCategoriesSortedByNameCommand() {
             // act
-            Command actual = SUT.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME);
+            Command actual = SUT.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, ANY_LONG);
 
             // assert
             assertThat(actual).isInstanceOf(GetPostCategoriesCommand.class);
@@ -119,7 +124,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnAddPostCommand() {
             // act
-            Command actual = SUT.create(PostCommandCode.ADD_POST);
+            Command actual = SUT.create(PostCommandCode.ADD_POST, SPRING_POST_REQUEST, JOHN_SMITH);
 
             // assert
             assertThat(actual).isInstanceOf(AddPostCommand.class);
