@@ -23,6 +23,14 @@ public class CategoryDataSupply {
             .withId(3L)
             .withName("Containers")
             .build();
+    public static final Category SPRING_CATEGORY = new CategoryBuilder()
+            .withId(4L)
+            .withName("Spring")
+            .build();
+    public static final Category JAVA_CATEGORY = new CategoryBuilder()
+            .withId(5L)
+            .withName("Java")
+            .build();
 
     public static Stream<Category> sortedValidCategories() {
         return validCategories()
@@ -41,7 +49,6 @@ public class CategoryDataSupply {
 
     static Stream<CategoryRequest> validCategoryRequests() {
         return Stream.of(
-                new CategoryRequest("Python"),
                 new CategoryRequest("Python"),
                 new CategoryRequest("Backend"),
                 new CategoryRequest("Algorithms"),
