@@ -5,6 +5,7 @@ import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
+import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,5 +53,10 @@ public class PostServiceImpl implements PostService {
             responses.add(new PostResponse(post, author, categories));
         }
         return responses;
+    }
+
+    @Override
+    public PostResponse add(PostRequest request, Author author) {
+        return null;
     }
 }
