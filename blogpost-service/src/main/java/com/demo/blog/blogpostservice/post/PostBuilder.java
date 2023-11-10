@@ -2,6 +2,7 @@ package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.category.Category;
+import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.util.Streamable;
@@ -115,6 +116,12 @@ public class PostBuilder {
         this.updatedOn = post.getUpdatedOn();
         this.categories = post.getCategories();
         this.author = post.getAuthor();
+        return this;
+    }
+
+    public PostBuilder fromRequest(PostRequest request) {
+        this.title = request.title();
+        this.body = request.body();
         return this;
     }
 
