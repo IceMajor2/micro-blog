@@ -4,8 +4,10 @@ import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
+import com.demo.blog.blogpostservice.post.exception.PostAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,6 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.TITLE_EXISTS_MSG_T;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST_REQUEST;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 @TestMethodOrder(MethodOrderer.Random.class)
@@ -61,5 +66,17 @@ public class AddPostCommandTest {
                 .isTitled(expectedTitle)
                 .writtenBy(expectedAuthorId)
                 .hasBody(expectedBody);
+    }
+
+    @Test
+    void shouldThrowExceptionOnPostTitleAlreadyExists() {
+        // arrange
+        SUT = new AddPostCommand(postRepository, SPRING_POST_REQUEST, ANY_AUTHOR);
+        when(postRepository.existsByTitle(SPRING_POST_REQUEST.title())).thenReturn(true);
+
+        // act & assert
+        assertThatExceptionOfType(PostAlreadyExistsException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(TITLE_EXISTS_MSG_T.formatted(SPRING_POST_REQUEST.title()));
     }
 }
