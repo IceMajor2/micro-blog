@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
 
-public class HttpResponseAssert extends AbstractAssert<HttpResponseAssert, ResponseEntity<?>> {
+public class HttpResponseAssert<T> extends AbstractAssert<HttpResponseAssert<T>, ResponseEntity<T>> {
 
-    public HttpResponseAssert(ResponseEntity<?> actual) {
+    public HttpResponseAssert(ResponseEntity<T> actual) {
         super(actual, HttpResponseAssert.class);
     }
 
-    public static HttpResponseAssert assertThat(ResponseEntity<?> actual) {
+    public static <T> HttpResponseAssert assertThat(ResponseEntity<?> actual) {
         return new HttpResponseAssert(actual);
     }
 
@@ -49,7 +49,7 @@ public class HttpResponseAssert extends AbstractAssert<HttpResponseAssert, Respo
         return this;
     }
 
-    public HttpResponseAssert ignoringIdEqualTo(CategoryResponse expected) {
+    public HttpResponseAssert ignoringIdEqualTo(T expected) {
         isNotNull();
         Assertions.assertThat(actual.getBody())
                 .usingRecursiveComparison()
