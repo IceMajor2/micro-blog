@@ -41,11 +41,12 @@ public class CategoryDataSupply {
 
     static Stream<CategoryRequest> validCategoryRequests() {
         return Stream.of(
-                CategoryRequest.builder().name("Python").build(),
-                CategoryRequest.builder().name("Backend").build(),
-                CategoryRequest.builder().name("Algorithms").build(),
-                CategoryRequest.builder().name("Procedural Programming Languages").build(),
-                CategoryRequest.builder().name("Data Structures").build()
+                new CategoryRequest("Python"),
+                new CategoryRequest("Python"),
+                new CategoryRequest("Backend"),
+                new CategoryRequest("Algorithms"),
+                new CategoryRequest("Procedural Programming Languages"),
+                new CategoryRequest("Data Structures")
         );
     }
 
