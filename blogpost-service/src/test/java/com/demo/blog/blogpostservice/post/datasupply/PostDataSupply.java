@@ -2,6 +2,7 @@ package com.demo.blog.blogpostservice.post.datasupply;
 
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostBuilder;
+import com.demo.blog.blogpostservice.post.dto.PostRequest;
 
 import java.util.stream.Stream;
 
@@ -25,30 +26,26 @@ public class PostDataSupply {
             .withBody("Oftentimes, both of the terms are used interchangeably. However, ...")
             .publishedHourAgo()
             .build();
+    public static final PostRequest SPRING_POST_REQUEST = new PostRequest(
+            "Spring & Spring Boot: what's the difference?",
+            "Oftentimes, both of the terms are used interchangeably. However, ..."
+    );
+    public static final PostRequest DOCKER_POST_REQUEST = new PostRequest(
+            "Dockerizing a Spring Boot application",
+            "Step 1. Install Docker"
+    );
+
+    public static Stream<PostRequest> validPostRequests() {
+        return Stream.of(
+                SPRING_POST_REQUEST,
+                DOCKER_POST_REQUEST
+        );
+    }
 
     public static Stream<Post> validPostsSortedByPublishedOnDesc() {
         return Stream.of(
-                new PostBuilder()
-                        .withId(1L)
-                        .withAuthor(1L)
-                        .withTitle("How to build microservices")
-                        .withBody("Some body...")
-                        .publishedNow()
-                        .build(),
-                new PostBuilder()
-                        .withId(2L)
-                        .withAuthor(1L)
-                        .withTitle("How is ArrayList built under the hood")
-                        .withBody("Body of the post...")
-                        .publishedFifteenMinsAgo()
-                        .build(),
-                new PostBuilder()
-                        .withId(3L)
-                        .withAuthor(2L)
-                        .withTitle("Learning Python...")
-                        .withBody("Text that is a blog post's body...")
-                        .publishedHourAgo()
-                        .build()
+                DOCKER_POST,
+                SPRING_POST
         );
     }
 }
