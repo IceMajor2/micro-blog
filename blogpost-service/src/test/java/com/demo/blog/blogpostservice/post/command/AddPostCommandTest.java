@@ -15,8 +15,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.NULL_AUTHOR_MSG;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.NULL_REQUEST_MSG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.TITLE_EXISTS_MSG_T;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST_REQUEST;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -78,5 +80,27 @@ public class AddPostCommandTest {
         assertThatExceptionOfType(PostAlreadyExistsException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(TITLE_EXISTS_MSG_T.formatted(SPRING_POST_REQUEST.title()));
+    }
+
+    @Test
+    void shouldThrowExceptionOnAuthorNull() {
+        // arrange
+        SUT = new AddPostCommand(postRepository, SPRING_POST_REQUEST, null);
+
+        // act & assert
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(NULL_AUTHOR_MSG);
+    }
+
+    @Test
+    void shouldThrowExceptionOnRequestNull() {
+        // arrange
+        SUT = new AddPostCommand(postRepository, null, ANY_AUTHOR);
+
+        // act & assert
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(NULL_REQUEST_MSG);
     }
 }
