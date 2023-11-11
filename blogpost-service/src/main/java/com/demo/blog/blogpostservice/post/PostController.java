@@ -25,4 +25,8 @@ public class PostController {
     public List<PostResponse> getAllPosts() {
         return postService.getAllOrderedByPublishedDateDesc();
     }
+
+//    @PostMapping
+//    @JsonView(View.PostCategory.class)
+//    public PostResponse addCategories(PostCategoryRequest request) {}
 }
