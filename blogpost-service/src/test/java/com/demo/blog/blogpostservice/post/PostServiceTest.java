@@ -3,10 +3,12 @@ package com.demo.blog.blogpostservice.post;
 import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.author.dto.AuthorResponse;
 import com.demo.blog.blogpostservice.category.Category;
+import com.demo.blog.blogpostservice.category.command.CategoryCommandCode;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
+import com.demo.blog.blogpostservice.postcategory.command.PostCategoryCommandCode;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
@@ -24,6 +26,7 @@ import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstant
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.*;
+import static com.demo.blog.blogpostservice.postcategory.datasupply.PostCategoryDataSupply.DOCKER_W_CONTAINERS_SPRING_REQ;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -37,6 +40,7 @@ class PostServiceTest {
     private CommandFactory commandFactory;
 
     @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
     class GetById {
 
         @BeforeEach
@@ -103,6 +107,7 @@ class PostServiceTest {
     }
 
     @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
     class GetCollection {
 
         private Post newer = new PostBuilder()
@@ -190,6 +195,7 @@ class PostServiceTest {
     }
 
     @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
     class Add {
 
         @BeforeEach
@@ -238,6 +244,43 @@ class PostServiceTest {
 
             // assert
             assertThat(actual.categories()).isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class AddCategories {
+
+        @BeforeEach
+        void setUp() {
+            Post stub = new PostBuilder().from(DOCKER_POST).withCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.postId())
+                    .execute()).thenReturn(DOCKER_POST);
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.categoryIds().get(0))
+                    .execute()).thenReturn(CONTAINERS_CATEGORY);
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.categoryIds().get(1))
+                    .execute()).thenReturn(SPRING_CATEGORY);
+            when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(stub);
+
+        }
+
+        @Test
+        void shouldMapPost() {
+            // arrange
+            long expectedId = DOCKER_POST.getId().longValue();
+            String expectedTitle = new String(DOCKER_POST.getTitle());
+            String expectedBody = new String(DOCKER_POST.getBody());
+            PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
+
+            // act
+            PostResponse actual = SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ);
+
+            // assert
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .comparingOnlyFields("id", "title", "body")
+                    .isEqualTo(expected);
         }
     }
 }
