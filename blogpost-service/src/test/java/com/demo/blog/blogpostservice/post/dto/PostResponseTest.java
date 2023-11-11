@@ -23,9 +23,8 @@ class PostResponseTest {
         String expectedTitle = new String(DOCKER_POST.getTitle());
         String expectedBody = new String(DOCKER_POST.getBody());
         String expectedPublishedDate = new String(DOCKER_POST.getPublishedOn().toString());
-        String expectedUpdatedDate = new String(DOCKER_POST.getUpdatedOn().toString());
         PostResponse expected = new PostResponse(expectedId, expectedTitle, null,
-                null, expectedPublishedDate, expectedUpdatedDate, expectedBody);
+                null, expectedPublishedDate, null, expectedBody);
 
         // act
         PostResponse actual = new PostResponse(DOCKER_POST, ANY_AUTHOR, Collections.emptyList());

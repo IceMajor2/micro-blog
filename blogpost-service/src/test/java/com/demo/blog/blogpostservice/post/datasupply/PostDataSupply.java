@@ -17,7 +17,6 @@ public class PostDataSupply {
             .withBody("Step 1. Install Docker")
             .withCategories(CONTAINERS_CATEGORY)
             .publishedThirtyMinsAgo()
-            .updatedNow()
             .build();
     public static final Post SPRING_POST = new PostBuilder()
             .withId(2L)
