@@ -14,6 +14,7 @@ public class PostConstants {
     public static final String NULL_ID_MSG = "Post ID was null";
     public static final String NULL_REQUEST_MSG = "Request was null";
 
+    public static final String BLANK_MSG = "Post title must be specified";
     public static final String ID_NOT_FOUND_MSG_T = "Post of '%d' ID was not found";
     public static final String TITLE_EXISTS_MSG_T = "Post with '%s' title already exists";
 

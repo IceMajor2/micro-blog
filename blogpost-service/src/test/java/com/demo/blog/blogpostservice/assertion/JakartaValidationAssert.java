@@ -20,10 +20,15 @@ public class JakartaValidationAssert extends AbstractAssert<JakartaValidationAss
         return new JakartaValidationAssert(actual);
     }
 
+    public JakartaValidationAssert containsExceptionMessages(String... errorMessages) {
+        isNotNull();
+        Assertions.assertThat(this.errorMessages).contains(errorMessages);
+        return this;
+    }
+
     public JakartaValidationAssert containsOnlyExceptionMessages(String... errorMessages) {
         isNotNull();
-        Assertions.assertThat(this.errorMessages)
-                .containsOnly(errorMessages);
+        Assertions.assertThat(this.errorMessages).containsOnly(errorMessages);
         return this;
     }
 
