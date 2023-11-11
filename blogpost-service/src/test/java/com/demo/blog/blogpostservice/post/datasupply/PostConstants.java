@@ -21,6 +21,7 @@ public class PostConstants {
     public static final String BODY_BLANK_MSG = "Body must be specified";
     public static final String ID_NOT_FOUND_MSG_T = "Post of '%d' ID was not found";
     public static final String TITLE_EXISTS_MSG_T = "Post with '%s' title already exists";
+    public static final String ALREADY_CATEGORIZED_AS = "Post already is categorized as [%s]";
 
     public static final Comparator<Post> PUBLISHED_DESC_COMPARATOR = Comparator.comparing(Post::getPublishedOn).reversed();
     public static final Comparator<PostResponse> PUBLISHED_DESC_COMPARATOR_DTO = (p1, p2) -> {

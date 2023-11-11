@@ -1,9 +1,11 @@
 package com.demo.blog.blogpostservice.post.command;
 
 import com.demo.blog.blogpostservice.category.Category;
+import com.demo.blog.blogpostservice.category.exception.CategoryExceptionMessage;
 import com.demo.blog.blogpostservice.command.Command;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
+import com.demo.blog.blogpostservice.post.exception.PostAlreadyCategorizedException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -23,6 +25,16 @@ public class AddCategoriesToPostCommand implements Command {
     public Post execute() {
         Objects.requireNonNull(post, NULL_POST_MSG.getMessage());
         Objects.requireNonNull(categories, NULL_CATEGORIES_MSG.getMessage());
+        if (categories.isEmpty())
+            throw new IllegalStateException(CategoryExceptionMessage.CATEGORIES_EMPTY_MSG.getMessage());
+        List<Long> currentCategoryIds = post.getCategories().stream()
+                .map(postCategory -> postCategory.getCategoryId().getId())
+                .toList();
+        List<Long> newCategoryIds = categories.stream()
+                .map(Category::getId)
+                .toList();
+        if(currentCategoryIds.containsAll(newCategoryIds))
+            throw new PostAlreadyCategorizedException(categories);
         categories.forEach(post::addCategory);
         return postRepository.save(post);
     }

@@ -8,6 +8,7 @@ public enum PostExceptionMessage implements ExceptionMessage {
     NULL_REQUEST_MSG("Request was null"),
     NULL_POST_MSG("Post was null"),
 
+    ALREADY_CATEGORIZED_AS("Post already is categorized as [%s]"),
     ID_NOT_FOUND_T("Post of '%d' ID was not found"),
     TITLE_EXISTS_MSG_T("Post with '%s' title already exists");
 

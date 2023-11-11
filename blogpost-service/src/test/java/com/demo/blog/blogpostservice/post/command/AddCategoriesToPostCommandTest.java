@@ -4,6 +4,8 @@ import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
+import com.demo.blog.blogpostservice.post.exception.PostAlreadyCategorizedException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -17,6 +19,7 @@ import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstant
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORIES_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.ALREADY_CATEGORIZED_AS;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.NULL_POST_MSG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -29,11 +32,18 @@ class AddCategoriesToPostCommandTest {
     private AddCategoriesToPostCommand SUT;
     private PostRepository postRepository = mock(PostRepository.class);
 
-    private static final List<Category> categories = List.of(JAVA_CATEGORY, SPRING_CATEGORY);
-    private static final Post post = new PostBuilder().from(DOCKER_POST).replacingCategories(categories).build();
+    private List<Category> categories;
+    private Post post;
+
+    @BeforeEach
+    void setUp() {
+        post = new PostBuilder().from(DOCKER_POST).clearCategories().build();
+        categories = List.of(JAVA_CATEGORY, SPRING_CATEGORY);
+    }
 
     @Test
     void shouldAddCategories() {
+        // arrange
         SUT = new AddCategoriesToPostCommand(postRepository, post, categories);
 
         // act
@@ -74,5 +84,23 @@ class AddCategoriesToPostCommandTest {
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(CATEGORIES_EMPTY_MSG);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNoNewCategoryIsAdded() {
+        // arrange
+        post = new PostBuilder().from(post).replacingCategories(categories).build();
+        SUT = new AddCategoriesToPostCommand(postRepository, post, List.of(SPRING_CATEGORY, JAVA_CATEGORY));
+
+        // act && assert
+        assertThatExceptionOfType(PostAlreadyCategorizedException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(ALREADY_CATEGORIZED_AS.formatted(SPRING_CATEGORY.getName() + ", " + JAVA_CATEGORY.getName()));
+        verify(postRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldSetUpdatedOnWhenSuccessfullyAddingCategory() {
+
     }
 }
