@@ -196,7 +196,6 @@ class PostServiceTest {
         void setUp() {
             when(commandFactory.create(PostCommandCode.ADD_POST, DOCKER_POST_REQUEST, JOHN_SMITH).execute())
                     .thenReturn(DOCKER_POST);
-//            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, JOHN_SMITH.getId()).execute()).thenReturn(JOHN_SMITH);
         }
 
         @Test
