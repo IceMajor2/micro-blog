@@ -262,7 +262,10 @@ class PostServiceTest {
                     .execute()).thenReturn(SPRING_CATEGORY);
             when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
                     .execute()).thenReturn(stub);
-
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getId()).execute())
+                    .thenReturn(ANY_AUTHOR);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, DOCKER_POST.getId()).execute())
+                    .thenReturn(List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY));
         }
 
         @Test
@@ -281,6 +284,33 @@ class PostServiceTest {
                     .usingRecursiveComparison()
                     .comparingOnlyFields("id", "title", "body")
                     .isEqualTo(expected);
+        }
+
+        @Test
+        void shouldMapAuthor() {
+            // arrange
+            AuthorResponse expectedAuthor = new AuthorResponse(new String(ANY_AUTHOR.getUsername()));
+
+            // act
+            PostResponse actual = SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ);
+
+            // assert
+            assertThat(actual.author()).isEqualTo(expectedAuthor);
+        }
+
+        @Test
+        void shouldMapCategories() {
+            // arrange
+            List<CategoryResponse> expectedCategories = List.of(
+                    new CategoryResponse(CONTAINERS_CATEGORY.getId().longValue(), new String(CONTAINERS_CATEGORY.getName())),
+                    new CategoryResponse(SPRING_CATEGORY.getId().longValue(), new String(SPRING_CATEGORY.getName()))
+            );
+
+            // act
+            PostResponse actual = SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ);
+
+            // assert
+            assertThat(actual.categories()).isEqualTo(expectedCategories);
         }
     }
 }
