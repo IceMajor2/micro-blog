@@ -48,4 +48,46 @@ public class PostDataSupply {
                 SPRING_POST
         );
     }
+
+    public static Stream<String> lessThanFiveCharactersTitles() {
+        return Stream.of(
+                "FOUR",
+                "333",
+                "TW"
+        );
+    }
+
+    public static Stream<String> justMoreOrEqualThanFiveCharactersTitles() {
+        return Stream.of(
+                "JUG_1",
+                "Java21",
+                "How-to?"
+        );
+    }
+
+    public static Stream<String> moreThan255CharactersTitles() {
+        return Stream.of(
+                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
+                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " +
+                "natoque penatibus et magnis dis parturient montes, nascetur " +
+                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,.",
+                "A wonderful serenity has taken possession of my entire soul, like " +
+                "these sweet mornings of spring which I enjoy with my whole heart. " +
+                "I am alone, and feel the charm of existence in this spot, " +
+                "which was created for the bliss of souls like mine. I am so happy,."
+        );
+    }
+
+    public static Stream<String> justLessOrEqualThan255CharactersTitles() {
+        return Stream.of(
+                "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
+                "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " +
+                "natoque penatibus et magnis dis parturient montes, nascetur " +
+                "ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis",
+                "A wonderful serenity has taken possession of my entire soul, like " +
+                "these sweet mornings of spring which I enjoy with my whole heart. " +
+                "I am alone, and feel the charm of existence in this spot, " +
+                "which was created for the bliss of souls like mine. I am so happy"
+        );
+    }
 }
