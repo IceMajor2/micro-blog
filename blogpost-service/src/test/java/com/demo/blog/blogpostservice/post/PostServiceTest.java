@@ -228,5 +228,17 @@ class PostServiceTest {
             // assert
             assertThat(actual.author()).isEqualTo(expected);
         }
+
+        @Test
+        void shouldMapEmptyCategoryList() {
+            // arrange
+            List<CategoryResponse> expected = Collections.emptyList();
+
+            // act
+            PostResponse actual = SUT.add(DOCKER_POST_REQUEST, JOHN_SMITH);
+
+            // assert
+            assertThat(actual.categories()).isEqualTo(expected);
+        }
     }
 }
