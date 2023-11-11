@@ -21,4 +21,16 @@ class PostTest {
         // act & assert
         assertThat(post.addCategory(SPRING_CATEGORY)).isFalse();
     }
+
+    @Test
+    void shouldAddCategory() {
+        // arrange
+        Post post = new PostBuilder()
+                .from(SPRING_POST)
+                .clearCategories()
+                .build();
+
+        // act & assert
+        assertThat(post.addCategory(SPRING_CATEGORY)).isTrue();
+    }
 }
