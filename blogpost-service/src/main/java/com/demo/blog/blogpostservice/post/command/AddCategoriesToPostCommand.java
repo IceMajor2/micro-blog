@@ -8,6 +8,7 @@ import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostAlreadyCategorizedException;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +37,7 @@ public class AddCategoriesToPostCommand implements Command {
         if(currentCategoryIds.containsAll(newCategoryIds))
             throw new PostAlreadyCategorizedException(categories);
         categories.forEach(post::addCategory);
+        post.setUpdatedOn(LocalDateTime.now());
         return postRepository.save(post);
     }
 }
