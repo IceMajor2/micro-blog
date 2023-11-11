@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -63,7 +64,7 @@ public class PostServiceImpl implements PostService {
                 .create(PostCommandCode.ADD_POST, request, author)
                 .execute();
         log.info(STR. "Added post: '\{ persisted }'" );
-        return new PostResponse(persisted, author, List.of());
+        return new PostResponse(persisted, author, Collections.emptyList());
     }
 
     @Override
