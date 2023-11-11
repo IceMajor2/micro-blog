@@ -5,6 +5,7 @@ import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostAlreadyCategorizedException;
+import com.demo.blog.blogpostservice.postcategory.command.AddCategoriesToPostCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
