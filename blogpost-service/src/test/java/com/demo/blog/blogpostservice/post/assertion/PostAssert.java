@@ -1,11 +1,14 @@
 package com.demo.blog.blogpostservice.post.assertion;
 
+import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
+import org.springframework.data.util.Streamable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostAssert extends AbstractAssert<PostAssert, Post> {
 
@@ -53,11 +56,14 @@ public class PostAssert extends AbstractAssert<PostAssert, Post> {
         return this;
     }
 
-    public PostAssert categorizedAs(Iterable<PostCategory> expected) {
+    public PostAssert categorizedAs(Iterable<Category> expected) {
         isNotNull();
+        List<PostCategory> expectedPostCategories = Streamable.of(expected)
+                .map(category -> new PostCategory(null, category.getId(), actual.getId()))
+                .toList();
         Assertions.assertThat(actual.getCategories())
-                .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyElementsOf(expected);
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .containsExactlyElementsOf(expectedPostCategories);
         return this;
     }
 
