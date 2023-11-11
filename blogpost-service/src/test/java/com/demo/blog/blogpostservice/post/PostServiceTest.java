@@ -196,6 +196,7 @@ class PostServiceTest {
         void setUp() {
             when(commandFactory.create(PostCommandCode.ADD_POST, DOCKER_POST_REQUEST, JOHN_SMITH).execute())
                     .thenReturn(DOCKER_POST);
+//            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, JOHN_SMITH.getId()).execute()).thenReturn(JOHN_SMITH);
         }
 
         @Test
@@ -214,6 +215,18 @@ class PostServiceTest {
                     .usingRecursiveComparison()
                     .comparingOnlyFields("id", "title", "body")
                     .isEqualTo(expected);
+        }
+
+        @Test
+        void shouldMapAuthor() {
+            // arrange
+            AuthorResponse expected = new AuthorResponse(new String(JOHN_SMITH.getUsername()));
+
+            // act
+            PostResponse actual = SUT.add(DOCKER_POST_REQUEST, JOHN_SMITH);
+
+            // assert
+            assertThat(actual.author()).isEqualTo(expected);
         }
     }
 }
