@@ -6,13 +6,15 @@ import com.demo.blog.blogpostservice.post.dto.PostRequest;
 
 import java.util.stream.Stream;
 
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
 
 public class PostDataSupply {
 
     public static final Post DOCKER_POST = new PostBuilder()
             .withId(1L)
-            .withAuthor(10L)
+            .withAuthor(ANY_AUTHOR.getId())
             .withTitle("Dockerizing a Spring Boot application")
             .withBody("Step 1. Install Docker")
             .withCategories(CONTAINERS_CATEGORY)
@@ -20,7 +22,7 @@ public class PostDataSupply {
             .build();
     public static final Post SPRING_POST = new PostBuilder()
             .withId(2L)
-            .withAuthor(3L)
+            .withAuthor(JOHN_SMITH.getId())
             .withTitle("Spring & Spring Boot: what's the difference?")
             .withBody("Oftentimes, both of the terms are used interchangeably. However, ...")
             .publishedHourAgo()
