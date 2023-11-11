@@ -23,8 +23,7 @@ import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.J
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORY_RESPONSE_COMPARATOR;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
-import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
-import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.*;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -56,14 +55,16 @@ class PostServiceTest {
             long expectedId = DOCKER_POST.getId().longValue();
             String expectedTitle = new String(DOCKER_POST.getTitle());
             String expectedBody = new String(DOCKER_POST.getBody());
+            PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
 
             // act
             PostResponse actual = SUT.getById(DOCKER_POST.getId());
 
             // assert
-            assertThat(actual.id()).isEqualTo(expectedId);
-            assertThat(actual.title()).isEqualTo(expectedTitle);
-            assertThat(actual.body()).isEqualTo(expectedBody);
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .comparingOnlyFields("id", "title", "body")
+                    .isEqualTo(expected);
         }
 
         @Test
@@ -185,6 +186,34 @@ class PostServiceTest {
                     .usingRecursiveFieldByFieldElementComparatorOnFields("name")
                     .allSatisfy(list -> assertThat(list).isSortedAccordingTo(CATEGORY_RESPONSE_COMPARATOR))
                     .containsExactlyElementsOf(expected);
+        }
+    }
+
+    @Nested
+    class Add {
+
+        @BeforeEach
+        void setUp() {
+            when(commandFactory.create(PostCommandCode.ADD_POST, DOCKER_POST_REQUEST, JOHN_SMITH).execute())
+                    .thenReturn(DOCKER_POST);
+        }
+
+        @Test
+        void shouldMapPost() {
+            // arrange
+            long expectedId = DOCKER_POST.getId().longValue();
+            String expectedTitle = new String(DOCKER_POST.getTitle());
+            String expectedBody = new String(DOCKER_POST.getBody());
+            PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
+
+            // act
+            PostResponse actual = SUT.add(DOCKER_POST_REQUEST, JOHN_SMITH);
+
+            // assert
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .comparingOnlyFields("id", "title", "body")
+                    .isEqualTo(expected);
         }
     }
 }
