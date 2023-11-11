@@ -59,7 +59,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse add(PostRequest request, Author author) {
-        return null;
+        Post persisted = (Post) commandFactory
+                .create(PostCommandCode.ADD_POST, request, author)
+                .execute();
+        log.info(STR. "Added post: '\{ persisted }'" );
+        return new PostResponse(persisted, new Author(), List.of());
     }
 
     @Override
