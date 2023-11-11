@@ -103,6 +103,11 @@ public class PostBuilder {
         return this;
     }
 
+    public PostBuilder clearCategories() {
+        this.categories.clear();
+        return this;
+    }
+
     public PostBuilder withAuthor(long authorId) {
         this.author = AggregateReference.to(authorId);
         return this;
