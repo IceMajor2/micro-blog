@@ -17,13 +17,8 @@ class PostTest {
                 .from(SPRING_POST)
                 .replacingCategories(Collections.singleton(SPRING_CATEGORY))
                 .build();
-        int initialSize = post.getCategories().size();
 
-        // act
-        post.addCategory(SPRING_CATEGORY);
-
-        // assert
-        int expectedSize = post.getCategories().size();
-        assertThat(initialSize).isEqualTo(expectedSize);
+        // act & assert
+        assertThat(post.addCategory(SPRING_CATEGORY)).isFalse();
     }
 }
