@@ -12,6 +12,7 @@ public class PostConstants {
     public static final String API_POST_SLASH = "/api/post/";
 
     public static final String NULL_ID_MSG = "Post ID was null";
+    public static final String NULL_POST_MSG = "Post was null";
     public static final String NULL_REQUEST_MSG = "Request was null";
 
     public static final String TITLE_BLANK_MSG = "Post title must be specified";
