@@ -19,8 +19,7 @@ import java.util.List;
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORIES_EMPTY_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORIES_MSG;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.ALREADY_CATEGORIZED_AS;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.NULL_POST_MSG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
@@ -111,5 +110,19 @@ class AddCategoriesToPostCommandTest {
 
         // assert
         assertThat(post).updatedOn(LocalDateTime.now());
+    }
+
+    @Test
+    void shouldAddOnlyNewCategoriesAndDoNothingOnAlreadyExistingOnes() {
+        // arrange
+        post = new PostBuilder().from(DOCKER_POST).replacingCategories(categories).build();
+        List<Category> newCategories = List.of(CONCURRENCY_CATEGORY, SPRING_CATEGORY);
+        SUT = new AddCategoriesToPostCommand(postRepository, post, newCategories);
+
+        // act
+        SUT.execute();
+
+        // assert
+        verify(postRepository, times(1)).save(post);
     }
 }
