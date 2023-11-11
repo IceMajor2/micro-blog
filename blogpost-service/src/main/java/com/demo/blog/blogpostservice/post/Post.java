@@ -5,6 +5,7 @@ import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import com.demo.blog.blogpostservice.category.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -22,6 +23,7 @@ public class Post {
     @Id
     private Long id;
     private String title;
+    @ToString.Exclude
     private String body;
     private LocalDateTime publishedOn;
     private LocalDateTime updatedOn;
