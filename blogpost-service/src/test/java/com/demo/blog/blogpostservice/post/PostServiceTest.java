@@ -3,7 +3,6 @@ package com.demo.blog.blogpostservice.post;
 import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.author.dto.AuthorResponse;
 import com.demo.blog.blogpostservice.category.Category;
-import com.demo.blog.blogpostservice.category.datasupply.CategoryConstants;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
@@ -21,6 +20,7 @@ import java.util.List;
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORY_RESPONSE_COMPARATOR;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
@@ -96,7 +96,7 @@ class PostServiceTest {
             // assert
             assertThat(actual.categories())
                     .isNotEmpty()
-                    .isSortedAccordingTo(CategoryConstants.CATEGORY_RESPONSE_COMPARATOR)
+                    .isSortedAccordingTo(CATEGORY_RESPONSE_COMPARATOR)
                     .containsExactlyInAnyOrderElementsOf(expected);
         }
     }
@@ -126,9 +126,9 @@ class PostServiceTest {
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, older.getId()).execute())
                     .thenReturn(JOHN_SMITH);
             when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, newer.getId()).execute())
-                    .thenReturn(Collections.emptyList());
+                    .thenReturn(List.of(CONTAINERS_CATEGORY));
             when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, older.getId()).execute())
-                    .thenReturn(Collections.emptyList());
+                    .thenReturn(List.of(CONCURRENCY_CATEGORY, THREADS_CATEGORY));
         }
 
         @Test
@@ -183,6 +183,7 @@ class PostServiceTest {
             assertThat(actual)
                     .map(PostResponse::categories)
                     .usingRecursiveFieldByFieldElementComparatorOnFields("name")
+                    .allSatisfy(list -> assertThat(list).isSortedAccordingTo(CATEGORY_RESPONSE_COMPARATOR))
                     .containsExactlyElementsOf(expected);
         }
     }
