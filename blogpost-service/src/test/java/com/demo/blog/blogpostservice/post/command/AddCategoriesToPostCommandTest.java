@@ -12,9 +12,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORIES_EMPTY_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORIES_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
@@ -90,17 +92,24 @@ class AddCategoriesToPostCommandTest {
     void shouldThrowExceptionWhenNoNewCategoryIsAdded() {
         // arrange
         post = new PostBuilder().from(post).replacingCategories(categories).build();
-        SUT = new AddCategoriesToPostCommand(postRepository, post, List.of(SPRING_CATEGORY, JAVA_CATEGORY));
+        SUT = new AddCategoriesToPostCommand(postRepository, post, categories);
 
-        // act && assert
+        // act & assert
         assertThatExceptionOfType(PostAlreadyCategorizedException.class)
                 .isThrownBy(() -> SUT.execute())
-                .withMessage(ALREADY_CATEGORIZED_AS.formatted(SPRING_CATEGORY.getName() + ", " + JAVA_CATEGORY.getName()));
+                .withMessage(ALREADY_CATEGORIZED_AS.formatted(JAVA_CATEGORY.getName() + ", " + SPRING_CATEGORY.getName()));
         verify(postRepository, never()).save(any());
     }
 
     @Test
     void shouldSetUpdatedOnWhenSuccessfullyAddingCategory() {
+        // arrange
+        SUT = new AddCategoriesToPostCommand(postRepository, post, categories);
 
+        // act
+        SUT.execute();
+
+        // assert
+        assertThat(post).updatedOn(LocalDateTime.now());
     }
 }
