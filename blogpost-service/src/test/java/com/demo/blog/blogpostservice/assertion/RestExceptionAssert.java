@@ -1,7 +1,7 @@
 package com.demo.blog.blogpostservice.assertion;
 
 import com.demo.blog.blogpostservice.exception.ApiException;
-import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
+import com.demo.blog.blogpostservice.exception.dto.ApiExceptionDTO;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.springframework.http.HttpStatus;

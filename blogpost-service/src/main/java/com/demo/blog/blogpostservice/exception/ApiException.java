@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.exception;
 
+import com.demo.blog.blogpostservice.exception.dto.ApiExceptionDTO;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 

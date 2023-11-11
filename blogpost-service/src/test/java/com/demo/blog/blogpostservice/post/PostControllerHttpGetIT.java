@@ -5,7 +5,7 @@ import com.demo.blog.blogpostservice.author.AuthorRepository;
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.config.BaseIntegrationTest;
-import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
+import com.demo.blog.blogpostservice.exception.dto.ApiExceptionDTO;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

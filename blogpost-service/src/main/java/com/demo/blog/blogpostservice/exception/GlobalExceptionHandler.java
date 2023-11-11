@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.exception;
 
+import com.demo.blog.blogpostservice.exception.dto.ApiExceptionDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;

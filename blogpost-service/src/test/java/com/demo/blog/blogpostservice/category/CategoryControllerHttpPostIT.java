@@ -3,7 +3,7 @@ package com.demo.blog.blogpostservice.category;
 import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.config.BaseIntegrationTest;
-import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
+import com.demo.blog.blogpostservice.exception.dto.ApiExceptionDTO;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;

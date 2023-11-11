@@ -1,5 +1,6 @@
-package com.demo.blog.blogpostservice.exception;
+package com.demo.blog.blogpostservice.exception.dto;
 
+import com.demo.blog.blogpostservice.exception.ApiException;
 import lombok.Data;
 
 @Data

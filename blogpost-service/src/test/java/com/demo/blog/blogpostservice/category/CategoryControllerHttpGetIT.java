@@ -2,7 +2,7 @@ package com.demo.blog.blogpostservice.category;
 
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
 import com.demo.blog.blogpostservice.config.BaseIntegrationTest;
-import com.demo.blog.blogpostservice.exception.ApiExceptionDTO;
+import com.demo.blog.blogpostservice.exception.dto.ApiExceptionDTO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
