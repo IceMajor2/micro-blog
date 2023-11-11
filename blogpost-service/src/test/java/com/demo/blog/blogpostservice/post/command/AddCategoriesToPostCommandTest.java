@@ -10,8 +10,10 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORIES_EMPTY_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORIES_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
@@ -61,5 +63,16 @@ class AddCategoriesToPostCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(NULL_CATEGORIES_MSG);
+    }
+
+    @Test
+    void shouldThrowExceptionOnCategoriesEmpty() {
+        // arrange
+        SUT = new AddCategoriesToPostCommand(postRepository, post, Collections.emptyList());
+
+        // act & assert
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(CATEGORIES_EMPTY_MSG);
     }
 }
