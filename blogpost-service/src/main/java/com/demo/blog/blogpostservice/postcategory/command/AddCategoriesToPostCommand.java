@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.post.command;
+package com.demo.blog.blogpostservice.postcategory.command;
 
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.exception.CategoryExceptionMessage;
