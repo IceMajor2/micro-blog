@@ -5,6 +5,8 @@ import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 
+import java.time.LocalDateTime;
+
 public class PostAssert extends AbstractAssert<PostAssert, Post> {
 
     public PostAssert(Post actual) {
@@ -36,6 +38,18 @@ public class PostAssert extends AbstractAssert<PostAssert, Post> {
         Assertions.assertThat(actual.getBody())
                 .as("body")
                 .isEqualTo(expected);
+        return this;
+    }
+
+    public PostAssert updatedOn(LocalDateTime expected) {
+        isNotNull();
+        Assertions.assertThat(actual.getUpdatedOn())
+                .as("updatedOn")
+                .hasYear(expected.getYear())
+                .hasMonth(expected.getMonth())
+                .hasDayOfMonth(expected.getDayOfMonth())
+                .hasHour(expected.getHour())
+                .hasMinute(expected.getMinute());
         return this;
     }
 
