@@ -5,17 +5,22 @@ import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.command.*;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.command.*;
+import com.demo.blog.blogpostservice.postcategory.command.AddCategoriesToPostCommand;
+import com.demo.blog.blogpostservice.postcategory.command.PostCategoryCommandCode;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_STRING;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST_REQUEST;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -128,6 +133,19 @@ class CommandFactoryTest {
 
             // assert
             assertThat(actual).isInstanceOf(AddPostCommand.class);
+        }
+    }
+
+    @Nested
+    class PostCategoryCommand {
+
+        @Test
+        void shouldReturnAddCategoriesToPostCommand() {
+            // act
+            Command actual = SUT.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, SPRING_POST, List.of(SPRING_CATEGORY));
+
+            // assert
+            assertThat(actual).isInstanceOf(AddCategoriesToPostCommand.class);
         }
     }
 }
