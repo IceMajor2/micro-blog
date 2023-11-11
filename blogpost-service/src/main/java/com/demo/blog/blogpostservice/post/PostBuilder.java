@@ -78,6 +78,11 @@ public class PostBuilder {
         return this;
     }
 
+    public PostBuilder updatedFifteenMinsAgo() {
+        this.updatedOn = LocalDateTime.now().minus(15, ChronoUnit.MINUTES);
+        return this;
+    }
+
     public PostBuilder withCategory(PostCategory category) {
         this.categories.add(category);
         return this;
