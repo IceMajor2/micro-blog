@@ -8,11 +8,16 @@ import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.category.command.*;
 import com.demo.blog.blogpostservice.category.dto.CategoryRequest;
+import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.command.*;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
+import com.demo.blog.blogpostservice.postcategory.command.AddCategoriesToPostCommand;
+import com.demo.blog.blogpostservice.postcategory.command.PostCategoryCommandCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -44,6 +49,8 @@ public class CommandFactory {
                 return new GetPostCategoriesCommand(categoryRepository, postRepository, (Long) params[0]);
             case PostCommandCode.ADD_POST:
                 return new AddPostCommand(postRepository, (PostRequest) params[0], (Author) params[1]);
+            case PostCategoryCommandCode.ADD_CATEGORIES_TO_POST:
+                return new AddCategoriesToPostCommand(postRepository, (Post) params[0], (List<Category>) params[1]);
             case AuthorCommandCode.GET_AUTHOR:
                 return new GetAuthorByIdCommand(authorRepository, (Long) params[0]);
             default:
