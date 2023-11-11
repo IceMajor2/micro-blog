@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
                 .create(PostCommandCode.ADD_POST, request, author)
                 .execute();
         log.info(STR. "Added post: '\{ persisted }'" );
-        return new PostResponse(persisted, new Author(), List.of());
+        return new PostResponse(persisted, author, List.of());
     }
 
     @Override
