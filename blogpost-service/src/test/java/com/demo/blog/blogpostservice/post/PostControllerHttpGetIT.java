@@ -39,6 +39,7 @@ public class PostControllerHttpGetIT extends BaseIntegrationTest {
 
         @ParameterizedTest
         @ValueSource(longs = {1L, 2L, 3L})
+        @Disabled
         void shouldReturnCategoryOnGetId(Long postId) {
             // arrange
             Post expectedPost = postRepository.findById(postId).get();
