@@ -8,6 +8,7 @@ public enum CategoryExceptionMessage implements ExceptionMessage {
     NULL_ID_MSG("Category ID was null"),
     NULL_REQUEST_MSG("Request was null"),
     NULL_OLD_CATEGORY_MSG("Category specified to be replaced was null"),
+    NULL_CATEGORIES_MSG("Categories were null"),
 
     EXISTS_MSG_T("Category '%s' already exists"),
     NOT_FOUND_ID_MSG_T("Category of '%d' ID was not found"),
