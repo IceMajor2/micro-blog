@@ -25,11 +25,12 @@ import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.A
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORY_RESPONSE_COMPARATOR;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
+import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.*;
 import static com.demo.blog.blogpostservice.postcategory.datasupply.PostCategoryDataSupply.DOCKER_W_CONTAINERS_SPRING_REQ;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -397,6 +398,23 @@ class PostServiceTest {
 
             // assert
             assertThat(actual.categories()).isEqualTo(expectedCategories);
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class DeletePost {
+
+        @Test
+        void shouldExecuteDeleteCommand() {
+            // arrange
+            when(commandFactory.create(PostCommandCode.DELETE_POST, ANY_LONG).execute()).thenReturn(DOCKER_POST);
+
+            // act
+            SUT.delete(ANY_LONG);
+
+            // assert
+            verify(commandFactory.create(PostCommandCode.DELETE_POST, ANY_LONG), times(1)).execute();
         }
     }
 }
