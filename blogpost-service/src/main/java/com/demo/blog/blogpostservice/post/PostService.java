@@ -18,6 +18,8 @@ public interface PostService {
 
     PostResponse add(PostRequest request, Author author);
 
+    void delete(Long id);
+
     PostResponse addCategory(PostCategoryRequest request);
 
     PostResponse replaceBody(PostBodyRequest request);

@@ -71,6 +71,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void delete(Long id) {
+        Post deleted = (Post) commandFactory
+                .create(PostCommandCode.DELETE_POST, id)
+                .execute();
+        log.info(STR. "Deleted post: '\{ deleted }'");
+    }
+
+    @Override
     public PostResponse addCategory(PostCategoryRequest request) {
         Post post = (Post) commandFactory
                 .create(PostCommandCode.GET_POST_BY_ID, request.postId())
