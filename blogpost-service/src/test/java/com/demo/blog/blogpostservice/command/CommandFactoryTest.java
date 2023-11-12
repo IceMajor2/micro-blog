@@ -142,6 +142,15 @@ class CommandFactoryTest {
             // assert
             assertThat(actual).isInstanceOf(ReplacePostBodyCommand.class);
         }
+
+        @Test
+        void shouldReturnDeletePostCommand() {
+            // act
+            Command actual = SUT.create(PostCommandCode.DELETE_POST, ANY_LONG);
+
+            // assert
+            assertThat(actual).isInstanceOf(DeleteCategoryCommand.class);
+        }
     }
 
     @Nested
