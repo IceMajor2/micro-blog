@@ -20,8 +20,7 @@ import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.J
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_STRING;
-import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
-import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST_REQUEST;
+import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -133,6 +132,15 @@ class CommandFactoryTest {
 
             // assert
             assertThat(actual).isInstanceOf(AddPostCommand.class);
+        }
+
+        @Test
+        void shouldReturnReplacePostBodyCommand() {
+            // act
+            Command actual = SUT.create(PostCommandCode.REPLACE_POST_BODY, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body());
+
+            // assert
+            assertThat(actual).isInstanceOf(ReplacePostBodyCommand.class);
         }
     }
 
