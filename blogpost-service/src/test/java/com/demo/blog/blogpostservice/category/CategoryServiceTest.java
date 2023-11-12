@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @TestClassOrder(ClassOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
@@ -115,5 +115,19 @@ class CategoryServiceTest {
 
         // assert
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void shouldExecuteDeleteCommand() {
+        // arrange
+        when(commandFactory.create(CategoryCommandCode.DELETE_CATEGORY, CONTAINERS_CATEGORY.getId()).execute())
+                .thenReturn(CONTAINERS_CATEGORY);
+
+        // act
+        SUT.delete(CONTAINERS_CATEGORY.getId());
+
+        // verify
+        verify(commandFactory.create(CategoryCommandCode.DELETE_CATEGORY, CONTAINERS_CATEGORY.getId()), times(1))
+                .execute();
     }
 }
