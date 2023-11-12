@@ -89,6 +89,7 @@ public class PostServiceImpl implements PostService {
         List<Category> categories = (List<Category>) commandFactory
                 .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
                 .execute();
+        log.info(STR. "New categories have been associated with the post '\{ persisted }'");
         return new PostResponse(persisted, author, categories);
     }
 }
