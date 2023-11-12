@@ -11,10 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+
+import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_STRING;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.NEW_DOCKER_BODY_REQUEST;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -37,7 +41,7 @@ class ReplacePostBodyCommandTest {
         SUT.execute();
 
         // assert
-        verify(postRepository, times(1)).save(expectedToSave);
+        verify(postRepository, times(1)).save(refEq(expectedToSave, "updatedOn"));
     }
 
     @Test
@@ -60,5 +64,17 @@ class ReplacePostBodyCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(PostConstants.NULL_POST_MSG);
+    }
+
+    @Test
+    void shouldSetUpdatedOnWhenSuccessful() {
+        // arrange
+        SUT = new ReplacePostBodyCommand(postRepository, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body());
+
+        // act
+        SUT.execute();
+
+        // assert
+        assertThat(DOCKER_POST).updatedOn(LocalDateTime.now());
     }
 }
