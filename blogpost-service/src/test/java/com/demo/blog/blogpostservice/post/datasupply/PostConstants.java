@@ -14,6 +14,7 @@ public class PostConstants {
     public static final String NULL_ID_MSG = "Post ID was null";
     public static final String NULL_POST_MSG = "Post was null";
     public static final String NULL_REQUEST_MSG = "Request was null";
+    public static final String NULL_ID_REQUEST_MSG = "Post must be specified";
 
     public static final String TITLE_BLANK_MSG = "Post title must be specified";
     public static final String TOO_SHORT_MSG = "Post title must be at least 5 character long";
