@@ -337,4 +337,66 @@ class PostServiceTest {
                     .isThrownBy(() -> SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ));
         }
     }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class ReplaceBody {
+
+        @BeforeEach
+        void setUp() {
+            Post stub = new PostBuilder().from(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, NEW_DOCKER_BODY_REQUEST.postId())
+                    .execute()).thenReturn(DOCKER_POST);
+            when(commandFactory.create(PostCommandCode.REPLACE_POST_BODY, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body())
+                    .execute()).thenReturn(stub);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getId()).execute())
+                    .thenReturn(ANY_AUTHOR);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, DOCKER_POST.getId()).execute())
+                    .thenReturn(List.of(CONTAINERS_CATEGORY));
+        }
+
+        @Test
+        void shouldMapPost() {
+            // arrange
+            long expectedId = DOCKER_POST.getId().longValue();
+            String expectedTitle = new String(DOCKER_POST.getTitle());
+            String expectedBody = new String(NEW_DOCKER_BODY_REQUEST.body());
+            PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
+
+            // act
+            PostResponse actual = SUT.replaceBody(NEW_DOCKER_BODY_REQUEST);
+
+            // assert
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .comparingOnlyFields("id", "title", "body")
+                    .isEqualTo(expected);
+        }
+
+        @Test
+        void shouldMapAuthor() {
+            // arrange
+            AuthorResponse expectedAuthor = new AuthorResponse(new String(ANY_AUTHOR.getUsername()));
+
+            // act
+            PostResponse actual = SUT.replaceBody(NEW_DOCKER_BODY_REQUEST);
+
+            // assert
+            assertThat(actual.author()).isEqualTo(expectedAuthor);
+        }
+
+        @Test
+        void shouldMapCategories() {
+            // arrange
+            List<CategoryResponse> expectedCategories = List.of(
+                    new CategoryResponse(CONTAINERS_CATEGORY.getId().longValue(), new String(CONTAINERS_CATEGORY.getName()))
+            );
+
+            // act
+            PostResponse actual = SUT.replaceBody(NEW_DOCKER_BODY_REQUEST);
+
+            // assert
+            assertThat(actual.categories()).isEqualTo(expectedCategories);
+        }
+    }
 }

@@ -99,6 +99,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse replaceBody(PostBodyRequest request) {
-        return null;
+        Post post = (Post) commandFactory
+                .create(PostCommandCode.GET_POST_BY_ID, request.postId())
+                .execute();
+        Post persisted = (Post) commandFactory
+                .create(PostCommandCode.REPLACE_POST_BODY, post, request.body())
+                .execute();
+        Author author = (Author) commandFactory
+                .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
+                .execute();
+        List<Category> categories = (List<Category>) commandFactory
+                .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                .execute();
+        log.info(STR. "Post '\{ persisted }' body has been updated");
+        return new PostResponse(persisted, author, categories);
     }
 }
