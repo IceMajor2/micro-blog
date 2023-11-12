@@ -28,12 +28,12 @@ public class PostDataSupply {
             .publishedHourAgo()
             .build();
     public static final PostRequest SPRING_POST_REQUEST = new PostRequest(
-            "Spring & Spring Boot: what's the difference?",
-            "Oftentimes, both of the terms are used interchangeably. However, ..."
+            new String(SPRING_POST.getTitle()),
+            new String(SPRING_POST.getBody())
     );
     public static final PostRequest DOCKER_POST_REQUEST = new PostRequest(
-            "Dockerizing a Spring Boot application",
-            "Step 1. Install Docker"
+            new String(DOCKER_POST.getTitle()),
+            new String(DOCKER_POST.getBody())
     );
 
     public static Stream<PostRequest> validPostRequests() {
