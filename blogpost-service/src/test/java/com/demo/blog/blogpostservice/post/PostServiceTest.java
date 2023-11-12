@@ -5,6 +5,7 @@ import com.demo.blog.blogpostservice.author.dto.AuthorResponse;
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.command.CategoryCommandCode;
 import com.demo.blog.blogpostservice.category.dto.CategoryResponse;
+import com.demo.blog.blogpostservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
@@ -27,6 +28,7 @@ import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupp
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.*;
 import static com.demo.blog.blogpostservice.postcategory.datasupply.PostCategoryDataSupply.DOCKER_W_CONTAINERS_SPRING_REQ;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.when;
 
 @TestClassOrder(ClassOrderer.Random.class)
@@ -251,17 +253,16 @@ class PostServiceTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class AddCategories {
 
+        private Post stub = new PostBuilder().from(DOCKER_POST).withCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
+
         @BeforeEach
         void setUp() {
-            Post stub = new PostBuilder().from(DOCKER_POST).withCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
             when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.postId())
                     .execute()).thenReturn(DOCKER_POST);
             when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.categoryIds().get(0))
                     .execute()).thenReturn(CONTAINERS_CATEGORY);
             when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.categoryIds().get(1))
                     .execute()).thenReturn(SPRING_CATEGORY);
-            when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
-                    .execute()).thenReturn(stub);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, DOCKER_POST.getId()).execute())
                     .thenReturn(ANY_AUTHOR);
             when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, DOCKER_POST.getId()).execute())
@@ -275,6 +276,10 @@ class PostServiceTest {
             String expectedTitle = new String(DOCKER_POST.getTitle());
             String expectedBody = new String(DOCKER_POST.getBody());
             PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
+
+            Post stub = new PostBuilder().from(DOCKER_POST).withCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
+            when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(stub);
 
             // act
             PostResponse actual = SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ);
@@ -291,6 +296,9 @@ class PostServiceTest {
             // arrange
             AuthorResponse expectedAuthor = new AuthorResponse(new String(ANY_AUTHOR.getUsername()));
 
+            when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(stub);
+
             // act
             PostResponse actual = SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ);
 
@@ -306,11 +314,27 @@ class PostServiceTest {
                     new CategoryResponse(SPRING_CATEGORY.getId().longValue(), new String(SPRING_CATEGORY.getName()))
             );
 
+            when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(stub);
+
             // act
             PostResponse actual = SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ);
 
             // assert
             assertThat(actual.categories()).isEqualTo(expectedCategories);
+        }
+
+        @Test
+        void categoryNotFoundShouldNotInterruptTheRest() {
+            // arrange
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, DOCKER_W_CONTAINERS_SPRING_REQ.categoryIds().get(0))
+                    .execute()).thenThrow(new CategoryNotFoundException(CONTAINERS_CATEGORY.getId()));
+            when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(SPRING_CATEGORY))
+                    .execute()).thenReturn(stub);
+
+            // act & assert
+            assertThatNoException()
+                    .isThrownBy(() -> SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ));
         }
     }
 }
