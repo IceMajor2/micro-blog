@@ -9,8 +9,11 @@ import com.demo.blog.blogpostservice.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.util.Streamable;
 
 import java.util.List;
@@ -21,16 +24,19 @@ import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.ID_NOT
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.NULL_ID_MSG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.Random.class)
+@ExtendWith(MockitoExtension.class)
 class GetPostCategoriesCommandTest {
 
     private GetPostCategoriesCommand SUT;
 
-    private CategoryRepository categoryRepository = mock(CategoryRepository.class);
-    private PostRepository postRepository = mock(PostRepository.class);
+    @Mock
+    private CategoryRepository categoryRepository;
+
+    @Mock
+    private PostRepository postRepository;
 
     @Test
     void shouldReturnPostCategories() {

@@ -5,13 +5,13 @@ import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.exception.PostAlreadyExistsException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.NULL_AUTHOR_MSG;
@@ -27,12 +27,9 @@ import static org.mockito.Mockito.*;
 public class AddPostCommandTest {
 
     private AddPostCommand SUT;
-    private PostRepository postRepository;
 
-    @BeforeEach
-    void setUp() {
-        postRepository = mock(PostRepository.class);
-    }
+    @Mock
+    private PostRepository postRepository;
 
     @ParameterizedTest
     @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#validPostRequests")

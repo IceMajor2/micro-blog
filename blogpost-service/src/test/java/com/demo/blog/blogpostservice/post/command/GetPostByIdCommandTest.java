@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -17,7 +18,6 @@ import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.ID_NOT_FOUND_MSG_T;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.Random.class)
@@ -26,7 +26,8 @@ class GetPostByIdCommandTest {
 
     private GetPostByIdCommand SUT;
 
-    private PostRepository postRepository = mock(PostRepository.class);
+    @Mock
+    private PostRepository postRepository;
 
     @Test
     void shouldReturnPost() {

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,8 @@ import static org.mockito.Mockito.*;
 class AddCategoriesToPostCommandTest {
 
     private AddCategoriesToPostCommand SUT;
-    private PostRepository postRepository = mock(PostRepository.class);
+    @Mock
+    private PostRepository postRepository;
 
     private List<Category> categories;
     private Post post;
