@@ -14,6 +14,7 @@ public class ReplacePostBodyCommand implements Command {
 
     @Override
     public Post execute() {
-        return null;
+        post.setBody(newBody);
+        return repository.save(post);
     }
 }
