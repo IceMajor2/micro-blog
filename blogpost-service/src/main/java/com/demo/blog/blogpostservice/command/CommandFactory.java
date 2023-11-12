@@ -51,6 +51,8 @@ public class CommandFactory {
                 return new AddPostCommand(postRepository, (PostRequest) params[0], (Author) params[1]);
             case PostCommandCode.REPLACE_POST_BODY:
                 return new ReplacePostBodyCommand(postRepository, (Post) params[0], (String) params[1]);
+            case PostCommandCode.DELETE_POST:
+                return new DeletePostCommand(postRepository, (Long) params[0]);
             case PostCategoryCommandCode.ADD_CATEGORIES_TO_POST:
                 return new AddCategoriesToPostCommand(postRepository, (Post) params[0], (List<Category>) params[1]);
             case AuthorCommandCode.GET_AUTHOR:
