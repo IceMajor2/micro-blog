@@ -4,6 +4,7 @@ import com.demo.blog.blogpostservice.author.Author;
 import com.demo.blog.blogpostservice.author.command.AuthorCommandCode;
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.command.CategoryCommandCode;
+import com.demo.blog.blogpostservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
@@ -74,11 +75,13 @@ public class PostServiceImpl implements PostService {
                 .create(PostCommandCode.GET_POST_BY_ID, request.postId())
                 .execute();
         List<Category> newCategories = new ArrayList<>();
-        for(Long categoryId : request.categoryIds()) {
-            Category category = (Category) commandFactory
-                    .create(CategoryCommandCode.GET_CATEGORY_BY_ID, categoryId)
-                    .execute();
-            newCategories.add(category);
+        for (Long categoryId : request.categoryIds()) {
+            try {
+                Category category = (Category) commandFactory
+                        .create(CategoryCommandCode.GET_CATEGORY_BY_ID, categoryId)
+                        .execute();
+                newCategories.add(category);
+            } catch (CategoryNotFoundException e) {}
         }
         Post persisted = (Post) commandFactory
                 .create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, post, newCategories)
@@ -89,7 +92,7 @@ public class PostServiceImpl implements PostService {
         List<Category> categories = (List<Category>) commandFactory
                 .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
                 .execute();
-        log.info(STR. "New categories have been associated with the post '\{ persisted }'");
+        log.info(STR. "New categories have been associated with the post '\{ persisted }'" );
         return new PostResponse(persisted, author, categories);
     }
 }
