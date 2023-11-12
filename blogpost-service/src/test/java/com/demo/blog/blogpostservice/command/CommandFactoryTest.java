@@ -149,7 +149,7 @@ class CommandFactoryTest {
             Command actual = SUT.create(PostCommandCode.DELETE_POST, ANY_LONG);
 
             // assert
-            assertThat(actual).isInstanceOf(DeleteCategoryCommand.class);
+            assertThat(actual).isInstanceOf(DeletePostCommand.class);
         }
     }
 
