@@ -7,6 +7,7 @@ import com.demo.blog.blogpostservice.category.command.CategoryCommandCode;
 import com.demo.blog.blogpostservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
+import com.demo.blog.blogpostservice.post.dto.PostBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import com.demo.blog.blogpostservice.postcategory.command.PostCategoryCommandCode;
@@ -94,5 +95,10 @@ public class PostServiceImpl implements PostService {
                 .execute();
         log.info(STR. "New categories have been associated with the post '\{ persisted }'" );
         return new PostResponse(persisted, author, categories);
+    }
+
+    @Override
+    public PostResponse replaceBody(PostBodyRequest request) {
+        return null;
     }
 }

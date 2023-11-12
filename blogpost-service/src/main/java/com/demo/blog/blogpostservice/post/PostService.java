@@ -1,6 +1,7 @@
 package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.Author;
+import com.demo.blog.blogpostservice.post.dto.PostBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import com.demo.blog.blogpostservice.postcategory.dto.PostCategoryRequest;
@@ -18,4 +19,6 @@ public interface PostService {
     PostResponse add(PostRequest request, Author author);
 
     PostResponse addCategory(PostCategoryRequest request);
+
+    PostResponse replaceBody(PostBodyRequest request);
 }
