@@ -6,6 +6,7 @@ import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostExceptionMessage;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class ReplacePostBodyCommand implements Command {
         Objects.requireNonNull(post, PostExceptionMessage.NULL_POST_MSG.getMessage());
         Objects.requireNonNull(newBody, PostExceptionMessage.BODY_BLANK_MSG.getMessage());
         post.setBody(newBody);
+        post.setUpdatedOn(LocalDateTime.now());
         return repository.save(post);
     }
 }
