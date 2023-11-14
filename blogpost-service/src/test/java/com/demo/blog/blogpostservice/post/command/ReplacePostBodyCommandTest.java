@@ -1,7 +1,6 @@
 package com.demo.blog.blogpostservice.post.command;
 
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.datasupply.PostConstants;
 import org.junit.jupiter.api.MethodOrderer;
@@ -34,7 +33,7 @@ class ReplacePostBodyCommandTest {
     @Test
     void shouldReplacePreviousBody() {
         // arrange
-        Post expectedToSave = new PostBuilder().from(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
+        Post expectedToSave = Post.PostFluentBuilder.post(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
         SUT = new ReplacePostBodyCommand(postRepository, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body());
 
         // act

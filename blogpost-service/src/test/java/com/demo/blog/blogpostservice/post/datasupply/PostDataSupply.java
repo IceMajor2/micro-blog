@@ -1,7 +1,6 @@
 package com.demo.blog.blogpostservice.post.datasupply;
 
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.dto.PostBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 
@@ -13,21 +12,23 @@ import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupp
 
 public class PostDataSupply {
 
-    public static final Post DOCKER_POST = new PostBuilder()
-            .withId(1L)
-            .withAuthor(ANY_AUTHOR.getId())
+    public static final Post DOCKER_POST = Post.PostFluentBuilder.post()
             .withTitle("Dockerizing a Spring Boot application")
             .withBody("Step 1. Install Docker")
+            .writtenBy(ANY_AUTHOR.getId())
+            .published().thirtyMinsAgo()
+            .withId(1L)
             .withCategories(CONTAINERS_CATEGORY)
-            .publishedThirtyMinsAgo()
             .build();
-    public static final Post SPRING_POST = new PostBuilder()
-            .withId(2L)
-            .withAuthor(JOHN_SMITH.getId())
+
+    public static final Post SPRING_POST = Post.PostFluentBuilder.post()
             .withTitle("Spring & Spring Boot: what's the difference?")
             .withBody("Oftentimes, both of the terms are used interchangeably. However, ...")
-            .publishedHourAgo()
+            .writtenBy(JOHN_SMITH.getId())
+            .published().hourAgo()
+            .withId(2L)
             .build();
+
     public static final PostRequest SPRING_POST_REQUEST = new PostRequest(
             new String(SPRING_POST.getTitle()),
             new String(SPRING_POST.getBody())

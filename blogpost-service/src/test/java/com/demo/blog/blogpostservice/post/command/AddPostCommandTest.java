@@ -1,7 +1,6 @@
 package com.demo.blog.blogpostservice.post.command;
 
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.exception.PostAlreadyExistsException;
@@ -13,6 +12,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
 
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.NULL_AUTHOR_MSG;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
@@ -35,10 +36,9 @@ public class AddPostCommandTest {
     @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#validPostRequests")
     void shouldAddPost(PostRequest request) {
         // arrange
-        Post postToSave = new PostBuilder()
-                .fromRequest(request)
-                .withAuthor(ANY_AUTHOR.getId())
-                .publishedNow()
+        Post postToSave = Post.PostFluentBuilder.post(request)
+                .writtenBy(ANY_AUTHOR.getId())
+                .published(LocalDateTime.now())
                 .build();
 
         SUT = new AddPostCommand(postRepository, request, ANY_AUTHOR);

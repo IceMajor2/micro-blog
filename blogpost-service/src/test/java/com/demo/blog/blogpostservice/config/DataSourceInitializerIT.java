@@ -6,7 +6,6 @@ import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryBuilder;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.postcategory.PostCategory;
 import org.junit.jupiter.api.ClassOrderer;
@@ -45,23 +44,26 @@ public class DataSourceInitializerIT extends BaseIntegrationTest {
     );
 
     private static final Set<Post> EXPECTED_POSTS = Set.of(
-            new PostBuilder()
-                    .withId(1L)
+            Post.PostFluentBuilder.post()
                     .withTitle("Java and C# comparison")
                     .withBody("Some people would argue that Java and C# are very alike...")
-                    .withAuthor(2)
+                    .writtenBy(2)
+                    .published().now()
+                    .withId(1L)
                     .build(),
-            new PostBuilder()
-                    .withId(2L)
+            Post.PostFluentBuilder.post()
                     .withTitle("Testing and why you should do it")
                     .withBody("Nowadays, testing is a sine qua non condition of building software")
-                    .withAuthor(1)
+                    .writtenBy(1)
+                    .published().now()
+                    .withId(2L)
                     .build(),
-            new PostBuilder()
-                    .withId(3L)
+            Post.PostFluentBuilder.post()
                     .withTitle("Process is more important than goals")
                     .withBody("This entry will be a little bit more different than the others...")
-                    .withAuthor(1)
+                    .writtenBy(1)
+                    .published().now()
+                    .withId(3L)
                     .build()
     );
 

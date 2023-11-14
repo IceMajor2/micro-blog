@@ -4,7 +4,6 @@ import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.CategoryBuilder;
 import com.demo.blog.blogpostservice.category.CategoryRepository;
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -26,11 +25,12 @@ public class TestRunner {
                     .build();
             categoryRepository.save(testing);
 
-            Post mocking = new PostBuilder()
+            Post mocking = Post.PostFluentBuilder.post()
                     .withTitle("Introduction to mocking")
                     .withBody("If you want to extend your testing skills...")
-                    .publishedNow()
-                    .withCategory(testing)
+                    .writtenBy(1)
+                    .published().now()
+                    .withCategories(testing)
                     .build();
             postRepository.save(mocking);
 

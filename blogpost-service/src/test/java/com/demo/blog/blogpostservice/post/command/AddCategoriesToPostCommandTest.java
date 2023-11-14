@@ -2,7 +2,6 @@ package com.demo.blog.blogpostservice.post.command;
 
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.PostBuilder;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostAlreadyCategorizedException;
 import com.demo.blog.blogpostservice.postcategory.command.AddCategoriesToPostCommand;
@@ -41,7 +40,7 @@ class AddCategoriesToPostCommandTest {
 
     @BeforeEach
     void setUp() {
-        post = new PostBuilder().from(DOCKER_POST).clearCategories().build();
+        post = Post.PostFluentBuilder.post(DOCKER_POST).clearCategories().build();
         categories = List.of(JAVA_CATEGORY, SPRING_CATEGORY);
     }
 
@@ -93,7 +92,7 @@ class AddCategoriesToPostCommandTest {
     @Test
     void shouldThrowExceptionWhenNoNewCategoryIsAdded() {
         // arrange
-        post = new PostBuilder().from(post).replacingCategories(categories).build();
+        post = Post.PostFluentBuilder.post(post).replacingCategories(categories).build();
         SUT = new AddCategoriesToPostCommand(postRepository, post, categories);
 
         // act & assert
@@ -118,7 +117,7 @@ class AddCategoriesToPostCommandTest {
     @Test
     void shouldAddOnlyNewCategoriesAndDoNothingOnAlreadyExistingOnes() {
         // arrange
-        post = new PostBuilder().from(DOCKER_POST).replacingCategories(categories).build();
+        post = Post.PostFluentBuilder.post(DOCKER_POST).replacingCategories(categories).build();
         List<Category> newCategories = List.of(CONCURRENCY_CATEGORY, SPRING_CATEGORY);
         SUT = new AddCategoriesToPostCommand(postRepository, post, newCategories);
 

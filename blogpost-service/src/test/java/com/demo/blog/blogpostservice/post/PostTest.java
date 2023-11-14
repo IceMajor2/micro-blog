@@ -13,9 +13,8 @@ class PostTest {
     @Test
     void shouldNotAddCategoryThatAlreadyExists() {
         // arrange
-        Post post = new PostBuilder()
-                .from(SPRING_POST)
-                .replacingCategories(Collections.singleton(SPRING_CATEGORY))
+        Post post = Post.PostFluentBuilder.post(SPRING_POST)
+                .replacingCategories(Collections.singletonList(SPRING_CATEGORY))
                 .build();
 
         // act & assert
@@ -25,8 +24,7 @@ class PostTest {
     @Test
     void shouldAddCategory() {
         // arrange
-        Post post = new PostBuilder()
-                .from(SPRING_POST)
+        Post post = Post.PostFluentBuilder.post(SPRING_POST)
                 .clearCategories()
                 .build();
 
