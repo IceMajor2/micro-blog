@@ -1,4 +1,4 @@
-package com.demo.blog.blogpostservice.post.builder;
+package com.demo.blog.blogpostservice.post.builder.fluent;
 
 public interface PostTitleBuilder {
 
