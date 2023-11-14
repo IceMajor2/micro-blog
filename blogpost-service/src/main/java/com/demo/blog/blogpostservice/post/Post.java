@@ -66,7 +66,9 @@ public class Post {
                     .withBody(post.body)
                     .writtenBy(post.author.getId())
                     .published().on(post.publishedOn)
-                    .updated().at(post.updatedOn);
+                    .withId(post.getId())
+                    .updated().at(post.updatedOn)
+                    .categories().setCategories(post.getCategories());
         }
 
         @Override
@@ -106,30 +108,44 @@ public class Post {
         }
 
         @Override
-        public PostAllFieldsBuilder withCategories(Category... categories) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.withCategories(categories);
+        public PostAllFieldsBuilder addCategories(Category... categories) {
+            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.addCategories(categories);
             return this;
         }
 
-        public Post build() {
-            return this.fluentBuilder.build();
+        @Override
+        public PostAllFieldsBuilder addCategories(Collection<Category> categories) {
+            addCategories(categories.toArray(new Category[0]));
+            return this;
+        }
+
+        @Override
+        public PostAllFieldsBuilder setCategories(Category... categories) {
+            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.setCategories(categories);
+            return this;
+        }
+
+        @Override
+        public PostAllFieldsBuilder setCategories(Collection<Category> categories) {
+            setCategories(categories.toArray(new Category[0]));
+            return this;
         }
 
         @Override
         public PostAllFieldsBuilder clearCategories() {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.withCategories(new Category[0]);
+            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.clearCategories();
             return this;
         }
 
         @Override
-        public PostAllFieldsBuilder replacingCategories(List<Category> categories) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.withCategories(categories.toArray(new Category[0]));
-            return this;
+        public Post build() {
+            return this.fluentBuilder.build();
         }
     }
 
     public static class PostFluentBuilder implements PostTitleBuilder, PostBodyBuilder, PostAuthorBuilder,
-            PostPublishedOnBuilder, PostOptionalFieldsBuilder, PostPublishedOnOptions, PostUpdatedOnOptions {
+            PostPublishedOnBuilder, PostOptionalFieldsBuilder, PostPublishedOnOptions, PostUpdatedOnOptions,
+            PostCategoryOptions {
 
         private List<Consumer<Post>> operations;
 
@@ -181,9 +197,35 @@ public class Post {
         }
 
         @Override
-        public PostOptionalFieldsBuilder withCategories(Category... categories) {
+        public PostOptionalFieldsBuilder addCategories(Category... categories) {
             Objects.requireNonNull(categories);
             Arrays.stream(categories).forEach(category -> this.operations.add(post -> post.addCategory(category)));
+            return this;
+        }
+
+        @Override
+        public PostOptionalFieldsBuilder setCategories(Category... categories) {
+            Objects.requireNonNull(categories);
+            clearCategories();
+            addCategories(categories);
+            return this;
+        }
+
+        @Override
+        public PostOptionalFieldsBuilder setCategories(Set<PostCategory> categories) {
+            Objects.requireNonNull(categories);
+            this.operations.add(post -> post.categories = categories);
+            return this;
+        }
+
+        @Override
+        public PostOptionalFieldsBuilder clearCategories() {
+            this.operations.add(post -> post.categories.clear());
+            return this;
+        }
+
+        @Override
+        public PostCategoryOptions categories() {
             return this;
         }
 

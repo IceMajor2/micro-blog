@@ -4,7 +4,7 @@ import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.post.Post;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 
 public interface PostAllFieldsBuilder {
 
@@ -20,11 +20,15 @@ public interface PostAllFieldsBuilder {
 
     PostAllFieldsBuilder updated(LocalDateTime on);
 
-    PostAllFieldsBuilder withCategories(Category... categories);
+    PostAllFieldsBuilder addCategories(Category... categories);
 
-    Post build();
+    PostAllFieldsBuilder addCategories(Collection<Category> categories);
+
+    PostAllFieldsBuilder setCategories(Category... category);
+
+    PostAllFieldsBuilder setCategories(Collection<Category> categories);
 
     PostAllFieldsBuilder clearCategories();
 
-    PostAllFieldsBuilder replacingCategories(List<Category> categories);
+    Post build();
 }
