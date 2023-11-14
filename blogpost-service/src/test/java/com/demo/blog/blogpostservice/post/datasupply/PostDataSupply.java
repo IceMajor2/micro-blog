@@ -18,7 +18,7 @@ public class PostDataSupply {
             .writtenBy(ANY_AUTHOR.getId())
             .published().thirtyMinsAgo()
             .withId(1L)
-            .withCategories(CONTAINERS_CATEGORY)
+            .categories().addCategories(CONTAINERS_CATEGORY)
             .build();
 
     public static final Post SPRING_POST = Post.PostFluentBuilder.post()

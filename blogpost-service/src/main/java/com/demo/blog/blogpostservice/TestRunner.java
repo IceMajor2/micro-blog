@@ -30,7 +30,7 @@ public class TestRunner {
                     .withBody("If you want to extend your testing skills...")
                     .writtenBy(1)
                     .published().now()
-                    .withCategories(testing)
+                    .categories().addCategories(testing)
                     .build();
             postRepository.save(mocking);
 

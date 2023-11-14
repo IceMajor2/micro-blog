@@ -92,7 +92,7 @@ class AddCategoriesToPostCommandTest {
     @Test
     void shouldThrowExceptionWhenNoNewCategoryIsAdded() {
         // arrange
-        post = Post.PostFluentBuilder.post(post).replacingCategories(categories).build();
+        post = Post.PostFluentBuilder.post(post).setCategories(categories).build();
         SUT = new AddCategoriesToPostCommand(postRepository, post, categories);
 
         // act & assert
@@ -117,7 +117,7 @@ class AddCategoriesToPostCommandTest {
     @Test
     void shouldAddOnlyNewCategoriesAndDoNothingOnAlreadyExistingOnes() {
         // arrange
-        post = Post.PostFluentBuilder.post(DOCKER_POST).replacingCategories(categories).build();
+        post = Post.PostFluentBuilder.post(DOCKER_POST).setCategories(categories).build();
         List<Category> newCategories = List.of(CONCURRENCY_CATEGORY, SPRING_CATEGORY);
         SUT = new AddCategoriesToPostCommand(postRepository, post, newCategories);
 
