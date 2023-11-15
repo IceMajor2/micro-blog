@@ -6,6 +6,7 @@ import com.demo.blog.blogpostservice.category.command.*;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.command.*;
 import com.demo.blog.blogpostservice.postcategory.command.AddCategoriesToPostCommand;
+import com.demo.blog.blogpostservice.postcategory.command.DeleteCategoriesFromPostCommand;
 import com.demo.blog.blogpostservice.postcategory.command.PostCategoryCommandCode;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -163,6 +164,15 @@ class CommandFactoryTest {
 
             // assert
             assertThat(actual).isInstanceOf(AddCategoriesToPostCommand.class);
+        }
+
+        @Test
+        void shouldReturnDeleteCategoriesFromPostCommand() {
+            // act
+            Command actual = SUT.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, SPRING_POST, List.of(SPRING_CATEGORY));
+
+            // assert
+            assertThat(actual).isInstanceOf(DeleteCategoriesFromPostCommand.class);
         }
     }
 }
