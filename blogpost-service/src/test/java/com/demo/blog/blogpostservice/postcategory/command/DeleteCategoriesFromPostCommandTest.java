@@ -10,9 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORIES_EMPTY_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORIES_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
@@ -72,5 +74,16 @@ class DeleteCategoriesFromPostCommandTest {
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(NULL_CATEGORIES_MSG);
+    }
+
+    @Test
+    void shouldThrowExceptionOnCategoryListEmpty() {
+        // arrange
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, DOCKER_POST, Collections.emptyList());
+
+        // act & assert
+        assertThatExceptionOfType(IllegalStateException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(CATEGORIES_EMPTY_MSG);
     }
 }
