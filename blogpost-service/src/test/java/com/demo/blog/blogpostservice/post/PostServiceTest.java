@@ -347,7 +347,7 @@ class PostServiceTest {
         @BeforeEach
         void setUp() {
             Post before = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY).build();
-            Post after = Post.PostFluentBuilder.post(SPRING_POST).setCategories().build();
+            Post after = Post.PostFluentBuilder.post(SPRING_POST).clearCategories().build();
             when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, SPRING_W_JAVA_SPRING_REQ.postId()).execute())
                     .thenReturn(before);
             when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, JAVA_CATEGORY.getId()).execute())
@@ -357,6 +357,8 @@ class PostServiceTest {
             when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
                     .execute()).thenReturn(after);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, SPRING_POST.getId()).execute()).thenReturn(JOHN_SMITH);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, SPRING_POST.getId())
+                    .execute()).thenReturn(Collections.emptyList());
         }
 
         @Test
@@ -384,6 +386,15 @@ class PostServiceTest {
 
             // assert
             assertThat(actual.author()).isEqualTo(expected);
+        }
+
+        @Test
+        void shouldMapCategories() {
+            // act
+            PostResponse actual = SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ);
+
+            // assert
+            assertThat(actual.categories()).isEmpty();
         }
     }
 
