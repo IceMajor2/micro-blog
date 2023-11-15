@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -83,15 +84,7 @@ public class PostServiceImpl implements PostService {
         Post post = (Post) commandFactory
                 .create(PostCommandCode.GET_POST_BY_ID, request.postId())
                 .execute();
-        List<Category> newCategories = new ArrayList<>();
-        for (Long categoryId : request.categoryIds()) {
-            try {
-                Category category = (Category) commandFactory
-                        .create(CategoryCommandCode.GET_CATEGORY_BY_ID, categoryId)
-                        .execute();
-                newCategories.add(category);
-            } catch (CategoryNotFoundException e) {}
-        }
+        List<Category> newCategories = fetchCategories(request.categoryIds());
         Post persisted = (Post) commandFactory
                 .create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, post, newCategories)
                 .execute();
@@ -107,7 +100,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse deleteCategory(PostCategoryRequest request) {
-        return null;
+        Post post = (Post) commandFactory
+                .create(PostCommandCode.GET_POST_BY_ID, request.postId())
+                .execute();
+        List<Category> newCategories = fetchCategories(request.categoryIds());
+        Post persisted = (Post) commandFactory
+                .create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, post, newCategories)
+                .execute();
+        log.info(STR. "Categories have been disconnected from post '\{ persisted }'" );
+        return new PostResponse(persisted, new Author(), List.of());
     }
 
     @Override
@@ -126,5 +127,18 @@ public class PostServiceImpl implements PostService {
                 .execute();
         log.info(STR. "Post '\{ persisted }' body has been updated");
         return new PostResponse(persisted, author, categories);
+    }
+
+    private List<Category> fetchCategories(Collection<Long> categoryIds) {
+        List<Category> newCategories = new ArrayList<>();
+        for (Long categoryId : categoryIds) {
+            try {
+                Category category = (Category) commandFactory
+                        .create(CategoryCommandCode.GET_CATEGORY_BY_ID, categoryId)
+                        .execute();
+                newCategories.add(category);
+            } catch (CategoryNotFoundException e) {}
+        }
+        return newCategories;
     }
 }
