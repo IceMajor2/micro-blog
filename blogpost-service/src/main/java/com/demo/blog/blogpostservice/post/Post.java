@@ -55,19 +55,13 @@ public class Post {
 
         private PostFluentBuilder fluentBuilder;
 
-        private PostAllArgsBuilder() {
-            this.operations = new ArrayList<>();
-        }
-
         private PostAllArgsBuilder(PostRequest request) {
-            this();
             this.fluentBuilder = (PostFluentBuilder) PostFluentBuilder.post()
                     .withTitle(new String(request.title()))
                     .withBody(new String(request.body()));
         }
 
         private PostAllArgsBuilder(Post post) {
-            this();
             this.fluentBuilder = (PostFluentBuilder) PostFluentBuilder.post()
                     .withTitle(new String(post.title))
                     .withBody(new String(post.body))
