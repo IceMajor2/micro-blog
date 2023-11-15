@@ -356,6 +356,7 @@ class PostServiceTest {
                     .thenReturn(SPRING_CATEGORY);
             when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
                     .execute()).thenReturn(after);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, SPRING_POST.getId()).execute()).thenReturn(JOHN_SMITH);
         }
 
         @Test
@@ -371,6 +372,18 @@ class PostServiceTest {
                     .usingRecursiveComparison()
                     .comparingOnlyFields("id", "name", "title")
                     .isEqualTo(expected);
+        }
+
+        @Test
+        void shouldMapAuthor() {
+            // arrange
+            AuthorResponse expected = new AuthorResponse(JOHN_SMITH.getUsername());
+
+            // act
+            PostResponse actual = SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ);
+
+            // assert
+            assertThat(actual.author()).isEqualTo(expected);
         }
     }
 
