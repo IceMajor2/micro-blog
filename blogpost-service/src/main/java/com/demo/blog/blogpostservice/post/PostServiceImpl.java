@@ -76,7 +76,7 @@ public class PostServiceImpl implements PostService {
         Post deleted = (Post) commandFactory
                 .create(PostCommandCode.DELETE_POST, id)
                 .execute();
-        log.info(STR. "Deleted post: '\{ deleted }'");
+        log.info(STR. "Deleted post: '\{ deleted }'" );
     }
 
     @Override
@@ -107,8 +107,11 @@ public class PostServiceImpl implements PostService {
         Post persisted = (Post) commandFactory
                 .create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, post, newCategories)
                 .execute();
+        Author author = (Author) commandFactory
+                .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
+                .execute();
         log.info(STR. "Categories have been disconnected from post '\{ persisted }'" );
-        return new PostResponse(persisted, new Author(), List.of());
+        return new PostResponse(persisted, author, List.of());
     }
 
     @Override
@@ -125,7 +128,7 @@ public class PostServiceImpl implements PostService {
         List<Category> categories = (List<Category>) commandFactory
                 .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
                 .execute();
-        log.info(STR. "Post '\{ persisted }' body has been updated");
+        log.info(STR. "Post '\{ persisted }' body has been updated" );
         return new PostResponse(persisted, author, categories);
     }
 
