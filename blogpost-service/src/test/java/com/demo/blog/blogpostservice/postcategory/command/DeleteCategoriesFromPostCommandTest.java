@@ -35,22 +35,24 @@ class DeleteCategoriesFromPostCommandTest {
     @Mock
     private PostRepository postRepository;
 
+    private Post post;
+
     @BeforeEach
     void setUp() {
-        Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY, JAVA_CATEGORY).build();
+        post = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY, JAVA_CATEGORY).build();
     }
 
     @Test
     void shouldDeleteCategory() {
         // arrange
-        SUT = new DeleteCategoriesFromPostCommand(postRepository, SPRING_POST, List.of(JAVA_CATEGORY));
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, post, List.of(JAVA_CATEGORY));
 
         // act
         SUT.execute();
 
         // assert
-        assertThat(SPRING_POST).categorizedAs(List.of(SPRING_CATEGORY));
-        verify(postRepository, times(1)).save(SPRING_POST);
+        assertThat(post).categorizedAs(List.of(SPRING_CATEGORY));
+        verify(postRepository, times(1)).save(post);
     }
 
     @Test
@@ -89,8 +91,7 @@ class DeleteCategoriesFromPostCommandTest {
     @Test
     void shouldThrowExceptionWhenAllCategoriesNotExist() {
         // arrange
-        System.out.println(SPRING_POST);
-        SUT = new DeleteCategoriesFromPostCommand(postRepository, SPRING_POST, List.of(CONCURRENCY_CATEGORY, THREADS_CATEGORY));
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, post, List.of(CONCURRENCY_CATEGORY, THREADS_CATEGORY));
 
         // act & assert
         assertThatExceptionOfType(CategoryNotFoundException.class)
@@ -100,26 +101,26 @@ class DeleteCategoriesFromPostCommandTest {
     @Test
     void shouldDeleteOnlyCategoriesInCommonAndDoNothingOnOthers() {
         // arrange
-        SUT = new DeleteCategoriesFromPostCommand(postRepository, SPRING_POST, List.of(CONCURRENCY_CATEGORY, JAVA_CATEGORY));
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, post, List.of(CONCURRENCY_CATEGORY, JAVA_CATEGORY));
 
         // act
         SUT.execute();
 
         // assert
-        assertThat(SPRING_POST).categorizedAs(List.of(SPRING_CATEGORY));
-        verify(postRepository, times(1)).save(SPRING_POST);
+        assertThat(post).categorizedAs(List.of(SPRING_CATEGORY));
+        verify(postRepository, times(1)).save(post);
     }
 
     @Test
     void shouldSetUpdatedOnWhenDeletionSuccessful() {
         // arrange
-        SUT = new DeleteCategoriesFromPostCommand(postRepository, SPRING_POST, List.of(SPRING_CATEGORY));
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, post, List.of(SPRING_CATEGORY));
 
         // act
         SUT.execute();
 
         // assert
-        assertThat(SPRING_POST).updatedOn(LocalDateTime.now());
-        verify(postRepository, times(1)).save(SPRING_POST);
+        assertThat(post).updatedOn(LocalDateTime.now());
+        verify(postRepository, times(1)).save(post);
     }
 }
