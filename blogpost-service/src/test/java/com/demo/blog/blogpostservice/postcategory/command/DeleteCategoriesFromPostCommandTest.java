@@ -1,5 +1,6 @@
 package com.demo.blog.blogpostservice.postcategory.command;
 
+import com.demo.blog.blogpostservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +17,7 @@ import java.util.List;
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.CATEGORIES_EMPTY_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORIES_MSG;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.NULL_POST_MSG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.DOCKER_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
@@ -85,5 +85,15 @@ class DeleteCategoriesFromPostCommandTest {
         assertThatExceptionOfType(IllegalStateException.class)
                 .isThrownBy(() -> SUT.execute())
                 .withMessage(CATEGORIES_EMPTY_MSG);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAllCategoriesNotExist() {
+        // arrange
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, SPRING_POST, List.of(CONCURRENCY_CATEGORY, THREADS_CATEGORY));
+
+        // act & assert
+        assertThatExceptionOfType(CategoryNotFoundException.class)
+                .isThrownBy(() -> SUT.execute());
     }
 }
