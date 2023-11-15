@@ -110,8 +110,11 @@ public class PostServiceImpl implements PostService {
         Author author = (Author) commandFactory
                 .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
                 .execute();
+        List<Category> categories = (List<Category>) commandFactory
+                .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                .execute();
         log.info(STR. "Categories have been disconnected from post '\{ persisted }'" );
-        return new PostResponse(persisted, author, List.of());
+        return new PostResponse(persisted, author, categories);
     }
 
     @Override
