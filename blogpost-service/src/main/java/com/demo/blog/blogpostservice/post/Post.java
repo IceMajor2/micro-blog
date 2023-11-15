@@ -54,7 +54,6 @@ public class Post {
     private static class PostAllArgsBuilder implements PostAllFieldsBuilder {
 
         private PostFluentBuilder fluentBuilder;
-        private List<Consumer<Post>> operations;
 
         private PostAllArgsBuilder() {
             this.operations = new ArrayList<>();
@@ -63,20 +62,20 @@ public class Post {
         private PostAllArgsBuilder(PostRequest request) {
             this();
             this.fluentBuilder = (PostFluentBuilder) PostFluentBuilder.post()
-                    .withTitle(request.title())
-                    .withBody(request.body());
+                    .withTitle(new String(request.title()))
+                    .withBody(new String(request.body()));
         }
 
         private PostAllArgsBuilder(Post post) {
             this();
             this.fluentBuilder = (PostFluentBuilder) PostFluentBuilder.post()
-                    .withTitle(post.title)
-                    .withBody(post.body)
-                    .writtenBy(post.author.getId())
-                    .published().on(post.publishedOn)
-                    .withId(post.getId())
-                    .updated().at(post.updatedOn)
-                    .categories().setCategories(post.getCategories());
+                    .withTitle(new String(post.title))
+                    .withBody(new String(post.body))
+                    .writtenBy(post.author.getId().longValue())
+                    .published().on(LocalDateTime.of(post.publishedOn.toLocalDate(), post.publishedOn.toLocalTime()))
+                    .withId(post.getId().longValue())
+                    .updated().at(deepCloneUpdatedOn(post.updatedOn))
+                    .categories().setCategories(deepCloneCategories(post.getCategories()));
         }
 
         @Override
@@ -148,6 +147,22 @@ public class Post {
         @Override
         public Post build() {
             return this.fluentBuilder.build();
+        }
+
+        private Set<PostCategory> deepCloneCategories(Set<PostCategory> categories) {
+            Set<PostCategory> clone = new HashSet<>();
+            categories.forEach(postCategory -> {
+                Long id = postCategory.getId() != null ? postCategory.getId() + 0 : null;
+                Long categoryId = postCategory.getCategoryId() != null ? postCategory.getCategoryId().getId() + 0 : null;
+                Long postId = postCategory.getPostId() != null ? postCategory.getPostId().getId() + 0 : null;
+                final PostCategory postCategoryClone = new PostCategory(id, categoryId, postId);
+                clone.add(postCategoryClone);
+            });
+            return clone;
+        }
+
+        private LocalDateTime deepCloneUpdatedOn(LocalDateTime updatedOn) {
+            return updatedOn != null ? updatedOn.minus(0, ChronoUnit.HOURS) : null;
         }
     }
 
