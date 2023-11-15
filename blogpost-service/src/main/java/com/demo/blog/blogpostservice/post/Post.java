@@ -38,7 +38,15 @@ public class Post {
     public boolean addCategory(Category category) {
         final PostCategory postCategory = new PostCategory();
         postCategory.setCategoryId(AggregateReference.to(category.getId()));
+        postCategory.setPostId(AggregateReference.to(this.id));
         return categories.add(postCategory);
+    }
+
+    public boolean deleteCategory(Category category) {
+        final PostCategory postCategory = new PostCategory();
+        postCategory.setCategoryId(AggregateReference.to(category.getId()));
+        postCategory.setPostId(AggregateReference.to(this.id));
+        return categories.remove(postCategory);
     }
 
     // TODO: write 'remove' methods

@@ -17,6 +17,7 @@ public class DeleteCategoriesFromPostCommand implements Command {
 
     @Override
     public Post execute() {
-        return null;
+        categories.forEach(post::deleteCategory);
+        return postRepository.save(post);
     }
 }
