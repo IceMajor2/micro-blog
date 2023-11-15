@@ -1,10 +1,9 @@
-package com.demo.blog.blogpostservice.post.command;
+package com.demo.blog.blogpostservice.postcategory.command;
 
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostAlreadyCategorizedException;
-import com.demo.blog.blogpostservice.postcategory.command.AddCategoriesToPostCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
