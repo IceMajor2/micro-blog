@@ -31,6 +31,7 @@ import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.PUBLISHED_DESC_COMPARATOR_DTO;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.*;
 import static com.demo.blog.blogpostservice.postcategory.datasupply.PostCategoryDataSupply.DOCKER_W_CONTAINERS_SPRING_REQ;
+import static com.demo.blog.blogpostservice.postcategory.datasupply.PostCategoryDataSupply.SPRING_W_JAVA_SPRING_REQ;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.mockito.Mockito.*;
 
@@ -336,6 +337,40 @@ class PostServiceTest {
             // act & assert
             assertThatNoException()
                     .isThrownBy(() -> SUT.addCategory(DOCKER_W_CONTAINERS_SPRING_REQ));
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
+    class DeleteCategories {
+
+        @BeforeEach
+        void setUp() {
+            Post before = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY).build();
+            Post after = Post.PostFluentBuilder.post(SPRING_POST).setCategories().build();
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, SPRING_W_JAVA_SPRING_REQ.postId()).execute())
+                    .thenReturn(before);
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, JAVA_CATEGORY.getId()).execute())
+                    .thenReturn(JAVA_CATEGORY);
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, SPRING_CATEGORY.getId()).execute())
+                    .thenReturn(SPRING_CATEGORY);
+            when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(after);
+        }
+
+        @Test
+        void shouldMapPost() {
+            // arrange
+            PostResponse expected = new PostResponse(SPRING_POST.getId(), SPRING_POST.getTitle(), null, null, null, null, SPRING_POST.getBody());
+
+            // act
+            PostResponse actual = SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ);
+
+            // assert
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .comparingOnlyFields("id", "name", "title")
+                    .isEqualTo(expected);
         }
     }
 
