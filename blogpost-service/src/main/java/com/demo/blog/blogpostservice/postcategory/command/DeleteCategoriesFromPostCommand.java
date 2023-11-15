@@ -22,6 +22,8 @@ public class DeleteCategoriesFromPostCommand implements Command {
     public Post execute() {
         Objects.requireNonNull(post, PostExceptionMessage.NULL_POST_MSG.getMessage());
         Objects.requireNonNull(categories, CategoryExceptionMessage.NULL_CATEGORIES_MSG.getMessage());
+        if (categories.isEmpty())
+            throw new IllegalStateException(CategoryExceptionMessage.CATEGORIES_EMPTY_MSG.getMessage());
         categories.forEach(post::deleteCategory);
         return postRepository.save(post);
     }
