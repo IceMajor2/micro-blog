@@ -14,7 +14,8 @@ public enum CategoryExceptionMessage implements ExceptionMessage {
 
     EXISTS_MSG_T("Category '%s' already exists"),
     NOT_FOUND_ID_MSG_T("Category of '%d' ID was not found"),
-    NOT_FOUND_NAME_MSG_T("Category '%s' was not found");
+    NOT_FOUND_NAME_MSG_T("Category '%s' was not found"),
+    NOT_FOUND_NAMES_MSG_T("Categories [%s] were not found");
 
     private final String message;
 

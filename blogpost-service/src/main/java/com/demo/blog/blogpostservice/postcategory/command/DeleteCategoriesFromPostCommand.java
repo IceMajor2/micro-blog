@@ -2,6 +2,7 @@ package com.demo.blog.blogpostservice.postcategory.command;
 
 import com.demo.blog.blogpostservice.category.Category;
 import com.demo.blog.blogpostservice.category.exception.CategoryExceptionMessage;
+import com.demo.blog.blogpostservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.blogpostservice.command.Command;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
@@ -24,6 +25,14 @@ public class DeleteCategoriesFromPostCommand implements Command {
         Objects.requireNonNull(categories, CategoryExceptionMessage.NULL_CATEGORIES_MSG.getMessage());
         if (categories.isEmpty())
             throw new IllegalStateException(CategoryExceptionMessage.CATEGORIES_EMPTY_MSG.getMessage());
+        List<Long> currentCategoryIds = post.getCategories().stream()
+                .map(postCategory -> postCategory.getCategoryId().getId())
+                .toList();
+        List<Long> newCategoryIds = categories.stream()
+                .map(Category::getId)
+                .toList();
+        if(currentCategoryIds.stream().noneMatch(newCategoryIds::contains))
+            throw new CategoryNotFoundException(categories);
         categories.forEach(post::deleteCategory);
         return postRepository.save(post);
     }
