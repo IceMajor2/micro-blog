@@ -9,6 +9,7 @@ import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostExceptionMessage;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class DeleteCategoriesFromPostCommand implements Command {
         if(currentCategoryIds.stream().noneMatch(newCategoryIds::contains))
             throw new CategoryNotFoundException(categories);
         categories.forEach(post::deleteCategory);
+        post.setUpdatedOn(LocalDateTime.now());
         return postRepository.save(post);
     }
 }
