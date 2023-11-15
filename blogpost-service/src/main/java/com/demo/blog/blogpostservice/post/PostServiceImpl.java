@@ -106,6 +106,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostResponse deleteCategory(PostCategoryRequest request) {
+        return null;
+    }
+
+    @Override
     public PostResponse replaceBody(PostBodyRequest request) {
         Post post = (Post) commandFactory
                 .create(PostCommandCode.GET_POST_BY_ID, request.postId())

@@ -22,5 +22,7 @@ public interface PostService {
 
     PostResponse addCategory(PostCategoryRequest request);
 
+    PostResponse deleteCategory(PostCategoryRequest request);
+
     PostResponse replaceBody(PostBodyRequest request);
 }
