@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -106,6 +107,19 @@ class DeleteCategoriesFromPostCommandTest {
 
         // assert
         assertThat(SPRING_POST).categorizedAs(List.of(SPRING_CATEGORY));
+        verify(postRepository, times(1)).save(SPRING_POST);
+    }
+
+    @Test
+    void shouldSetUpdatedOnWhenDeletionSuccessful() {
+        // arrange
+        SUT = new DeleteCategoriesFromPostCommand(postRepository, SPRING_POST, List.of(SPRING_CATEGORY));
+
+        // act
+        SUT.execute();
+
+        // assert
+        assertThat(SPRING_POST).updatedOn(LocalDateTime.now());
         verify(postRepository, times(1)).save(SPRING_POST);
     }
 }
