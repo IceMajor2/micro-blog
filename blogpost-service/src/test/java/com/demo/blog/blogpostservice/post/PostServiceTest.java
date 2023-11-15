@@ -344,18 +344,17 @@ class PostServiceTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class DeleteCategories {
 
+        Post before = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY).build();
+        Post after = Post.PostFluentBuilder.post(SPRING_POST).clearCategories().build();
+
         @BeforeEach
         void setUp() {
-            Post before = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY).build();
-            Post after = Post.PostFluentBuilder.post(SPRING_POST).clearCategories().build();
             when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, SPRING_W_JAVA_SPRING_REQ.postId()).execute())
                     .thenReturn(before);
             when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, JAVA_CATEGORY.getId()).execute())
                     .thenReturn(JAVA_CATEGORY);
             when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, SPRING_CATEGORY.getId()).execute())
                     .thenReturn(SPRING_CATEGORY);
-            when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
-                    .execute()).thenReturn(after);
             when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, SPRING_POST.getId()).execute()).thenReturn(JOHN_SMITH);
             when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, SPRING_POST.getId())
                     .execute()).thenReturn(Collections.emptyList());
@@ -365,6 +364,9 @@ class PostServiceTest {
         void shouldMapPost() {
             // arrange
             PostResponse expected = new PostResponse(SPRING_POST.getId(), SPRING_POST.getTitle(), null, null, null, null, SPRING_POST.getBody());
+
+            when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(after);
 
             // act
             PostResponse actual = SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ);
@@ -381,6 +383,9 @@ class PostServiceTest {
             // arrange
             AuthorResponse expected = new AuthorResponse(JOHN_SMITH.getUsername());
 
+            when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(after);
+
             // act
             PostResponse actual = SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ);
 
@@ -390,11 +395,28 @@ class PostServiceTest {
 
         @Test
         void shouldMapCategories() {
+            // arrange
+            when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(JAVA_CATEGORY, SPRING_CATEGORY))
+                    .execute()).thenReturn(after);
+
             // act
             PostResponse actual = SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ);
 
             // assert
             assertThat(actual.categories()).isEmpty();
+        }
+
+        @Test
+        void categoryNotFoundShouldNotInterruptTheRest() {
+            // arrange
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, JAVA_CATEGORY.getId()).execute())
+                    .thenThrow(new CategoryNotFoundException(JAVA_CATEGORY.getId()));
+            when(commandFactory.create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, before, List.of(SPRING_CATEGORY))
+                    .execute()).thenReturn(after);
+
+            // act & assert
+            assertThatNoException()
+                    .isThrownBy(() -> SUT.deleteCategory(SPRING_W_JAVA_SPRING_REQ));
         }
     }
 
