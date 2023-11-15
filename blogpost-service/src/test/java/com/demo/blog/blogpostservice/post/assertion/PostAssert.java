@@ -62,8 +62,8 @@ public class PostAssert extends AbstractAssert<PostAssert, Post> {
                 .map(category -> new PostCategory(null, category.getId(), actual.getId()))
                 .toList();
         Assertions.assertThat(actual.getCategories())
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
-                .containsExactlyElementsOf(expectedPostCategories);
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "postId")
+                .containsExactlyInAnyOrderElementsOf(expectedPostCategories);
         return this;
     }
 

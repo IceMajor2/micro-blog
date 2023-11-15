@@ -52,6 +52,7 @@ class AddCategoriesToPostCommandTest {
         SUT.execute();
 
         // assert
+        assertThat(post).categorizedAs(categories);
         verify(postRepository, times(1)).save(post);
     }
 
