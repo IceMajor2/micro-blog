@@ -9,8 +9,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.NULL_POST_MSG;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.TITLE_BLANK_MSG;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.NEW_SPRING_TITLE_REQUEST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.Random.class)
@@ -32,5 +35,27 @@ class ChangePostTitleCommandTest {
 
         // assert
         assertThat(SPRING_POST).isTitled(NEW_SPRING_TITLE_REQUEST.newTitle());
+    }
+
+    @Test
+    void shouldThrowExceptionOnPostNull() {
+        // arrange
+        SUT = new ChangePostTitleCommand(postRepository, null, NEW_SPRING_TITLE_REQUEST.newTitle());
+
+        // act & assert
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(NULL_POST_MSG);
+    }
+
+    @Test
+    void shouldThrowExceptionOnNewTitleNull() {
+        // arrange
+        SUT = new ChangePostTitleCommand(postRepository, SPRING_POST, null);
+
+        // act & assert
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(TITLE_BLANK_MSG);
     }
 }
