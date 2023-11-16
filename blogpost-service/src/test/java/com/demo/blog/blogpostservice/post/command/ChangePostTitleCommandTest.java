@@ -14,7 +14,6 @@ import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.TITLE_
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.NEW_SPRING_TITLE_REQUEST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @ExtendWith(MockitoExtension.class)
