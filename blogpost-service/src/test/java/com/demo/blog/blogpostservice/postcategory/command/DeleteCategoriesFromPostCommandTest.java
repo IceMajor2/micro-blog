@@ -39,7 +39,7 @@ class DeleteCategoriesFromPostCommandTest {
 
     @BeforeEach
     void setUp() {
-        post = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY, JAVA_CATEGORY).build();
+        post = Post.PostBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY, JAVA_CATEGORY).build();
     }
 
     @Test

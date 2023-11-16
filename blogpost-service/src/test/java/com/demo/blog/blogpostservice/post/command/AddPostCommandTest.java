@@ -36,7 +36,7 @@ public class AddPostCommandTest {
     @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#validPostRequests")
     void shouldAddPost(PostRequest request) {
         // arrange
-        Post postToSave = Post.PostFluentBuilder.post(request)
+        Post postToSave = Post.PostBuilder.post(request)
                 .writtenBy(ANY_AUTHOR.getId())
                 .published(LocalDateTime.now())
                 .build();

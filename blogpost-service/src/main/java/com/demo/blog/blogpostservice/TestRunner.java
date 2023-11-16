@@ -25,7 +25,7 @@ public class TestRunner {
                     .build();
             categoryRepository.save(testing);
 
-            Post mocking = Post.PostFluentBuilder.post()
+            Post mocking = Post.PostBuilder.post()
                     .withTitle("Introduction to mocking")
                     .withBody("If you want to extend your testing skills...")
                     .writtenBy(1)

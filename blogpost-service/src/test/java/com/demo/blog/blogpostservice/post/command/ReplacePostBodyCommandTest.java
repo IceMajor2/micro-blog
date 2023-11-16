@@ -33,7 +33,7 @@ class ReplacePostBodyCommandTest {
     @Test
     void shouldReplacePreviousBody() {
         // arrange
-        Post expectedToSave = Post.PostFluentBuilder.post(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
+        Post expectedToSave = Post.PostBuilder.post(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
         SUT = new ReplacePostBodyCommand(postRepository, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body());
 
         // act

@@ -27,7 +27,7 @@ public class AddPostCommand implements Command {
         Objects.requireNonNull(author, AuthorExceptionMessage.NULL_AUTHOR_MSG.getMessage());
         if(repository.existsByTitle(request.title()))
             throw new PostAlreadyExistsException(request.title());
-        Post post = Post.PostFluentBuilder.post(request)
+        Post post = Post.PostBuilder.post(request)
                 .writtenBy(author.getId())
                 .published(LocalDateTime.now())
                 .build();

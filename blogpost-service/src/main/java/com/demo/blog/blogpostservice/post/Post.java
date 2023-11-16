@@ -49,20 +49,18 @@ public class Post {
         return categories.remove(postCategory);
     }
 
-    // TODO: write 'remove' methods
-
     private static class PostAllArgsBuilder implements PostAllFieldsBuilder {
 
-        private PostFluentBuilder fluentBuilder;
+        private PostBuilder fluentBuilder;
 
         private PostAllArgsBuilder(PostRequest request) {
-            this.fluentBuilder = (PostFluentBuilder) PostFluentBuilder.post()
+            this.fluentBuilder = (PostBuilder) PostBuilder.post()
                     .withTitle(new String(request.title()))
                     .withBody(new String(request.body()));
         }
 
         private PostAllArgsBuilder(Post post) {
-            this.fluentBuilder = (PostFluentBuilder) PostFluentBuilder.post()
+            this.fluentBuilder = (PostBuilder) PostBuilder.post()
                     .withTitle(new String(post.title))
                     .withBody(new String(post.body))
                     .writtenBy(post.author.getId().longValue())
@@ -74,43 +72,43 @@ public class Post {
 
         @Override
         public PostAllFieldsBuilder withId(long postId) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.withId(postId);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.withId(postId);
             return this;
         }
 
         @Override
         public PostAllFieldsBuilder withTitle(String title) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.withTitle(title);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.withTitle(title);
             return this;
         }
 
         @Override
         public PostAllFieldsBuilder withBody(String body) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.withBody(body);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.withBody(body);
             return this;
         }
 
         @Override
         public PostAllFieldsBuilder writtenBy(long authorId) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.writtenBy(authorId);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.writtenBy(authorId);
             return this;
         }
 
         @Override
         public PostAllFieldsBuilder published(LocalDateTime publishedOn) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.published().on(publishedOn);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.published().on(publishedOn);
             return this;
         }
 
         @Override
         public PostAllFieldsBuilder updated(LocalDateTime updatedOn) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.updated().at(updatedOn);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.updated().at(updatedOn);
             return this;
         }
 
         @Override
         public PostAllFieldsBuilder addCategories(Category... categories) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.addCategories(categories);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.addCategories(categories);
             return this;
         }
 
@@ -122,7 +120,7 @@ public class Post {
 
         @Override
         public PostAllFieldsBuilder setCategories(Category... categories) {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.setCategories(categories);
+            this.fluentBuilder = (PostBuilder) fluentBuilder.setCategories(categories);
             return this;
         }
 
@@ -134,7 +132,7 @@ public class Post {
 
         @Override
         public PostAllFieldsBuilder clearCategories() {
-            this.fluentBuilder = (PostFluentBuilder) fluentBuilder.clearCategories();
+            this.fluentBuilder = (PostBuilder) fluentBuilder.clearCategories();
             return this;
         }
 
@@ -160,14 +158,14 @@ public class Post {
         }
     }
 
-    public static class PostFluentBuilder implements PostTitleBuilder, PostBodyBuilder, PostAuthorBuilder,
+    public static class PostBuilder implements PostTitleBuilder, PostBodyBuilder, PostAuthorBuilder,
             PostPublishedOnBuilder, PostOptionalFieldsBuilder, PostPublishedOnOptions, PostUpdatedOnOptions,
             PostCategoryOptions {
 
         private List<Consumer<Post>> operations;
 
         public static PostTitleBuilder post() {
-            return new PostFluentBuilder();
+            return new PostBuilder();
         }
 
         public static PostAllFieldsBuilder post(PostRequest request) {
@@ -178,7 +176,7 @@ public class Post {
             return new PostAllArgsBuilder(post);
         }
 
-        private PostFluentBuilder() {
+        private PostBuilder() {
             this.operations = new ArrayList<>();
         }
 

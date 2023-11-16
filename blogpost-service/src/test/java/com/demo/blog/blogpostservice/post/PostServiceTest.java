@@ -116,12 +116,12 @@ class PostServiceTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class GetCollection {
 
-        private Post newer = Post.PostFluentBuilder.post(DOCKER_POST)
+        private Post newer = Post.PostBuilder.post(DOCKER_POST)
                 .setCategories(CONTAINERS_CATEGORY)
                 .writtenBy(ANY_AUTHOR.getId())
                 .published(LocalDateTime.now().minus(15, ChronoUnit.MINUTES))
                 .build();
-        private Post older = Post.PostFluentBuilder.post(SPRING_POST)
+        private Post older = Post.PostBuilder.post(SPRING_POST)
                 .setCategories(CONCURRENCY_CATEGORY, THREADS_CATEGORY)
                 .writtenBy(JOHN_SMITH.getId())
                 .published(LocalDateTime.now().minus(30, ChronoUnit.MINUTES))
@@ -255,7 +255,7 @@ class PostServiceTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class AddCategories {
 
-        private Post stub = Post.PostFluentBuilder.post(DOCKER_POST).setCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
+        private Post stub = Post.PostBuilder.post(DOCKER_POST).setCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
 
         @BeforeEach
         void setUp() {
@@ -279,7 +279,7 @@ class PostServiceTest {
             String expectedBody = new String(DOCKER_POST.getBody());
             PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
 
-            Post stub = Post.PostFluentBuilder.post(DOCKER_POST).setCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
+            Post stub = Post.PostBuilder.post(DOCKER_POST).setCategories(CONTAINERS_CATEGORY, SPRING_CATEGORY).build();
             when(commandFactory.create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, DOCKER_POST, List.of(CONTAINERS_CATEGORY, SPRING_CATEGORY))
                     .execute()).thenReturn(stub);
 
@@ -344,8 +344,8 @@ class PostServiceTest {
     @TestMethodOrder(MethodOrderer.Random.class)
     class DeleteCategories {
 
-        Post before = Post.PostFluentBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY).build();
-        Post after = Post.PostFluentBuilder.post(SPRING_POST).clearCategories().build();
+        Post before = Post.PostBuilder.post(SPRING_POST).setCategories(SPRING_CATEGORY).build();
+        Post after = Post.PostBuilder.post(SPRING_POST).clearCategories().build();
 
         @BeforeEach
         void setUp() {
@@ -426,7 +426,7 @@ class PostServiceTest {
 
         @BeforeEach
         void setUp() {
-            Post stub = Post.PostFluentBuilder.post(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
+            Post stub = Post.PostBuilder.post(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
             when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, DOCKER_POST.getId())
                     .execute()).thenReturn(DOCKER_POST);
             when(commandFactory.create(PostCommandCode.REPLACE_POST_BODY, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body())

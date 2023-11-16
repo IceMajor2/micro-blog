@@ -13,7 +13,7 @@ import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupp
 
 public class PostDataSupply {
 
-    public static final Post DOCKER_POST = Post.PostFluentBuilder.post()
+    public static final Post DOCKER_POST = Post.PostBuilder.post()
             .withTitle("Dockerizing a Spring Boot application")
             .withBody("Step 1. Install Docker")
             .writtenBy(ANY_AUTHOR.getId())
@@ -22,7 +22,7 @@ public class PostDataSupply {
             .categories().addCategories(CONTAINERS_CATEGORY)
             .build();
 
-    public static final Post SPRING_POST = Post.PostFluentBuilder.post()
+    public static final Post SPRING_POST = Post.PostBuilder.post()
             .withTitle("Spring & Spring Boot: what's the difference?")
             .withBody("Oftentimes, both of the terms are used interchangeably. However, ...")
             .writtenBy(JOHN_SMITH.getId())

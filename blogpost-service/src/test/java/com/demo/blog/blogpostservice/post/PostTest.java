@@ -11,7 +11,7 @@ class PostTest {
     @Test
     void shouldNotAddCategoryThatAlreadyExists() {
         // arrange
-        Post post = Post.PostFluentBuilder.post(SPRING_POST)
+        Post post = Post.PostBuilder.post(SPRING_POST)
                 .setCategories(SPRING_CATEGORY)
                 .build();
 
@@ -22,11 +22,16 @@ class PostTest {
     @Test
     void shouldAddCategory() {
         // arrange
-        Post post = Post.PostFluentBuilder.post(SPRING_POST)
+        Post post = Post.PostBuilder.post(SPRING_POST)
                 .clearCategories()
                 .build();
 
         // act & assert
         assertThat(post.addCategory(SPRING_CATEGORY)).isTrue();
+    }
+
+    @Test
+    void shouldDeleteCategory() {
+
     }
 }

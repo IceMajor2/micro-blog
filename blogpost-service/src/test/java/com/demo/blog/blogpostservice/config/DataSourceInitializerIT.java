@@ -44,21 +44,21 @@ public class DataSourceInitializerIT extends BaseIntegrationTest {
     );
 
     private static final Set<Post> EXPECTED_POSTS = Set.of(
-            Post.PostFluentBuilder.post()
+            Post.PostBuilder.post()
                     .withTitle("Java and C# comparison")
                     .withBody("Some people would argue that Java and C# are very alike...")
                     .writtenBy(2)
                     .published().now()
                     .withId(1L)
                     .build(),
-            Post.PostFluentBuilder.post()
+            Post.PostBuilder.post()
                     .withTitle("Testing and why you should do it")
                     .withBody("Nowadays, testing is a sine qua non condition of building software")
                     .writtenBy(1)
                     .published().now()
                     .withId(2L)
                     .build(),
-            Post.PostFluentBuilder.post()
+            Post.PostBuilder.post()
                     .withTitle("Process is more important than goals")
                     .withBody("This entry will be a little bit more different than the others...")
                     .writtenBy(1)
