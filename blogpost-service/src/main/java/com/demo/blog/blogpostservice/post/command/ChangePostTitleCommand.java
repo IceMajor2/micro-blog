@@ -6,6 +6,7 @@ import com.demo.blog.blogpostservice.post.PostRepository;
 import com.demo.blog.blogpostservice.post.exception.PostExceptionMessage;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class ChangePostTitleCommand implements Command {
         Objects.requireNonNull(post, PostExceptionMessage.NULL_POST_MSG.getMessage());
         Objects.requireNonNull(newTitle, PostExceptionMessage.TITLE_BLANK_MSG.getMessage());
         post.setTitle(newTitle);
+        post.setUpdatedOn(LocalDateTime.now());
         return postRepository.save(post);
     }
 }
