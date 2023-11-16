@@ -1,7 +1,8 @@
 package com.demo.blog.blogpostservice.post;
 
 import com.demo.blog.blogpostservice.author.Author;
-import com.demo.blog.blogpostservice.post.dto.PostBodyRequest;
+import com.demo.blog.blogpostservice.post.dto.PostChangeTitleRequest;
+import com.demo.blog.blogpostservice.post.dto.PostReplaceBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import com.demo.blog.blogpostservice.postcategory.dto.PostCategoryRequest;
@@ -24,5 +25,7 @@ public interface PostService {
 
     PostResponse deleteCategory(PostCategoryRequest request);
 
-    PostResponse replaceBody(PostBodyRequest request);
+    PostResponse replaceBody(Long postId, PostReplaceBodyRequest request);
+
+    PostResponse changeTitle(Long postId, PostChangeTitleRequest request);
 }

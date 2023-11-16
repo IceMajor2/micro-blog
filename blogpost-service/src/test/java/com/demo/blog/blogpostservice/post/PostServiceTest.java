@@ -427,7 +427,7 @@ class PostServiceTest {
         @BeforeEach
         void setUp() {
             Post stub = Post.PostFluentBuilder.post(DOCKER_POST).withBody(NEW_DOCKER_BODY_REQUEST.body()).build();
-            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, NEW_DOCKER_BODY_REQUEST.postId())
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, DOCKER_POST.getId())
                     .execute()).thenReturn(DOCKER_POST);
             when(commandFactory.create(PostCommandCode.REPLACE_POST_BODY, DOCKER_POST, NEW_DOCKER_BODY_REQUEST.body())
                     .execute()).thenReturn(stub);
@@ -446,7 +446,7 @@ class PostServiceTest {
             PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
 
             // act
-            PostResponse actual = SUT.replaceBody(NEW_DOCKER_BODY_REQUEST);
+            PostResponse actual = SUT.replaceBody(DOCKER_POST.getId(), NEW_DOCKER_BODY_REQUEST);
 
             // assert
             assertThat(actual)
@@ -461,7 +461,7 @@ class PostServiceTest {
             AuthorResponse expectedAuthor = new AuthorResponse(new String(ANY_AUTHOR.getUsername()));
 
             // act
-            PostResponse actual = SUT.replaceBody(NEW_DOCKER_BODY_REQUEST);
+            PostResponse actual = SUT.replaceBody(DOCKER_POST.getId(), NEW_DOCKER_BODY_REQUEST);
 
             // assert
             assertThat(actual.author()).isEqualTo(expectedAuthor);
@@ -475,7 +475,7 @@ class PostServiceTest {
             );
 
             // act
-            PostResponse actual = SUT.replaceBody(NEW_DOCKER_BODY_REQUEST);
+            PostResponse actual = SUT.replaceBody(DOCKER_POST.getId(), NEW_DOCKER_BODY_REQUEST);
 
             // assert
             assertThat(actual.categories()).isEqualTo(expectedCategories);

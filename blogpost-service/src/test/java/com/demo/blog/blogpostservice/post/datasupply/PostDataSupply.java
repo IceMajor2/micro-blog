@@ -1,7 +1,7 @@
 package com.demo.blog.blogpostservice.post.datasupply;
 
 import com.demo.blog.blogpostservice.post.Post;
-import com.demo.blog.blogpostservice.post.dto.PostBodyRequest;
+import com.demo.blog.blogpostservice.post.dto.PostReplaceBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 
 import java.util.stream.Stream;
@@ -37,8 +37,9 @@ public class PostDataSupply {
             new String(DOCKER_POST.getTitle()),
             new String(DOCKER_POST.getBody())
     );
-    public static final PostBodyRequest NEW_DOCKER_BODY_REQUEST = new PostBodyRequest(
-            DOCKER_POST.getId().longValue(), "This post has been updated with guidelines for the new Spring Boot"
+    public static final PostReplaceBodyRequest NEW_DOCKER_BODY_REQUEST = new PostReplaceBodyRequest(
+//            DOCKER_POST.getId().longValue(),
+            "This post has been updated with guidelines for the new Spring Boot"
     );
 
     public static Stream<PostRequest> validPostRequests() {
