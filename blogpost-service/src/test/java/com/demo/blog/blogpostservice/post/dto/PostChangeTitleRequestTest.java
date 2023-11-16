@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_STRING;
-import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.TITLE_BLANK_MSG;
+import static com.demo.blog.blogpostservice.post.datasupply.PostConstants.*;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 class PostChangeTitleRequestTest {
@@ -26,7 +26,7 @@ class PostChangeTitleRequestTest {
         PostChangeTitleRequest actual = new PostChangeTitleRequest(blankString);
 
         // assert
-        assertThat(validator.validate(actual)).containsOnlyExceptionMessages(TITLE_BLANK_MSG);
+        assertThat(validator.validate(actual)).containsExceptionMessages(TITLE_BLANK_MSG);
     }
 
     @Test
@@ -38,4 +38,43 @@ class PostChangeTitleRequestTest {
         assertThat(validator.validate(actual)).isValid();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#lessThanFiveCharactersTitles")
+    void shouldThrowExceptionOnTitleShorterThan5Chars(String tooShort) {
+        // act
+        PostChangeTitleRequest actual = new PostChangeTitleRequest(tooShort);
+
+        // assert
+        assertThat(validator.validate(actual)).containsOnlyExceptionMessages(TOO_SHORT_MSG);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#moreThan255CharactersTitles")
+    void shouldThrowExceptionOnTitleLongerThan255Chars(String tooLong) {
+        // act
+        PostChangeTitleRequest actual = new PostChangeTitleRequest(tooLong);
+
+        // assert
+        assertThat(validator.validate(actual)).containsOnlyExceptionMessages(TOO_LONG_MSG);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#justMoreOrEqualThanFiveCharactersTitles")
+    void shouldAcceptTitlesJustMoreOrEqualThanFiveCharactersLong(String moreOrEqualThanFiveChars) {
+        // act
+        PostChangeTitleRequest actual = new PostChangeTitleRequest(moreOrEqualThanFiveChars);
+
+        // assert
+        assertThat(validator.validate(actual)).isValid();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#justLessOrEqualThan255CharactersTitles")
+    void shouldAcceptTitlesJustLessOrEqualThan255CharactersLong(String lessOrEqualThan255Chars) {
+        // act
+        PostChangeTitleRequest actual = new PostChangeTitleRequest(lessOrEqualThan255Chars);
+
+        // assert
+        assertThat(validator.validate(actual)).isValid();
+    }
 }
