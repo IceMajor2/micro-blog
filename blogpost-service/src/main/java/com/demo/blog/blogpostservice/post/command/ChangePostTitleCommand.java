@@ -14,6 +14,7 @@ public class ChangePostTitleCommand implements Command {
 
     @Override
     public Post execute() {
-        return null;
+        post.setTitle(newTitle);
+        return postRepository.save(post);
     }
 }
