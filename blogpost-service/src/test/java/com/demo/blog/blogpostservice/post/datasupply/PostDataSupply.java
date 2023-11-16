@@ -1,6 +1,7 @@
 package com.demo.blog.blogpostservice.post.datasupply;
 
 import com.demo.blog.blogpostservice.post.Post;
+import com.demo.blog.blogpostservice.post.dto.PostChangeTitleRequest;
 import com.demo.blog.blogpostservice.post.dto.PostReplaceBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 
@@ -38,8 +39,10 @@ public class PostDataSupply {
             new String(DOCKER_POST.getBody())
     );
     public static final PostReplaceBodyRequest NEW_DOCKER_BODY_REQUEST = new PostReplaceBodyRequest(
-//            DOCKER_POST.getId().longValue(),
             "This post has been updated with guidelines for the new Spring Boot"
+    );
+    public static final PostChangeTitleRequest NEW_SPRING_TITLE_REQUEST = new PostChangeTitleRequest(
+            "Spring and Spring Boot: what's the difference?"
     );
 
     public static Stream<PostRequest> validPostRequests() {
