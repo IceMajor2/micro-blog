@@ -11,7 +11,8 @@ public enum PostExceptionMessage implements ExceptionMessage {
     ALREADY_CATEGORIZED_AS("Post already is categorized as [%s]"),
     ID_NOT_FOUND_T("Post of '%d' ID was not found"),
     TITLE_EXISTS_MSG_T("Post with '%s' title already exists"),
-    BODY_BLANK_MSG("Body must be specified");
+    BODY_BLANK_MSG("Body must be specified"),
+    TITLE_BLANK_MSG("Post title must be specified");
 
     private final String message;
 
