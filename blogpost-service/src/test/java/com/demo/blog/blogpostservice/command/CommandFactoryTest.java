@@ -147,7 +147,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnChangePostTitleCommand() {
             // act
-            Command actual = SUT.create(PostCommandCode.CHANGE_POST_TITLE, SPRING_POST, NEW_SPRING_TITLE_REQUEST);
+            Command actual = SUT.create(PostCommandCode.CHANGE_POST_TITLE, SPRING_POST, NEW_SPRING_TITLE_REQUEST.newTitle());
 
             // assert
             assertThat(actual).isInstanceOf(ChangePostTitleCommand.class);
