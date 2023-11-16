@@ -7,7 +7,8 @@ import com.demo.blog.blogpostservice.category.command.CategoryCommandCode;
 import com.demo.blog.blogpostservice.category.exception.CategoryNotFoundException;
 import com.demo.blog.blogpostservice.command.CommandFactory;
 import com.demo.blog.blogpostservice.post.command.PostCommandCode;
-import com.demo.blog.blogpostservice.post.dto.PostBodyRequest;
+import com.demo.blog.blogpostservice.post.dto.PostChangeTitleRequest;
+import com.demo.blog.blogpostservice.post.dto.PostReplaceBodyRequest;
 import com.demo.blog.blogpostservice.post.dto.PostRequest;
 import com.demo.blog.blogpostservice.post.dto.PostResponse;
 import com.demo.blog.blogpostservice.postcategory.command.PostCategoryCommandCode;
@@ -118,9 +119,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse replaceBody(PostBodyRequest request) {
+    public PostResponse replaceBody(Long postId, PostReplaceBodyRequest request) {
         Post post = (Post) commandFactory
-                .create(PostCommandCode.GET_POST_BY_ID, request.postId())
+                .create(PostCommandCode.GET_POST_BY_ID, postId)
                 .execute();
         Post persisted = (Post) commandFactory
                 .create(PostCommandCode.REPLACE_POST_BODY, post, request.body())
@@ -133,6 +134,11 @@ public class PostServiceImpl implements PostService {
                 .execute();
         log.info(STR. "Post '\{ persisted }' body has been updated" );
         return new PostResponse(persisted, author, categories);
+    }
+
+    @Override
+    public PostResponse changeTitle(Long postId, PostChangeTitleRequest request) {
+        return null;
     }
 
     private List<Category> fetchCategories(Collection<Long> categoryIds) {
