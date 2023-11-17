@@ -144,7 +144,13 @@ public class PostServiceImpl implements PostService {
         Post persisted = (Post) commandFactory
                 .create(PostCommandCode.CHANGE_POST_TITLE, post, request.newTitle())
                 .execute();
-        return new PostResponse(persisted, new Author(), Collections.emptyList());
+        Author author = (Author) commandFactory
+                .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
+                .execute();
+        List<Category> categories = (List<Category>) commandFactory
+                .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                .execute();
+        return new PostResponse(persisted, author, categories);
     }
 
     private List<Category> fetchCategories(Collection<Long> categoryIds) {
