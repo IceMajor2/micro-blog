@@ -493,6 +493,10 @@ class PostServiceTest {
                     .execute()).thenReturn(SPRING_POST);
             when(commandFactory.create(PostCommandCode.CHANGE_POST_TITLE, SPRING_POST, NEW_SPRING_TITLE_REQUEST.newTitle())
                     .execute()).thenReturn(stub);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, SPRING_POST.getId()).execute())
+                    .thenReturn(JOHN_SMITH);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, SPRING_POST.getId()).execute())
+                    .thenReturn(Collections.emptyList());
         }
 
         @Test
@@ -511,6 +515,30 @@ class PostServiceTest {
                     .usingRecursiveComparison()
                     .comparingOnlyFields("id", "title", "body")
                     .isEqualTo(expected);
+        }
+
+        @Test
+        void shouldMapAuthor() {
+            // arrange
+            AuthorResponse expectedAuthor = new AuthorResponse(new String(JOHN_SMITH.getUsername()));
+
+            // act
+            PostResponse actual = SUT.changeTitle(SPRING_POST.getId(), NEW_SPRING_TITLE_REQUEST);
+
+            // assert
+            assertThat(actual.author()).isEqualTo(expectedAuthor);
+        }
+
+        @Test
+        void shouldMapCategories() {
+            // arrange
+            List<CategoryResponse> expectedCategories = Collections.emptyList();
+
+            // act
+            PostResponse actual = SUT.changeTitle(SPRING_POST.getId(), NEW_SPRING_TITLE_REQUEST);
+
+            // assert
+            assertThat(actual.categories()).isEqualTo(expectedCategories);
         }
     }
 
