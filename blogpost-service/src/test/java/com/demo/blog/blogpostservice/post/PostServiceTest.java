@@ -484,6 +484,38 @@ class PostServiceTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
+    class ChangeTitle {
+
+        @BeforeEach
+        void setUp() {
+            Post stub = Post.PostBuilder.post(SPRING_POST).withTitle(NEW_SPRING_TITLE_REQUEST.newTitle()).build();
+            when(commandFactory.create(PostCommandCode.GET_POST_BY_ID, SPRING_POST.getId())
+                    .execute()).thenReturn(SPRING_POST);
+            when(commandFactory.create(PostCommandCode.CHANGE_POST_TITLE, SPRING_POST, NEW_SPRING_TITLE_REQUEST.newTitle())
+                    .execute()).thenReturn(stub);
+        }
+
+        @Test
+        void shouldMapPost() {
+            // arrange
+            long expectedId = SPRING_POST.getId();
+            String expectedTitle = NEW_SPRING_TITLE_REQUEST.newTitle();
+            String expectedBody = SPRING_POST.getBody();
+            PostResponse expected = new PostResponse(expectedId, expectedTitle, null, null, null, null, expectedBody);
+
+            // act
+            PostResponse actual = SUT.changeTitle(SPRING_POST.getId(), NEW_SPRING_TITLE_REQUEST);
+
+            // assert
+            assertThat(actual)
+                    .usingRecursiveComparison()
+                    .comparingOnlyFields("id", "title", "body")
+                    .isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
     class DeletePost {
 
         @Test
