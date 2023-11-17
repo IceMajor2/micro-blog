@@ -138,7 +138,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponse changeTitle(Long postId, PostChangeTitleRequest request) {
-        return null;
+        Post post = (Post) commandFactory
+                .create(PostCommandCode.GET_POST_BY_ID, postId)
+                .execute();
+        Post persisted = (Post) commandFactory
+                .create(PostCommandCode.CHANGE_POST_TITLE, post, request.newTitle())
+                .execute();
+        return new PostResponse(persisted, new Author(), Collections.emptyList());
     }
 
     private List<Category> fetchCategories(Collection<Long> categoryIds) {
