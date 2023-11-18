@@ -200,6 +200,42 @@ class PostServiceTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
+    class GetAuthorCollection {
+
+        @BeforeEach
+        void setUp() {
+            List<Post> stub = List.of(ENGINEERING_POST, SPRING_POST);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, JOHN_SMITH.getId()).execute())
+                    .thenReturn(JOHN_SMITH);
+            when(commandFactory.create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, JOHN_SMITH).execute())
+                    .thenReturn(stub);
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, SPRING_POST.getId()).execute())
+                    .thenReturn(Collections.emptyList());
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, ENGINEERING_POST.getId()).execute())
+                    .thenReturn(List.of(SPRING_CATEGORY));
+        }
+
+        @Test
+        void shouldMapPosts() {
+            // arrange
+            List<PostResponse> expectedList = List.of(
+                    new PostResponse(ENGINEERING_POST.getId(), ENGINEERING_POST.getTitle(), null, null, null, null, ENGINEERING_POST.getBody()),
+                    new PostResponse(SPRING_POST.getId(), SPRING_POST.getTitle(), null, null, null, null, SPRING_POST.getBody())
+            );
+
+            // act
+            List<PostResponse> actual = SUT.getAllWrittenByOrderedByPublishedDateDesc(JOHN_SMITH.getId());
+
+            // assert
+            assertThat(actual)
+                    .isSortedAccordingTo(PUBLISHED_DESC_COMPARATOR_DTO)
+                    .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
+                    .containsExactlyInAnyOrderElementsOf(expectedList);
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
     class Add {
 
         @BeforeEach

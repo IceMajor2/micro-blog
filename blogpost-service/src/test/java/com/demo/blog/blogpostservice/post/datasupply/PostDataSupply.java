@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
 
 public class PostDataSupply {
 
@@ -28,6 +29,7 @@ public class PostDataSupply {
             .writtenBy(JOHN_SMITH.getId())
             .published().hourAgo()
             .withId(2L)
+            .categories().setCategories(SPRING_CATEGORY)
             .build();
 
     public static final Post ENGINEERING_POST = Post.PostBuilder.post()
