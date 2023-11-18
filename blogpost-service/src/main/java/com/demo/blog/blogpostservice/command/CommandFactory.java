@@ -44,6 +44,8 @@ public class CommandFactory {
                 return new DeleteCategoryCommand(categoryRepository, (Long) params[0]);
             case PostCommandCode.GET_ALL_POSTS:
                 return new GetAllPostsCommand(postRepository);
+            case PostCommandCode.GET_ALL_POSTS_OF_AUTHOR:
+                return new GetAllPostsWrittenByCommand(postRepository, (Long) params[0]);
             case PostCommandCode.GET_POST_BY_ID:
                 return new GetPostByIdCommand(postRepository, (Long) params[0]);
             case PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME:
