@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class ChangePostTitleCommand implements Command {
+public class ChangePostTitleCommand implements Command<Post> {
 
     private final PostRepository postRepository;
     private final Post post;

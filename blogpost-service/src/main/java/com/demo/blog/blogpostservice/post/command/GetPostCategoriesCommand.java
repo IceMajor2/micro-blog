@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class GetPostCategoriesCommand implements Command {
+public class GetPostCategoriesCommand implements Command<List<Category>> {
 
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;

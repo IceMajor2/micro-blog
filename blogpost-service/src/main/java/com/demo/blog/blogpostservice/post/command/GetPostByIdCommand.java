@@ -7,7 +7,7 @@ import com.demo.blog.blogpostservice.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GetPostByIdCommand implements Command {
+public class GetPostByIdCommand implements Command<Post> {
 
     private final PostRepository postRepository;
     private final Long postId;

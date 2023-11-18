@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class GetAllPostsCommand implements Command {
+public class GetAllPostsCommand implements Command<List<Post>> {
 
     private final PostRepository postRepository;
 

@@ -6,7 +6,7 @@ import com.demo.blog.blogpostservice.command.Command;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GetCategoriesSortedByNameCommand implements Command {
+public class GetCategoriesSortedByNameCommand implements Command<Iterable<Category>> {
 
     private final CategoryRepository categoryRepository;
 

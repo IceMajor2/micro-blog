@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class DeletePostCommand implements Command {
+public class DeletePostCommand implements Command<Post> {
 
     private final PostRepository postRepository;
     private final Long postId;

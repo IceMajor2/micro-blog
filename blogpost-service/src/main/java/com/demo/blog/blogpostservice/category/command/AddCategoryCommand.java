@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class AddCategoryCommand implements Command {
+public class AddCategoryCommand implements Command<Category> {
 
     private final CategoryRepository categoryRepository;
     private final CategoryRequest categoryRequest;

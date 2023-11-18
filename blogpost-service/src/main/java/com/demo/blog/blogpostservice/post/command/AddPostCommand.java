@@ -15,7 +15,7 @@ import java.util.Objects;
 
 
 @RequiredArgsConstructor
-public class AddPostCommand implements Command {
+public class AddPostCommand implements Command<Post> {
 
     private final PostRepository repository;
     private final PostRequest request;

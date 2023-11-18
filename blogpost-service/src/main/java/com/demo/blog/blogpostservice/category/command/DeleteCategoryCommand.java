@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class DeleteCategoryCommand implements Command {
+public class DeleteCategoryCommand implements Command<Category> {
 
     private final CategoryRepository categoryRepository;
     private final Long categoryDeleteId;

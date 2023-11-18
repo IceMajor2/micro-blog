@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class ReplacePostBodyCommand implements Command {
+public class ReplacePostBodyCommand implements Command<Post> {
 
     private final PostRepository repository;
     private final Post post;

@@ -1,7 +1,7 @@
 package com.demo.blog.blogpostservice.command;
 
 @FunctionalInterface
-public interface Command {
+public interface Command<T> {
 
-    Object execute();
+    T execute();
 }

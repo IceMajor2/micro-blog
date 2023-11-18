@@ -17,7 +17,7 @@ import static com.demo.blog.blogpostservice.category.exception.CategoryException
 import static com.demo.blog.blogpostservice.post.exception.PostExceptionMessage.NULL_POST_MSG;
 
 @RequiredArgsConstructor
-public class AddCategoriesToPostCommand implements Command {
+public class AddCategoriesToPostCommand implements Command<Post> {
 
     private final PostRepository postRepository;
     private final Post post;

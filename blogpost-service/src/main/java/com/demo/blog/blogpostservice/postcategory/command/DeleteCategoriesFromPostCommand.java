@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class DeleteCategoriesFromPostCommand implements Command {
+public class DeleteCategoriesFromPostCommand implements Command<Post> {
 
     private final PostRepository postRepository;
     private final Post post;

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class GetAllPostsWrittenByCommand implements Command {
+public class GetAllPostsWrittenByCommand implements Command<List<Post>> {
 
     private final PostRepository postRepository;
     private final Long authorId;
