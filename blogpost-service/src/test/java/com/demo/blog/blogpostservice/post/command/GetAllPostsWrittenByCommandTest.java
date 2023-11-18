@@ -30,7 +30,7 @@ class GetAllPostsWrittenByCommandTest {
     void shouldRetrieveAllPostsWrittenByAuthor() {
         // arrange
         List<Post> expectedPosts = List.of(ENGINEERING_POST, SPRING_POST);
-        SUT = new GetAllPostsWrittenByCommand(postRepository, JOHN_SMITH.getId());
+        SUT = new GetAllPostsWrittenByCommand(postRepository, JOHN_SMITH);
 
         when(postRepository.findByAuthorOrderByPublishedOnDesc(JOHN_SMITH.getId())).thenReturn(expectedPosts);
 

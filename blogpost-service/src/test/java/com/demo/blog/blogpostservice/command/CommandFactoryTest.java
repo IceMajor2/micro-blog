@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_LONG;
@@ -165,7 +166,7 @@ class CommandFactoryTest {
         @Test
         void shouldReturnGetPostByAuthorCommand() {
             // act
-            Command actual = SUT.create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, ANY_LONG);
+            Command actual = SUT.create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, ANY_AUTHOR);
 
             // assert
             assertThat(actual).isInstanceOf(GetAllPostsWrittenByCommand.class);
