@@ -161,6 +161,15 @@ class CommandFactoryTest {
             // assert
             assertThat(actual).isInstanceOf(DeletePostCommand.class);
         }
+
+        @Test
+        void shouldReturnGetPostByAuthorCommand() {
+            // act
+            Command actual = SUT.create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, ANY_LONG);
+
+            // assert
+            assertThat(actual).isInstanceOf(GetAllPostsWrittenByCommand.class);
+        }
     }
 
     @Nested
