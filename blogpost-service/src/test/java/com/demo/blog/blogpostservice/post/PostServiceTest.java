@@ -232,6 +232,20 @@ class PostServiceTest {
                     .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
                     .containsExactlyInAnyOrderElementsOf(expectedList);
         }
+
+        @Test
+        void shouldMapAuthor() {
+            // arrange
+            AuthorResponse expectedAuthor = new AuthorResponse(JOHN_SMITH.getUsername());
+
+            // act
+            List<PostResponse> actual = SUT.getAllWrittenByOrderedByPublishedDateDesc(JOHN_SMITH.getId());
+
+            // assert
+            assertThat(actual)
+                    .map(PostResponse::author)
+                    .contains(expectedAuthor);
+        }
     }
 
     @Nested
