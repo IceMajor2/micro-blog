@@ -30,6 +30,14 @@ public class PostDataSupply {
             .withId(2L)
             .build();
 
+    public static final Post ENGINEERING_POST = Post.PostBuilder.post()
+            .withTitle("Deep dive into creational design patterns")
+            .withBody("Knowing a programming language is important, but a good developer should also...")
+            .writtenBy(JOHN_SMITH.getId())
+            .published().fifteenMinsAgo()
+            .withId(3L)
+            .build();
+
     public static final PostRequest SPRING_POST_REQUEST = new PostRequest(
             new String(SPRING_POST.getTitle()),
             new String(SPRING_POST.getBody())
