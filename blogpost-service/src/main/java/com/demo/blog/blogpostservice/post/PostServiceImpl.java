@@ -154,6 +154,11 @@ public class PostServiceImpl implements PostService {
         return new PostResponse(persisted, author, categories);
     }
 
+    @Override
+    public List<PostResponse> getAllWrittenByOrderedByPublishedDateDesc(Long authorId) {
+        return null;
+    }
+
     private List<Category> fetchCategories(Collection<Long> categoryIds) {
         List<Category> newCategories = new ArrayList<>();
         for (Long categoryId : categoryIds) {
