@@ -39,7 +39,6 @@ class GetAllPostsCommandTest {
         // assert
         assertThatPosts(actual)
                 .isSortedByNewest()
-                .ignoringDateFields()
                 .containsAll(expectedPosts);
     }
 

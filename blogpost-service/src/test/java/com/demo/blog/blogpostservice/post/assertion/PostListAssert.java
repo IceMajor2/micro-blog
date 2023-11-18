@@ -4,7 +4,6 @@ import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.datasupply.PostConstants;
 import org.assertj.core.api.AbstractListAssert;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ListAssert;
 import org.springframework.data.util.Streamable;
 
 import java.util.List;
@@ -35,11 +34,5 @@ public class PostListAssert extends AbstractListAssert<PostListAssert, List<Post
         Assertions.assertThat(actual)
                 .isSortedAccordingTo(PostConstants.PUBLISHED_DESC_COMPARATOR);
         return this;
-    }
-
-    public ListAssert<Post> ignoringDateFields() {
-        isNotNull();
-        return Assertions.assertThat(actual)
-                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("publishedOn", "updatedOn");
     }
 }
