@@ -246,6 +246,27 @@ class PostServiceTest {
                     .map(PostResponse::author)
                     .contains(expectedAuthor);
         }
+
+        @Test
+        void shouldMapCategories() {
+            // arrange
+            List<List<CategoryResponse>> expected = List.of(
+                    Collections.emptyList(),
+                    List.of(
+                            new CategoryResponse(null, new String(SPRING_CATEGORY.getName()))
+                    )
+            );
+
+            // act
+            List<PostResponse> actual = SUT.getAllWrittenByOrderedByPublishedDateDesc(JOHN_SMITH.getId());
+
+            // assert
+            assertThat(actual)
+                    .map(PostResponse::categories)
+                    .usingRecursiveFieldByFieldElementComparatorOnFields("name")
+                    .allSatisfy(list -> assertThat(list).isSortedAccordingTo(CATEGORY_RESPONSE_COMPARATOR))
+                    .containsExactlyElementsOf(expected);
+        }
     }
 
     @Nested
