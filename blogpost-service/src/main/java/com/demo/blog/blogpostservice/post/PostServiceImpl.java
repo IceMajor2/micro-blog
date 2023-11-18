@@ -64,6 +64,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostResponse> getAllWrittenByOrderedByPublishedDateDesc(Long authorId) {
+        List<PostResponse> responses = new ArrayList<>();
+        Author author = (Author) commandFactory
+                .create(AuthorCommandCode.GET_AUTHOR, authorId)
+                .execute();
+        List<Post> authorPosts = (List<Post>) commandFactory
+                .create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, author)
+                .execute();
+        for(Post post : authorPosts) {
+            List<Category> categories = (List<Category>) commandFactory
+                    .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                    .execute();
+            responses.add(new PostResponse(post, author, categories));
+        }
+        return responses;
+    }
+
+    @Override
     public PostResponse add(PostRequest request, Author author) {
         Post persisted = (Post) commandFactory
                 .create(PostCommandCode.ADD_POST, request, author)
@@ -152,11 +170,6 @@ public class PostServiceImpl implements PostService {
                 .execute();
         log.info(STR. "Post '\{ persisted }' has new title" );
         return new PostResponse(persisted, author, categories);
-    }
-
-    @Override
-    public List<PostResponse> getAllWrittenByOrderedByPublishedDateDesc(Long authorId) {
-        return null;
     }
 
     private List<Category> fetchCategories(Collection<Long> categoryIds) {
