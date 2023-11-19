@@ -12,9 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThatPosts;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryConstants.NULL_CATEGORY_MSG;
 import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.JAVA_CATEGORY;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.JAVA_POST;
 import static com.demo.blog.blogpostservice.post.datasupply.PostDataSupply.SPRING_POST;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 @TestMethodOrder(MethodOrderer.Random.class)
@@ -42,5 +44,16 @@ class GetAllPostsFromCategoryCommandTest {
         assertThatPosts(actual)
                 .isSortedByNewest()
                 .isEqualTo(expectedPosts);
+    }
+
+    @Test
+    void shouldThrowExceptionOnCategoryNull() {
+        // arrange
+        SUT = new GetAllPostsFromCategoryCommand(postRepository, null);
+
+        // act & assert
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> SUT.execute())
+                .withMessage(NULL_CATEGORY_MSG);
     }
 }

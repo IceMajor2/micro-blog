@@ -25,6 +25,7 @@ public class CategoryConstants {
     public static final String NULL_REQUEST_MSG = "Request was null";
     public static final String NULL_OLD_CATEGORY_MSG = "Category specified to be replaced was null";
     public static final String NULL_CATEGORIES_MSG = "Categories were null";
+    public static final String NULL_CATEGORY_MSG = "Category was null";
 
     public static final Comparator<CategoryResponse> CATEGORY_RESPONSE_COMPARATOR = Comparator.comparing(CategoryResponse::name);
 
