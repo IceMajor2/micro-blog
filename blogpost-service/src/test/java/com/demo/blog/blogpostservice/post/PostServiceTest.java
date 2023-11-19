@@ -323,6 +323,30 @@ class PostServiceTest {
                     .map(PostResponse::author)
                     .containsExactlyInAnyOrderElementsOf(expectedAuthors);
         }
+
+        @Test
+        void shouldMapCategoriesInPostList() {
+            // arrange
+            List<List<CategoryResponse>> expected = List.of(
+                    List.of(
+                            new CategoryResponse(null, new String(JAVA_CATEGORY.getName()))
+                    ),
+                    List.of(
+                            new CategoryResponse(null, new String(JAVA_CATEGORY.getName())),
+                            new CategoryResponse(null, new String(SPRING_CATEGORY.getName()))
+                    )
+            );
+
+            // act
+            List<PostResponse> actual = SUT.getAllFromCategoryOrderedByPublishedDateDesc(JAVA_CATEGORY.getId());
+
+            // assert
+            assertThat(actual)
+                    .map(PostResponse::categories)
+                    .usingRecursiveFieldByFieldElementComparatorOnFields("name")
+                    .allSatisfy(list -> assertThat(list).isSortedAccordingTo(CATEGORY_RESPONSE_COMPARATOR))
+                    .containsExactlyElementsOf(expected);
+        }
     }
 
     @Nested
