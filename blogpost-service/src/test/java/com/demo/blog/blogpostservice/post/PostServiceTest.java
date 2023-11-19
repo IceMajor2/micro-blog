@@ -306,6 +306,23 @@ class PostServiceTest {
                     .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
                     .containsExactlyInAnyOrderElementsOf(expectedList);
         }
+
+        @Test
+        void shouldMapAuthors() {
+            // arrange
+            List<AuthorResponse> expectedAuthors = List.of(
+                    new AuthorResponse(JOHN_SMITH.getUsername()),
+                    new AuthorResponse(ANY_AUTHOR.getUsername())
+            );
+
+            // act
+            List<PostResponse> actual = SUT.getAllFromCategoryOrderedByPublishedDateDesc(JAVA_CATEGORY.getId());
+
+            // assert
+            assertThat(actual)
+                    .map(PostResponse::author)
+                    .containsExactlyInAnyOrderElementsOf(expectedAuthors);
+        }
     }
 
     @Nested
