@@ -72,7 +72,7 @@ public class PostServiceImpl implements PostService {
         List<Post> authorPosts = (List<Post>) commandFactory
                 .create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, author)
                 .execute();
-        for(Post post : authorPosts) {
+        for (Post post : authorPosts) {
             List<Category> categories = (List<Category>) commandFactory
                     .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
                     .execute();
@@ -83,7 +83,23 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> getAllFromCategoryOrderedByPublishedDateDesc(Long categoryId) {
-        return null;
+        Category category = (Category) commandFactory
+                .create(CategoryCommandCode.GET_CATEGORY_BY_ID, categoryId)
+                .execute();
+        List<Post> categoryPosts = (List<Post>) commandFactory
+                .create(PostCommandCode.GET_ALL_POSTS_OF_CATEGORY, category)
+                .execute();
+        List<PostResponse> responses = new ArrayList<>();
+        for (Post post : categoryPosts) {
+            List<Category> postCategories = (List<Category>) commandFactory
+                    .create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, post.getId())
+                    .execute();
+            Author postAuthor = (Author) commandFactory
+                    .create(AuthorCommandCode.GET_AUTHOR, post.getAuthor().getId())
+                    .execute();
+            responses.add(new PostResponse(post, postAuthor, postCategories));
+        }
+        return responses;
     }
 
     @Override
@@ -108,7 +124,7 @@ public class PostServiceImpl implements PostService {
         Post post = (Post) commandFactory
                 .create(PostCommandCode.GET_POST_BY_ID, request.postId())
                 .execute();
-        List<Category> newCategories = fetchCategories(request.categoryIds());
+        List<Category> newCategories = fetchRequestedCategories(request.categoryIds());
         Post persisted = (Post) commandFactory
                 .create(PostCategoryCommandCode.ADD_CATEGORIES_TO_POST, post, newCategories)
                 .execute();
@@ -127,7 +143,7 @@ public class PostServiceImpl implements PostService {
         Post post = (Post) commandFactory
                 .create(PostCommandCode.GET_POST_BY_ID, request.postId())
                 .execute();
-        List<Category> newCategories = fetchCategories(request.categoryIds());
+        List<Category> newCategories = fetchRequestedCategories(request.categoryIds());
         Post persisted = (Post) commandFactory
                 .create(PostCategoryCommandCode.DELETE_CATEGORIES_FROM_POST, post, newCategories)
                 .execute();
@@ -177,7 +193,7 @@ public class PostServiceImpl implements PostService {
         return new PostResponse(persisted, author, categories);
     }
 
-    private List<Category> fetchCategories(Collection<Long> categoryIds) {
+    private List<Category> fetchRequestedCategories(Collection<Long> categoryIds) {
         List<Category> newCategories = new ArrayList<>();
         for (Long categoryId : categoryIds) {
             try {
