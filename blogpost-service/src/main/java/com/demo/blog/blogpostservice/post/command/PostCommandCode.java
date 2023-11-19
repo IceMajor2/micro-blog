@@ -13,7 +13,8 @@ public enum PostCommandCode implements CommandCode {
     REPLACE_POST_BODY("P_REPLACE_BODY"),
     CHANGE_POST_TITLE("P_CHANGE_TITLE"),
     DELETE_POST("P_DELETE"),
-    GET_ALL_POSTS_OF_AUTHOR("P_GET_ALL_OF_AUTHOR");
+    GET_ALL_POSTS_OF_AUTHOR("P_GET_ALL_OF_AUTHOR"),
+    GET_ALL_POSTS_OF_CATEGORY("P_GET_ALL_OF_CAT");
 
     final String code;
 

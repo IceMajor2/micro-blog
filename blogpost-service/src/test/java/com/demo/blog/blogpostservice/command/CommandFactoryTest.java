@@ -110,6 +110,24 @@ class CommandFactoryTest {
         }
 
         @Test
+        void shouldReturnGetAllPostsOfAuthorCommand() {
+            // act
+            Command actual = SUT.create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, ANY_AUTHOR);
+
+            // assert
+            assertThat(actual).isInstanceOf(GetAllPostsWrittenByCommand.class);
+        }
+
+        @Test
+        void shouldReturnGetAllPostsFromCategoryCommand() {
+            // act
+            Command actual = SUT.create(PostCommandCode.GET_ALL_POSTS_OF_CATEGORY, SPRING_CATEGORY);
+
+            // assert
+            assertThat(actual).isInstanceOf(GetAllPostsFromCategoryCommand.class);
+        }
+
+        @Test
         void shouldReturnGetPostByIdCommand() {
             // act
             Command actual = SUT.create(PostCommandCode.GET_POST_BY_ID, ANY_LONG);
@@ -161,15 +179,6 @@ class CommandFactoryTest {
 
             // assert
             assertThat(actual).isInstanceOf(DeletePostCommand.class);
-        }
-
-        @Test
-        void shouldReturnGetPostByAuthorCommand() {
-            // act
-            Command actual = SUT.create(PostCommandCode.GET_ALL_POSTS_OF_AUTHOR, ANY_AUTHOR);
-
-            // assert
-            assertThat(actual).isInstanceOf(GetAllPostsWrittenByCommand.class);
         }
     }
 
