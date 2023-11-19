@@ -25,7 +25,7 @@ public class DeleteCategoriesFromPostCommand implements Command<Post> {
         Objects.requireNonNull(post, PostExceptionMessage.NULL_POST_MSG.getMessage());
         Objects.requireNonNull(categories, CategoryExceptionMessage.NULL_CATEGORIES_MSG.getMessage());
         if (categories.isEmpty())
-            throw new IllegalStateException(CategoryExceptionMessage.CATEGORIES_EMPTY_MSG.getMessage());
+            throw new IllegalStateException(CategoryExceptionMessage.EMPTY_CATEGORIES_MSG.getMessage());
         List<Long> currentCategoryIds = post.getCategories().stream()
                 .map(postCategory -> postCategory.getCategoryId().getId())
                 .toList();
