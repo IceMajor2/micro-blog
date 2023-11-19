@@ -10,7 +10,6 @@ import org.springframework.data.util.Streamable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class GetAllPostsWrittenByCommand implements Command<List<Post>> {
@@ -22,7 +21,6 @@ public class GetAllPostsWrittenByCommand implements Command<List<Post>> {
     public List<Post> execute() {
         Objects.requireNonNull(author, AuthorExceptionMessage.NULL_AUTHOR_MSG.getMessage());
         return Streamable.of(postRepository.findByAuthorOrderByPublishedOnDesc(author.getId()))
-                .stream()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
