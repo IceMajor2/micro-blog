@@ -17,6 +17,8 @@ public interface PostService {
 
     List<PostResponse> getAllWrittenByOrderedByPublishedDateDesc(Long authorId);
 
+    List<PostResponse> getAllFromCategoryOrderedByPublishedDateDesc(Long categoryId);
+
     PostResponse getById(Long id);
 
     PostResponse add(PostRequest request, Author author);

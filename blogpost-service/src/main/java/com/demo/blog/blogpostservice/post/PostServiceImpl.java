@@ -82,6 +82,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostResponse> getAllFromCategoryOrderedByPublishedDateDesc(Long categoryId) {
+        return null;
+    }
+
+    @Override
     public PostResponse add(PostRequest request, Author author) {
         Post persisted = (Post) commandFactory
                 .create(PostCommandCode.ADD_POST, request, author)
