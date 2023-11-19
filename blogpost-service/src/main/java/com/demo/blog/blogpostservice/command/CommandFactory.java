@@ -46,6 +46,8 @@ public class CommandFactory {
                 return new GetAllPostsCommand(postRepository);
             case PostCommandCode.GET_ALL_POSTS_OF_AUTHOR:
                 return new GetAllPostsWrittenByCommand(postRepository, (Author) params[0]);
+            case PostCommandCode.GET_ALL_POSTS_OF_CATEGORY:
+                return new GetAllPostsFromCategoryCommand(postRepository, (Category) params[0]);
             case PostCommandCode.GET_POST_BY_ID:
                 return new GetPostByIdCommand(postRepository, (Long) params[0]);
             case PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME:
