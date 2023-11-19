@@ -9,8 +9,7 @@ import java.util.stream.Stream;
 
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.ANY_AUTHOR;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorDataSupply.JOHN_SMITH;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.CONTAINERS_CATEGORY;
-import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.SPRING_CATEGORY;
+import static com.demo.blog.blogpostservice.category.datasupply.CategoryDataSupply.*;
 
 public class PostDataSupply {
 
@@ -29,7 +28,7 @@ public class PostDataSupply {
             .writtenBy(JOHN_SMITH.getId())
             .published().hourAgo()
             .withId(2L)
-            .categories().setCategories(SPRING_CATEGORY)
+            .categories().setCategories(JAVA_CATEGORY, SPRING_CATEGORY)
             .build();
 
     public static final Post ENGINEERING_POST = Post.PostBuilder.post()
@@ -38,6 +37,15 @@ public class PostDataSupply {
             .writtenBy(JOHN_SMITH.getId())
             .published().fifteenMinsAgo()
             .withId(3L)
+            .build();
+
+    public static final Post JAVA_POST = Post.PostBuilder.post()
+            .withTitle("Java as first programming language")
+            .withBody("The never-ending question: which should be my first programming language?")
+            .writtenBy(ANY_AUTHOR.getId())
+            .published().now()
+            .withId(4L)
+            .categories().setCategories(JAVA_CATEGORY)
             .build();
 
     public static final PostRequest SPRING_POST_REQUEST = new PostRequest(
