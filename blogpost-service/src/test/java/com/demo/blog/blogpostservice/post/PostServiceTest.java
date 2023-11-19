@@ -271,6 +271,45 @@ class PostServiceTest {
 
     @Nested
     @TestMethodOrder(MethodOrderer.Random.class)
+    class GetCategoryCollection {
+
+        @BeforeEach
+        void setUp() {
+            when(commandFactory.create(CategoryCommandCode.GET_CATEGORY_BY_ID, JAVA_CATEGORY.getId()).execute())
+                    .thenReturn(JAVA_CATEGORY);
+            when(commandFactory.create(PostCommandCode.GET_ALL_POSTS_OF_CATEGORY, JAVA_CATEGORY).execute())
+                    .thenReturn(List.of(JAVA_POST, SPRING_POST));
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, JAVA_POST.getId()).execute())
+                    .thenReturn(List.of(JAVA_CATEGORY));
+            when(commandFactory.create(PostCommandCode.GET_POST_CATEGORIES_SORTED_BY_NAME, SPRING_POST.getId()).execute())
+                    .thenReturn(List.of(JAVA_CATEGORY, SPRING_CATEGORY));
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, JAVA_POST.getAuthor().getId()).execute())
+                    .thenReturn(ANY_AUTHOR);
+            when(commandFactory.create(AuthorCommandCode.GET_AUTHOR, SPRING_POST.getAuthor().getId()).execute())
+                    .thenReturn(JOHN_SMITH);
+        }
+
+        @Test
+        void shouldMapPosts() {
+            // arrange
+            List<PostResponse> expectedList = List.of(
+                    new PostResponse(JAVA_POST.getId(), JAVA_POST.getTitle(), null, null, null, null, JAVA_POST.getBody()),
+                    new PostResponse(SPRING_POST.getId(), SPRING_POST.getTitle(), null, null, null, null, SPRING_POST.getBody())
+            );
+
+            // act
+            List<PostResponse> actual = SUT.getAllFromCategoryOrderedByPublishedDateDesc(JAVA_CATEGORY.getId());
+
+            // assert
+            assertThat(actual)
+                    .isSortedAccordingTo(PUBLISHED_DESC_COMPARATOR_DTO)
+                    .usingRecursiveFieldByFieldElementComparatorOnFields("id", "title", "body")
+                    .containsExactlyInAnyOrderElementsOf(expectedList);
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.Random.class)
     class Add {
 
         @BeforeEach
