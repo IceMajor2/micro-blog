@@ -9,6 +9,7 @@ public enum CategoryExceptionMessage implements ExceptionMessage {
     NULL_REQUEST_MSG("Request was null"),
     NULL_OLD_CATEGORY_MSG("Category specified to be replaced was null"),
     NULL_CATEGORIES_MSG("Categories were null"),
+    NULL_CATEGORY_MSG("Category was null"),
 
     CATEGORIES_EMPTY_MSG("List of categories was empty"),
 
