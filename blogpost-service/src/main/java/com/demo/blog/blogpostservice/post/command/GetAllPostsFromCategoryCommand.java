@@ -5,6 +5,7 @@ import com.demo.blog.blogpostservice.command.Command;
 import com.demo.blog.blogpostservice.post.Post;
 import com.demo.blog.blogpostservice.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Streamable;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class GetAllPostsFromCategoryCommand implements Command<List<Post>> {
 
     @Override
     public List<Post> execute() {
-        return null;
+        return Streamable.of(postRepository.findByCategoryOrderByPublishedOnDesc(category.getId()))
+                .toList();
     }
 }
