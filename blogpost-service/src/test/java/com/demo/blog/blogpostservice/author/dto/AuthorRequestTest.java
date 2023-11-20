@@ -9,8 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
-import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.USERNAME_BLANK_MSG;
-import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.USERNAME_TOO_SHORT_MSG;
+import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.*;
 import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_EMAIL;
 
 @TestMethodOrder(MethodOrderer.Random.class)
@@ -37,5 +36,15 @@ class AuthorRequestTest {
 
         // assert
         assertThat(validator.validate(actual)).containsOnlyExceptionMessages(USERNAME_TOO_SHORT_MSG);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#moreThan255CharactersTitles")
+    void shouldThrowExceptionOnTitleLongerThan255Chars(String tooLong) {
+        // act
+        AuthorRequest actual = new AuthorRequest(ANY_EMAIL, tooLong);
+
+        // assert
+        assertThat(validator.validate(actual)).containsOnlyExceptionMessages(USERNAME_TOO_LONG_MSG);
     }
 }
