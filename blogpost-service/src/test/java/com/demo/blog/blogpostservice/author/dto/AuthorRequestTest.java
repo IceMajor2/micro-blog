@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import static com.demo.blog.blogpostservice.assertion.AllAssertions.assertThat;
 import static com.demo.blog.blogpostservice.author.datasupply.AuthorConstants.*;
-import static com.demo.blog.blogpostservice.datasupply.Constants.ANY_EMAIL;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 class AuthorRequestTest {
@@ -22,7 +21,7 @@ class AuthorRequestTest {
     @NullSource
     void shouldThrowExceptionOnUsernameBlank(String blank) {
         // act
-        AuthorRequest actual = new AuthorRequest(ANY_EMAIL, blank);
+        AuthorRequest actual = new AuthorRequest(blank);
 
         // assert
         assertThat(validator.validate(actual)).containsExceptionMessages(USERNAME_BLANK_MSG);
@@ -32,7 +31,7 @@ class AuthorRequestTest {
     @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#lessThanFiveCharactersTitles")
     void shouldThrowExceptionOnUsernameShorterThan5Chars(String tooShort) {
         // act
-        AuthorRequest actual = new AuthorRequest(ANY_EMAIL, tooShort);
+        AuthorRequest actual = new AuthorRequest(tooShort);
 
         // assert
         assertThat(validator.validate(actual)).containsOnlyExceptionMessages(USERNAME_TOO_SHORT_MSG);
@@ -42,7 +41,7 @@ class AuthorRequestTest {
     @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#moreThan255CharactersTitles")
     void shouldThrowExceptionOnUsernameLongerThan255Chars(String tooLong) {
         // act
-        AuthorRequest actual = new AuthorRequest(ANY_EMAIL, tooLong);
+        AuthorRequest actual = new AuthorRequest(tooLong);
 
         // assert
         assertThat(validator.validate(actual)).containsOnlyExceptionMessages(USERNAME_TOO_LONG_MSG);
@@ -52,7 +51,7 @@ class AuthorRequestTest {
     @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#justMoreOrEqualThanFiveCharactersTitles")
     void shouldAcceptUsernamesJustMoreOrEqualThanFiveCharactersLong(String moreOrEqualThanFiveChars) {
         // act
-        AuthorRequest actual = new AuthorRequest(ANY_EMAIL, moreOrEqualThanFiveChars);
+        AuthorRequest actual = new AuthorRequest(moreOrEqualThanFiveChars);
 
         // assert
         assertThat(validator.validate(actual)).isValid();
