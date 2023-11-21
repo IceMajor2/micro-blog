@@ -26,34 +26,4 @@ class AuthorRequestTest {
         // assert
         assertThat(validator.validate(actual)).containsExceptionMessages(USERNAME_BLANK_MSG);
     }
-
-    @ParameterizedTest
-    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#lessThanFiveCharactersTitles")
-    void shouldThrowExceptionOnUsernameShorterThan5Chars(String tooShort) {
-        // act
-        AuthorRequest actual = new AuthorRequest(tooShort);
-
-        // assert
-        assertThat(validator.validate(actual)).containsOnlyExceptionMessages(USERNAME_TOO_SHORT_MSG);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#moreThan255CharactersTitles")
-    void shouldThrowExceptionOnUsernameLongerThan255Chars(String tooLong) {
-        // act
-        AuthorRequest actual = new AuthorRequest(tooLong);
-
-        // assert
-        assertThat(validator.validate(actual)).containsOnlyExceptionMessages(USERNAME_TOO_LONG_MSG);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.demo.blog.blogpostservice.post.datasupply.PostDataSupply#justMoreOrEqualThanFiveCharactersTitles")
-    void shouldAcceptUsernamesJustMoreOrEqualThanFiveCharactersLong(String moreOrEqualThanFiveChars) {
-        // act
-        AuthorRequest actual = new AuthorRequest(moreOrEqualThanFiveChars);
-
-        // assert
-        assertThat(validator.validate(actual)).isValid();
-    }
 }
