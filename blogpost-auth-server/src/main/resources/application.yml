@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/postgres
+    username: postgres
+    password: 1111
+  sql:
+    init:
+      mode: always
+      schema-locations:
+        - classpath:oauth2-registered-client-schema.sql
+        - classpath:oauth2-authorization-schema.sql
+        - classpath:user-schema.sql
+        - classpath:session.sql
+jwt:
+  key:
+    public: classpath:top_secret_keys/app.pub
+    private: classpath:top_secret_keys/app.key
+    id: secret
