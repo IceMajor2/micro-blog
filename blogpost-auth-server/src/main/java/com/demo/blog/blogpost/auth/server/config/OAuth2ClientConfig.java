@@ -39,7 +39,7 @@ public class OAuth2ClientConfig {
                                         AuthorizationGrantType.AUTHORIZATION_CODE,
                                         AuthorizationGrantType.REFRESH_TOKEN
                                 )))
-                                .redirectUri("http://127.0.0.1:8082/login/oauth2/code/spring")
+                                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/spring")
                                 .scopes(scopes -> scopes.addAll(Set.of(
                                         "user.read", "user.write", OidcScopes.OPENID
                                 )))
