@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.demo.blog</groupId>
     <artifactId>blogpost-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>blogpost-service</name>
     <description>Blog post service for the blog application</description>
     <properties>
